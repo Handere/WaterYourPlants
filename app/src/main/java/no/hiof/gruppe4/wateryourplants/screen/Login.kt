@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -22,11 +24,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import no.hiof.gruppe4.wateryourplants.HomeActivity
 import no.hiof.gruppe4.wateryourplants.ui.theme.Purple700
 // Code from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
     fun LoginPage(navController: NavHostController) {
+        // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
+        val mContext = LocalContext.current
+
         Box(modifier = Modifier.fillMaxSize()) {
             ClickableText(
                 text = AnnotatedString("Sign up here"),
@@ -70,7 +76,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Purple700
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { },
+                    onClick = { mContext.startActivity(Intent(mContext, HomeActivity::class.java))},
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()

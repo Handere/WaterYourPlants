@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WaterYourPlants</string>
     <string name="login">Login</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
