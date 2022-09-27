@@ -17,8 +17,33 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import no.hiof.gruppe4.wateryourplants.screen.ScreenMain
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    ScreenMain()
+                }
+
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+        ScreenMain()
+
+}
+
+/*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,3 +74,4 @@ fun DefaultPreview() {
         Login("Android")
     }
 }
+ */
