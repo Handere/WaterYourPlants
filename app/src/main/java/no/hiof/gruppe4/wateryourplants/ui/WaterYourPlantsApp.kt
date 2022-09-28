@@ -9,7 +9,7 @@ import no.hiof.gruppe4.wateryourplants.Routes
 // Code from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
-    fun ScreenMain(){
+    fun WaterYourPlantsApp(){
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = Routes.Login.route) {
