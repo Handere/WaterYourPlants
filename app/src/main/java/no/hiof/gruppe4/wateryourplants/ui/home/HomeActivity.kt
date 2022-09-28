@@ -1,4 +1,4 @@
-package no.hiof.gruppe4.wateryourplants
+package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
