@@ -1,7 +1,9 @@
 package no.hiof.gruppe4.wateryourplants.model
 
-data class Room(
+data class PlantRoom(
     val id: Long,
         val name: String,
     val plants: List<Plant>
 )
+
+

@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class HomeActivity : ComponentActivity() {
@@ -22,9 +23,11 @@ class HomeActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = { TopAppBar() {}},
-                        content = {Greeting("Android")})
+                        content = {PlantCards()})
+
 
                 }
+
             }
         }
     }
