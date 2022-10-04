@@ -7,5 +7,5 @@ data class User(
     val firstName: String,
     val surname: String,
     val profilePictureURL: String,
-    val rooms: List<Room>
+    val rooms: List<PlantRoom>
 )
