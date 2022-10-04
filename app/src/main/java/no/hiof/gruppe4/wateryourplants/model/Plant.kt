@@ -22,9 +22,9 @@ Valg blandt uke dager med en uke intervall
 date picker = https://www.geeksforgeeks.org/date-picker-in-android-using-jetpack-compose/
 */
 
-/*object PlantRepo {
-    fun getPlant(plantId: Long): Plant
-}*/
+object PlantRepo {
+    fun getPlant(plantId: Long): Plant = plants.find{it.id == plantId}!!
+}
 
 val plants = listOf(
     Plant(
