@@ -24,7 +24,13 @@ class RoomActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = { ScaffoldTopAppBar() },
-                        content = { PlantCards() })
+                        floatingActionButton = {
+                            FloatingActionButton(onClick = { /*TODO*/ }) {
+
+                            }
+                        },
+                        content = { PlantCards() }
+                        )
                 }
             }
         }

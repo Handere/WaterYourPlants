@@ -40,6 +40,11 @@ class HomeActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = { ScaffoldTopAppBar() },
+                        floatingActionButton = {
+                            FloatingActionButton(onClick = { /*TODO: Add functionality*/ }) {
+
+                            }
+                        },
                         content = {
                             RoomCards()
                         })
