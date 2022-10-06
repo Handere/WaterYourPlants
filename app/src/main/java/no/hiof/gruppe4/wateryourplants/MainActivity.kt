@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import no.hiof.gruppe4.wateryourplants.screen.WaterYourPlantsApp
+import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            WaterYourPlantsTheme {
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     WaterYourPlantsApp()
                 }
-
+            }
         }
     }
 }
