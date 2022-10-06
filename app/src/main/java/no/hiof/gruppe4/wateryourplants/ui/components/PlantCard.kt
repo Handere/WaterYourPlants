@@ -44,7 +44,6 @@ fun PlantCard(
                         .padding(12.dp),
                     fontSize = 16.sp)
             }
-
         }
     }
 
