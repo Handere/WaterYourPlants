@@ -23,7 +23,7 @@ class RoomActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Scaffold(
-                        topBar = { TopAppBar() {} },
+                        topBar = { ScaffoldTopAppBar() },
                         content = { PlantCards() })
                 }
             }
