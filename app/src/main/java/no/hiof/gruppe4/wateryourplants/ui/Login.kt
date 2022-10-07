@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeActivity
-import no.hiof.gruppe4.wateryourplants.ui.theme.Purple700
+import no.hiof.gruppe4.wateryourplants.ui.theme.*
 // Code from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
@@ -44,7 +45,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Purple700
                     fontSize = 14.sp,
                     fontFamily = FontFamily.Default,
                     textDecoration = TextDecoration.Underline,
-                    color = Purple700
+                    color = MaterialTheme.colors.onPrimary
                 )
             )
         }
