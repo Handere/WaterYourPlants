@@ -23,8 +23,14 @@ class RoomActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Scaffold(
-                        topBar = { TopAppBar() {} },
-                        content = { PlantCards() })
+                        topBar = { ScaffoldTopAppBar() },
+                        floatingActionButton = {
+                            FloatingActionButton(onClick = { /*TODO*/ }) {
+
+                            }
+                        },
+                        content = { PlantCards() }
+                        )
                 }
             }
         }
