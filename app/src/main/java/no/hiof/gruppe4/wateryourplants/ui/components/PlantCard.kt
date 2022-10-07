@@ -9,24 +9,30 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun PlantCard(
     painter: Painter = painterResource(id = R.drawable.no_plant_image),
     contentDescription: String,
-    plantName: String,
+    species: String,
+    speciesLatin: String,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().clickable {  },
-        shape = RoundedCornerShape(15.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { }
+            .padding(0.dp, 0.dp, 0.dp, 5.dp),
+        shape = Shapes.medium,
         elevation = 5.dp,) {
 
         Box(modifier = modifier
@@ -38,11 +44,21 @@ fun PlantCard(
                 Image(
                     painter = painter,
                     contentDescription = contentDescription,
-                    contentScale = ContentScale.Crop)
-                Text(text = plantName,
-                    modifier
-                        .padding(12.dp),
-                    fontSize = 16.sp)
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier.fillMaxWidth(0.5f))
+                Column(modifier = modifier
+                        .fillMaxHeight()) {
+                    Text(text = species,
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = speciesLatin,
+                        fontSize = 14.sp,
+                        modifier = modifier.padding(5.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
             }
         }
     }

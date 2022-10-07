@@ -1,20 +1,24 @@
 package no.hiof.gruppe4.wateryourplants.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import no.hiof.gruppe4.wateryourplants.model.Plant
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import no.hiof.gruppe4.wateryourplants.model.plants
-import no.hiof.gruppe4.wateryourplants.ui.home.HomeActivity
 
 @Composable
 fun PlantCards() {
     
-    LazyColumn {
+    LazyColumn(modifier = Modifier.padding(12.dp)) {
         items(plants) { // TODO: Change to list from view model
             PlantCard(
                 contentDescription = it.species,
-                plantName = it.species)
+                species = it.species,
+                speciesLatin = it.speciesLatin)
         }
     }
 }
