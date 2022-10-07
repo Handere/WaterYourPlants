@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeActivity
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
+
 // Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
@@ -71,12 +73,12 @@ import no.hiof.gruppe4.wateryourplants.R
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
                     onClick = { localContext.startActivity(Intent(localContext, HomeActivity::class.java))},
-                    shape = RoundedCornerShape(50.dp),
+                    shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
                 ) {
-                    Text(text = "Login")
+                    Text(text = stringResource(id = R.string.login))
                 }
             }
 

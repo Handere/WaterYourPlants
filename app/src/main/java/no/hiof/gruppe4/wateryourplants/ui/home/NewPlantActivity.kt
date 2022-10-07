@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 class NewPlantActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,21 +66,21 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
         Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
         Spacer(modifier = modifier.height(20.dp))
         TextField(
-            label ={ Text(text = "Plant search")},
+            label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field))},
             value = plantSearch.value,
             onValueChange = { plantSearch.value = it })
 
         Spacer(modifier = modifier.height(20.dp))
         Row(modifier = modifier) {
             Button(onClick = { /*TODO*/ },
-                shape = RoundedCornerShape(50.dp),
+                shape = Shapes.medium,
                 modifier = modifier.height(50.dp)
             ) {
                 Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
             }
             Spacer(modifier = modifier.width(20.dp))
             Button(onClick = { /*TODO*/ },
-                shape = RoundedCornerShape(50.dp),
+                shape = Shapes.medium,
                 modifier = modifier.height(50.dp)
             ) {
                 Text(text = stringResource(id = R.string.add_new_plant_search_button))

@@ -13,5 +13,6 @@
     <string name="add_new_plant">Add new plant</string>
     <string name="add_new_plant_image_search_button">Image search</string>
     <string name="add_new_plant_search_button">Search</string>
+    <string name="add_new_plant_search_field">Plant search</string>
     <string name="plant_species">Species</string>
 </resources>
