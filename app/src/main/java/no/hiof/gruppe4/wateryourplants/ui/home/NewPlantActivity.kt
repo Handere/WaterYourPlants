@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
-class RoomActivity : ComponentActivity() {
+class NewPlantActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,9 +27,8 @@ class RoomActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = { ScaffoldTopAppBar() },
-                        floatingActionButton = { RoomFloatingActionButton() },
-                        content = { PlantCards() }
-                        )
+                        content = { Greeting3(name = "Hello!") }
+                    )
                 }
             }
         }
@@ -37,23 +36,14 @@ class RoomActivity : ComponentActivity() {
 }
 
 @Composable
-fun RoomFloatingActionButton() {
-    val localContext = LocalContext.current
-    FloatingActionButton(onClick = {localContext.startActivity(Intent(localContext, NewPlantActivity::class.java))}) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
-    }
-}
-
-
-@Composable
-fun Greeting2(name: String) {
+fun Greeting3(name: String) {
     Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview3() {
+fun DefaultPreview4() {
     WaterYourPlantsTheme {
-        Greeting2("Android")
+        Greeting3("Android")
     }
 }

@@ -12,8 +12,8 @@ import no.hiof.gruppe4.wateryourplants.ui.home.RoomActivity
 fun PlantRoomCard(
     buttonName: String, 
     modifier: Modifier = Modifier) {
-    val mContext = LocalContext.current
-    Button(onClick = {mContext.startActivity(Intent(mContext, RoomActivity::class.java))}) {
+    val localContext = LocalContext.current
+    Button(onClick = {localContext.startActivity(Intent(localContext, RoomActivity::class.java))}) {
         Text(text = buttonName)
     }
 }

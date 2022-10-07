@@ -13,6 +13,15 @@
         android:theme="@style/Theme.WaterYourPlants"
         tools:targetApi="31">
         <activity
+            android:name=".ui.home.NewPlantActivity"
+            android:exported="false"
+            android:label="@string/title_activity_new_plant"
+            android:theme="@style/Theme.WaterYourPlants">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.home.RoomActivity"
             android:exported="false"
             android:label="@string/title_activity_room"

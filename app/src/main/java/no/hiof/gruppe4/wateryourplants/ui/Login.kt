@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -37,7 +35,7 @@ import no.hiof.gruppe4.wateryourplants.R
     @Composable
     fun LoginPage(navController: NavHostController, painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
         // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
-        val mContext = LocalContext.current
+        val localContext = LocalContext.current
 
         Column(
             modifier = Modifier.padding(20.dp),
@@ -72,7 +70,7 @@ import no.hiof.gruppe4.wateryourplants.R
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { mContext.startActivity(Intent(mContext, HomeActivity::class.java))},
+                    onClick = { localContext.startActivity(Intent(localContext, HomeActivity::class.java))},
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
