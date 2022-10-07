@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -34,21 +35,6 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.*
         // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
         val mContext = LocalContext.current
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            ClickableText(
-                text = AnnotatedString("Sign up here"),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(20.dp),
-                onClick = { },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline,
-                    color = MaterialTheme.colors.onPrimary
-                )
-            )
-        }
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.Center,
@@ -58,7 +44,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.*
             val username = remember { mutableStateOf(TextFieldValue()) }
             val password = remember { mutableStateOf(TextFieldValue()) }
 
-            Text(text = "Login", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+            Text(text = "Login", style = TextStyle(fontSize = 40.sp))
 
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
@@ -89,7 +75,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.*
 
             Spacer(modifier = Modifier.height(20.dp))
             ClickableText(
-                text = AnnotatedString("Forgot password?"),
+                text = AnnotatedString(stringResource(id = no.hiof.gruppe4.wateryourplants.R.string.sign_up_here)) ,
                 onClick = { },
                 style = TextStyle(
                     fontSize = 14.sp,
