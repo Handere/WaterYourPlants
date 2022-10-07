@@ -1,6 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.screen
 
 import android.content.Intent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -14,7 +15,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -27,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeActivity
-import no.hiof.gruppe4.wateryourplants.ui.theme.*
-// Code from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
+import no.hiof.gruppe4.wateryourplants.R
+// Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
-    fun LoginPage(navController: NavHostController) {
+    fun LoginPage(navController: NavHostController, painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
         // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
         val mContext = LocalContext.current
 
@@ -44,7 +48,12 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.*
             val username = remember { mutableStateOf(TextFieldValue()) }
             val password = remember { mutableStateOf(TextFieldValue()) }
 
-            Text(text = "Login", style = TextStyle(fontSize = 40.sp))
+            // Picture designed by Freepik, modified by Handere
+            Image(painter = painter,
+                contentDescription = stringResource(id = R.string.water_your_plants),
+                contentScale = ContentScale.Crop)
+
+            // Text(text = "Login", style = TextStyle(fontSize = 40.sp))
 
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
@@ -75,7 +84,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.*
 
             Spacer(modifier = Modifier.height(20.dp))
             ClickableText(
-                text = AnnotatedString(stringResource(id = no.hiof.gruppe4.wateryourplants.R.string.sign_up_here)) ,
+                text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
                 onClick = { },
                 style = TextStyle(
                     fontSize = 14.sp,

@@ -4,6 +4,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_room_activity.kt">RoomActivity.kt</string>
     <string name="title_activity_room">RoomActivity</string>
+    <string name="water_your_plants">Water your plants</string>
     <string name="sign_up_here">Sign up here</string>
     <string name="header_room">Rooms:</string>
     <string name="placeholder_username">Username</string>
