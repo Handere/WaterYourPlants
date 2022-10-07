@@ -76,8 +76,8 @@ fun RoomCards(modifier: Modifier = Modifier) {
                 .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
                 .fillMaxWidth(),
             contentScale = ContentScale.Fit)
-        Text(text = stringResource(id = R.string.header_room), modifier
-            .fillMaxWidth())
+        Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
+            fontSize = 30.sp)
         LazyColumn {
             items(plantRoom) { // TODO: Change to list from view model
                 PlantRoomCard(
