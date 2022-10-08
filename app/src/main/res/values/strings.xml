@@ -10,9 +10,18 @@
     <string name="placeholder_username">Username</string>
     <string name="placeholder_weather_description">Weather placeholder. Designed by Freepik.</string>
     <string name="title_activity_new_plant">NewPlantActivity</string>
+
+    <!-- New plant -->
     <string name="add_new_plant">Add new plant</string>
     <string name="add_new_plant_image_search_button">Image search</string>
     <string name="add_new_plant_search_button">Search</string>
     <string name="add_new_plant_search_field">Plant search</string>
     <string name="plant_species">Species</string>
+    <string name="add_new_plant_plant_species_latin">Species Latin</string>
+    <string name="add_new_plant_plant_classification">Classification</string>
+    <string name="add_new_plant_plant_age">Age</string>
+    <string name="add_new_plant_plant_watering_interval">Watering interval</string>
+    <string name="add_new_plant_plant_nutrition_interval">Nutrition interval</string>
+    <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
+    <string name="add_new_plant_plant_personal_note">Note</string>
 </resources>
