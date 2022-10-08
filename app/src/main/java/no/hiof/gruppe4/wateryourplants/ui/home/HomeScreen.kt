@@ -39,8 +39,6 @@ fun HomeScreen(
             onNavigateToRoom = onNavigateToRoom,
             userName = userName)
     }
-
-
 }
 
 @Composable

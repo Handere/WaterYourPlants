@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WaterYourPlantsTheme {
-                AppNavHost()
+                val navController = rememberNavController()
+                AppNavHost(navController = navController)
             }
         }
     }
@@ -32,7 +33,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     startDestination: String = Routes.LoginScreen.route
 ) {
     NavHost(

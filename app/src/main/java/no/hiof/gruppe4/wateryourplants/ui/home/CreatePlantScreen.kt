@@ -61,6 +61,8 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
         .fillMaxWidth()
         .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
+
+        // TODO: Make DRY...
         LazyColumn(modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
