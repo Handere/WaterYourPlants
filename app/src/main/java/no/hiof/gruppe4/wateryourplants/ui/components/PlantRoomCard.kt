@@ -17,7 +17,7 @@ fun PlantRoomCard(
     userName: String?,
     buttonName: String?,
     modifier: Modifier = Modifier) {
-    Button(onClick = { buttonName?.let { userName?.let { it1 -> onNavigationToRoom(it1, it) } } },
+    Button(onClick = { onNavigationToRoom(userName.toString(), buttonName.toString()) },
         shape = Shapes.medium,
         modifier = modifier.fillMaxWidth()) {
         buttonName?.let { Text(text = it.uppercase()) }

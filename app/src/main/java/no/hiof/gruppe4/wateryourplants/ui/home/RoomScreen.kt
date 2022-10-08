@@ -27,9 +27,9 @@ fun RoomScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { roomName?.let { userName?.let { it1 ->
-                onNavigationToCreatePlant(it, it1) } }
-            }) {
+            FloatingActionButton(onClick = { onNavigationToCreatePlant(userName.toString(),
+                roomName.toString()
+            ) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }

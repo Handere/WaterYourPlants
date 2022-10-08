@@ -82,12 +82,10 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             RoomScreen(
-                onNavigationToCreatePlant = { roomName, userName -> navController.navigate(Routes.CreatePlantScreen.withArgs(roomName, userName))},
+                onNavigationToCreatePlant = { userName, roomName -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, roomName))},
                 userName = args?.getString(Routes.RoomScreen.userName),
                 roomName = args?.getString(Routes.RoomScreen.roomName))
         }
-
-        // TODO: Fix bug that switches userName and roomName between Room and CreatePlant
 
         // Create plant screen
         composable(
