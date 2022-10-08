@@ -75,126 +75,126 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
     val sunRequirement = remember { mutableStateOf(TextFieldValue())}
     val personalNote = remember { mutableStateOf(TextFieldValue())}
 
-    LazyColumn(modifier = modifier
-        .fillMaxWidth()
-        .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier.fillMaxWidth().padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
+        LazyColumn(modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
 
-        item {
-            Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
+            item {
+                // Plant search field
+                TextField(
+                    label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field))},
+                    value = plantSearch.value,
+                    onValueChange = { plantSearch.value = it })
 
-            // Plant search field
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field))},
-                value = plantSearch.value,
-                onValueChange = { plantSearch.value = it })
-
-            // Plant search buttons
-            Spacer(modifier = modifier.height(20.dp))
-            Row(modifier = modifier) {
-                Button(onClick = { /*TODO*/ },
-                    shape = Shapes.medium,
-                    modifier = modifier.height(50.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
-                }
-                Spacer(modifier = modifier.width(20.dp))
-                Button(onClick = { /*TODO*/ },
-                    shape = Shapes.medium,
-                    modifier = modifier.height(50.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.add_new_plant_search_button))
+                // Plant search buttons
+                Spacer(modifier = modifier.height(20.dp))
+                Row(modifier = modifier) {
+                    Button(onClick = { /*TODO*/ },
+                        shape = Shapes.medium,
+                        modifier = modifier.height(50.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
+                    }
+                    Spacer(modifier = modifier.width(20.dp))
+                    Button(onClick = { /*TODO*/ },
+                        shape = Shapes.medium,
+                        modifier = modifier.height(50.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.add_new_plant_search_button))
+                    }
                 }
             }
-        }
 
-        // Image
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            Image(
-                painter = painter,
-                contentDescription = "Placeholder image",
-                modifier = modifier
-                    .clip(CircleShape)
-                    .border(1.5.dp, Color.Black, CircleShape)
-                    .clickable { /*TODO: Add uploading functionality*/ })
-        }
+            // Image
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                Image(
+                    painter = painter,
+                    contentDescription = "Placeholder image",
+                    modifier = modifier
+                        .clip(CircleShape)
+                        .border(1.5.dp, Color.Black, CircleShape)
+                        .clickable { /*TODO: Add uploading functionality*/ })
+            }
 
-        // Species
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.plant_species))},
-                value = species.value,
-                onValueChange = { species.value = it })
-        }
+            // Species
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.plant_species))},
+                    value = species.value,
+                    onValueChange = { species.value = it })
+            }
 
-        // Species Latin
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin))},
-                value = speciesLatin.value,
-                onValueChange = { speciesLatin.value = it })
-        }
+            // Species Latin
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin))},
+                    value = speciesLatin.value,
+                    onValueChange = { speciesLatin.value = it })
+            }
 
-        // Classification
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_classification))},
-                value = classification.value,
-                onValueChange = { classification.value = it })
-        }
+            // Classification
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_classification))},
+                    value = classification.value,
+                    onValueChange = { classification.value = it })
+            }
 
-        // Age
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_age))},
-                value = age.value,
-                onValueChange = { age.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-        }
+            // Age
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_age))},
+                    value = age.value,
+                    onValueChange = { age.value = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            }
 
-        // Watering interval
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval))},
-                value = wateringInterval.value,
-                onValueChange = { wateringInterval.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
-        }
+            // Watering interval
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval))},
+                    value = wateringInterval.value,
+                    onValueChange = { wateringInterval.value = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
 
-        // Nutrition interval
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval))},
-                value = nutritionInterval.value,
-                onValueChange = { nutritionInterval.value = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-        }
+            // Nutrition interval
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval))},
+                    value = nutritionInterval.value,
+                    onValueChange = { nutritionInterval.value = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            }
 
-        // Sun requirement
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement))},
-                value = sunRequirement.value,
-                onValueChange = { sunRequirement.value = it })
-        }
+            // Sun requirement
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement))},
+                    value = sunRequirement.value,
+                    onValueChange = { sunRequirement.value = it })
+            }
 
-        // Personal note
-        item {
-            Spacer(modifier = modifier.height(20.dp))
-            TextField(
-                label = {Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note))},
-                value = personalNote.value,
-                onValueChange = { personalNote.value = it })
+            // Personal note
+            item {
+                Spacer(modifier = modifier.height(20.dp))
+                TextField(
+                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note))},
+                    value = personalNote.value,
+                    onValueChange = { personalNote.value = it })
+            }
         }
     }
 }
