@@ -18,13 +18,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.model.plantRoom
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
 @Composable
-fun HomeScreen(navController: NavController, userName: String = "TestUser") {
+fun HomeScreen(
+    onNavigateToRoom: () -> Unit,
+    userName: String?
+) {
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
@@ -33,19 +35,22 @@ fun HomeScreen(navController: NavController, userName: String = "TestUser") {
             }
         }
     ) {
-        RoomCards()
+        RoomCards(onNavigateToRoom)
     }
 
-    
+
 }
 
 @Composable
-fun ScaffoldTopAppBar(userName: String = "I'm a teapot") {
-    TopAppBar(title = { Text(text = userName) }) // TODO: Placeholder. Change to actual username
+fun ScaffoldTopAppBar(userName: String?) {
+    TopAppBar(title = { userName?.let { Text(text = it) } }) // TODO: Placeholder. Change to actual username
 }
 
 @Composable
-fun RoomCards(modifier: Modifier = Modifier) {
+fun RoomCards(
+    onNavigateToRoom: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
     val descriptionPlaceholder = stringResource(id = R.string.placeholder_weather_description)
     Column(
@@ -64,6 +69,7 @@ fun RoomCards(modifier: Modifier = Modifier) {
         LazyColumn {
             items(plantRoom) { // TODO: Change to list from view model
                 PlantRoomCard(
+                    onNavigateToRoom,
                     buttonName = it.name)
             }
         }

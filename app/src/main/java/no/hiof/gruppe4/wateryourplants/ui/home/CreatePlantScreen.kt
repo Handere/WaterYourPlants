@@ -1,24 +1,18 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.NumberPicker
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,53 +23,44 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
-import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
+import androidx.navigation.NavController
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
-/*
-class NewPlantActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WaterYourPlantsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Scaffold(
-                        topBar = { ScaffoldTopAppBar() },
-                        floatingActionButton = {
-                            FloatingActionButton(onClick = { /*TODO: Add create functionality*/ }) {
-                                Icon(imageVector = Icons.Default.Create, contentDescription = "Create")
-                            }
-                        },
-                        content = { AddNewPlant() }
-                    )
-                }
+
+@Composable
+fun CreatePlantScreen(userName: String, room: String) {
+    Scaffold(
+        topBar = { ScaffoldTopAppBar(userName)},
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO: Add create functionality*/ })
+            {
+            Icon(imageVector = Icons.Default.Create, contentDescription = "Create")
             }
         }
+    ) {
+        AddNewPlant()
     }
 }
 
 @Composable
 fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResource(id = R.drawable.no_plant_image)) {
     val localContext = LocalContext.current
-    val plantSearch = remember { mutableStateOf(TextFieldValue())}
-    val species = remember { mutableStateOf(TextFieldValue())}
-    val speciesLatin = remember { mutableStateOf(TextFieldValue())}
-    val classification = remember { mutableStateOf(TextFieldValue())}
-    val age = remember { mutableStateOf(TextFieldValue())}
-    val wateringInterval = remember { mutableStateOf(TextFieldValue())}
-    val nutritionInterval = remember { mutableStateOf(TextFieldValue())}
-    val sunRequirement = remember { mutableStateOf(TextFieldValue())}
-    val personalNote = remember { mutableStateOf(TextFieldValue())}
+    val plantSearch = remember { mutableStateOf(TextFieldValue()) }
+    val species = remember { mutableStateOf(TextFieldValue()) }
+    val speciesLatin = remember { mutableStateOf(TextFieldValue()) }
+    val classification = remember { mutableStateOf(TextFieldValue()) }
+    val age = remember { mutableStateOf(TextFieldValue()) }
+    val wateringInterval = remember { mutableStateOf(TextFieldValue()) }
+    val nutritionInterval = remember { mutableStateOf(TextFieldValue()) }
+    val sunRequirement = remember { mutableStateOf(TextFieldValue()) }
+    val personalNote = remember { mutableStateOf(TextFieldValue()) }
 
-    Column(modifier = modifier.fillMaxWidth().padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
         LazyColumn(modifier = modifier
             .fillMaxWidth()
@@ -85,7 +70,7 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 // Plant search field
                 TextField(
-                    label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field))},
+                    label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
                     value = plantSearch.value,
                     onValueChange = { plantSearch.value = it })
 
@@ -124,7 +109,7 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.plant_species))},
+                    label = { Text(text = stringResource(id = R.string.plant_species)) },
                     value = species.value,
                     onValueChange = { species.value = it })
             }
@@ -133,7 +118,7 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
                     value = speciesLatin.value,
                     onValueChange = { speciesLatin.value = it })
             }
@@ -142,7 +127,7 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_classification))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
                     value = classification.value,
                     onValueChange = { classification.value = it })
             }
@@ -151,17 +136,18 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_age))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_age)) },
                     value = age.value,
                     onValueChange = { age.value = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
             }
 
             // Watering interval
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
                     value = wateringInterval.value,
                     onValueChange = { wateringInterval.value = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -172,17 +158,18 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
                     value = nutritionInterval.value,
                     onValueChange = { nutritionInterval.value = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
             }
 
             // Sun requirement
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
                     value = sunRequirement.value,
                     onValueChange = { sunRequirement.value = it })
             }
@@ -191,25 +178,10 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
             item {
                 Spacer(modifier = modifier.height(20.dp))
                 TextField(
-                    label = {Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note))},
+                    label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
                     value = personalNote.value,
                     onValueChange = { personalNote.value = it })
             }
         }
     }
 }
-
-@Composable
-fun Greeting3(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview4() {
-    WaterYourPlantsTheme {
-        Greeting3("Android")
-    }
-}
-
- */

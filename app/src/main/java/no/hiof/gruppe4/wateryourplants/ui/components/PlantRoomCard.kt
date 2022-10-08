@@ -7,15 +7,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import no.hiof.gruppe4.wateryourplants.ui.home.RoomActivity
+import androidx.navigation.NavController
+import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun PlantRoomCard(
+    onNavigationToRoom: () -> Unit,
     buttonName: String, 
     modifier: Modifier = Modifier) {
-    val localContext = LocalContext.current
-    Button(onClick = {localContext.startActivity(Intent(localContext, RoomActivity::class.java))},
+    Button(onClick = onNavigationToRoom,
         shape = Shapes.medium,
         modifier = modifier.fillMaxWidth()) {
         Text(text = buttonName)

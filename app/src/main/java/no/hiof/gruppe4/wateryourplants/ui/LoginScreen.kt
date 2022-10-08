@@ -34,9 +34,9 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 // Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
-    fun LoginScreen(navController: NavHostController, painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
-        // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
-        val localContext = LocalContext.current
+    fun LoginScreen(
+        onNavigateToHomeScreen: (String) -> Unit,
+        painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
 
         Column(
             modifier = Modifier.padding(20.dp),
@@ -71,7 +71,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { navController.navigate(Routes.HomeScreen.route) },
+                    onClick = { onNavigateToHomeScreen("TestUsername") }, //TODO: Change to actual username
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()

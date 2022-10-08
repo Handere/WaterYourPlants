@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
-
+/*
 class RoomActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +53,8 @@ fun RoomFloatingActionButton() {
     }
 }
 
+
+ */
 
 @Composable
 fun Greeting2(name: String) {
