@@ -1,15 +1,21 @@
 <resources>
     <string name="app_name">WaterYourPlants</string>
-    <string name="login">Login</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_room_activity.kt">RoomActivity.kt</string>
     <string name="title_activity_room">RoomActivity</string>
+    <string name="title_activity_new_plant">NewPlantActivity</string>
+
+    <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
+    <string name="login">Login</string>
     <string name="sign_up_here">Sign up here</string>
-    <string name="header_room">Rooms:</string>
+
+    <!-- Home -->
     <string name="placeholder_username">Username</string>
     <string name="placeholder_weather_description">Weather placeholder. Designed by Freepik.</string>
-    <string name="title_activity_new_plant">NewPlantActivity</string>
+
+    <!-- Room -->
+    <string name="header_room">Rooms:</string>
 
     <!-- New plant -->
     <string name="add_new_plant">Add new plant</string>
