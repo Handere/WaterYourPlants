@@ -13,7 +13,7 @@ import no.hiof.gruppe4.wateryourplants.model.plants
 @Composable
 fun PlantCards() {
     
-    LazyColumn(modifier = Modifier.padding(12.dp)) {
+    LazyColumn() {
         items(plants) { // TODO: Change to list from view model
             PlantCard(
                 contentDescription = it.species,

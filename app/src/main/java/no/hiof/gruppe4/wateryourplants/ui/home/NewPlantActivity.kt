@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -116,7 +117,8 @@ fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResourc
                 contentDescription = "Placeholder image",
                 modifier = modifier
                     .clip(CircleShape)
-                    .border(1.5.dp, Color.Black, CircleShape))
+                    .border(1.5.dp, Color.Black, CircleShape)
+                    .clickable { /*TODO: Add uploading functionality*/ })
         }
 
         // Species

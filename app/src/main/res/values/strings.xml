@@ -11,11 +11,12 @@
     <string name="sign_up_here">Sign up here</string>
 
     <!-- Home -->
-    <string name="placeholder_username">Username</string>
+    <string name="placeholder_username">&lt;Username&gt;</string>
     <string name="placeholder_weather_description">Weather placeholder. Designed by Freepik.</string>
 
     <!-- Room -->
     <string name="header_room">Rooms:</string>
+    <string name="placeholder_room_name">&lt;Room name&gt;</string>
 
     <!-- New plant -->
     <string name="add_new_plant">Add new plant</string>
