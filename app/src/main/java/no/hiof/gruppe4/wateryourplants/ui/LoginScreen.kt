@@ -3,7 +3,6 @@ package no.hiof.gruppe4.wateryourplants.screen
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -28,14 +27,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import no.hiof.gruppe4.wateryourplants.ui.home.HomeActivity
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 // Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
-    fun LoginPage(navController: NavHostController, painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
+    fun LoginScreen(navController: NavHostController, painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
         // From https://www.geeksforgeeks.org/start-a-new-activity-using-intent-in-android-using-jetpack-compose/
         val localContext = LocalContext.current
 
@@ -72,7 +71,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { localContext.startActivity(Intent(localContext, HomeActivity::class.java))},
+                    onClick = { navController.navigate(Routes.HomeScreen.route) },
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()

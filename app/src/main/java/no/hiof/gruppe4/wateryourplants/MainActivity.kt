@@ -9,7 +9,11 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import no.hiof.gruppe4.wateryourplants.screen.WaterYourPlantsApp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
+import no.hiof.gruppe4.wateryourplants.ui.home.HomeScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,54 +21,42 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WaterYourPlantsTheme {
-
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "login_screen"
+                ) {
+                    composable(Routes.LoginScreen.route) {
+                        LoginScreen(navController = navController)
+                    }
+                    composable(Routes.HomeScreen.route) {
+                        HomeScreen(navController = navController)
+                    }
+                }
+/*
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    WaterYourPlantsApp()
+                    // WaterYourPlantsApp()
                 }
-            }
-        }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-        WaterYourPlantsApp()
-
-}
-
-/*
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WaterYourPlantsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Login("Android")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Login(name: String) {
-    Text(text = stringResource(R.string.login))
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WaterYourPlantsTheme {
-        Login("Android")
-    }
-}
  */
+            }
+        }
+    }
+}
+
+sealed class Routes(val route: String) {
+    object LoginScreen : Routes("login_screen")
+    object HomeScreen : Routes("home_screen")
+    object RoomScreen : Routes("room_screen")
+    object CreatePlantScreen : Routes("create_plant_screen")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+        // WaterYourPlantsApp()
+
+}

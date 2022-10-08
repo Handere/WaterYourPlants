@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import no.hiof.gruppe4.wateryourplants.Routes
 
 // Code from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
-
+/*
     @Composable
     fun WaterYourPlantsApp(){
         val navController = rememberNavController()
@@ -15,8 +15,9 @@ import no.hiof.gruppe4.wateryourplants.Routes
         NavHost(navController = navController, startDestination = Routes.Login.route) {
 
             composable(Routes.Login.route) {
-                LoginPage(navController = navController)
+                LoginScreen(navController = navController)
             }
 
         }
     }
+*/

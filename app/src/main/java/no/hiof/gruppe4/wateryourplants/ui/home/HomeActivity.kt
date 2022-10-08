@@ -29,7 +29,7 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCard
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
-
+/*
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +55,13 @@ class HomeActivity : ComponentActivity() {
         }
     }
 }
-
+ */
+/*
 @Composable
 fun ScaffoldTopAppBar() {
     TopAppBar(title = { Text(text = stringResource(id = R.string.placeholder_username))}) // TODO: Placeholder. Change to actual username
 }
+
 
 @Composable
 fun RoomCards(modifier: Modifier = Modifier) {
@@ -86,7 +88,7 @@ fun RoomCards(modifier: Modifier = Modifier) {
         }
     }
 }
-
+*/
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
