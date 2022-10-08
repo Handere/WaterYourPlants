@@ -31,7 +31,7 @@ import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
-fun CreatePlantScreen(userName: String, room: String) {
+fun CreatePlantScreen(userName: String?, roomName: String?) {
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
         floatingActionButton = {
@@ -47,7 +47,6 @@ fun CreatePlantScreen(userName: String, room: String) {
 
 @Composable
 fun AddNewPlant(modifier: Modifier = Modifier, painter: Painter = painterResource(id = R.drawable.no_plant_image)) {
-    val localContext = LocalContext.current
     val plantSearch = remember { mutableStateOf(TextFieldValue()) }
     val species = remember { mutableStateOf(TextFieldValue()) }
     val speciesLatin = remember { mutableStateOf(TextFieldValue()) }

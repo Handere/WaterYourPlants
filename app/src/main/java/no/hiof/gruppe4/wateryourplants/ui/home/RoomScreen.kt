@@ -1,7 +1,8 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -14,23 +15,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import no.hiof.gruppe4.wateryourplants.R
-import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
-fun RoomScreen(userName: String) {
+fun RoomScreen(
+    onNavigationToCreatePlant: (String, String) -> Unit,
+    userName: String?,
+    roomName: String?,
+    modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO: Add navigation to CreatePlantScreen*/ }) {
+            FloatingActionButton(onClick = { roomName?.let { userName?.let { it1 ->
+                onNavigationToCreatePlant(it, it1) } }
+            }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = stringResource(id = R.string.placeholder_room_name), fontSize = 30.sp)
+        Column(modifier = modifier.padding(16.dp, 0.dp)) {
+            roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
+            Spacer(modifier = modifier.height(5.dp))
             PlantCards()
         }
     }

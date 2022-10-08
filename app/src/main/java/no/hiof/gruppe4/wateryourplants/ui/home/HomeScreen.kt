@@ -24,7 +24,7 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
 @Composable
 fun HomeScreen(
-    onNavigateToRoom: () -> Unit,
+    onNavigateToRoom: (String, String) -> Unit,
     userName: String?
 ) {
     Scaffold(
@@ -35,7 +35,9 @@ fun HomeScreen(
             }
         }
     ) {
-        RoomCards(onNavigateToRoom)
+        RoomCards(
+            onNavigateToRoom = onNavigateToRoom,
+            userName = userName)
     }
 
 
@@ -48,7 +50,8 @@ fun ScaffoldTopAppBar(userName: String?) {
 
 @Composable
 fun RoomCards(
-    onNavigateToRoom: () -> Unit,
+    userName: String?,
+    onNavigateToRoom: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
@@ -69,7 +72,8 @@ fun RoomCards(
         LazyColumn {
             items(plantRoom) { // TODO: Change to list from view model
                 PlantRoomCard(
-                    onNavigateToRoom,
+                    userName = userName,
+                    onNavigationToRoom = onNavigateToRoom,
                     buttonName = it.name)
             }
         }
