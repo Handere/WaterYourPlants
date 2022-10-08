@@ -4,4 +4,5 @@ package no.hiof.gruppe4.wateryourplants
 
 sealed class Routes(val route: String) {
     object Login : Routes("Login")
+
 }
