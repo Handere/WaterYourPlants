@@ -40,7 +40,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val username = remember { mutableStateOf(TextFieldValue()) }
+            val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
             val password = remember { mutableStateOf(TextFieldValue()) }
 
             // Picture designed by Freepik, modified by Handere
@@ -67,7 +67,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { onNavigateToHomeScreen("TestUsername") }, //TODO: Change to actual username
+                    onClick = { onNavigateToHomeScreen(username.value.text) }, //TODO: Change to actual username
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
