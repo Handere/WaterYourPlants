@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">WaterYourPlants</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_room_activity.kt">RoomActivity.kt</string>
-    <string name="title_activity_room">RoomActivity</string>
-    <string name="title_activity_new_plant">NewPlantActivity</string>
+
+    <!-- Screens -->
+    <string name="login_screen">login_screen</string>
+    <string name="home_screen">home_screen</string>
+    <string name="room_screen">room_screen</string>
+    <string name="create_plant_screen">create_plant_screen</string>
 
     <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
