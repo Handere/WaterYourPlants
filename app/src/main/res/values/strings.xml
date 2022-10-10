@@ -1,10 +1,36 @@
 <resources>
     <string name="app_name">WaterYourPlants</string>
+
+    <!-- Screens -->
+    <string name="login_screen">login_screen</string>
+    <string name="home_screen">home_screen</string>
+    <string name="room_screen">room_screen</string>
+    <string name="create_plant_screen">create_plant_screen</string>
+
+    <!-- Login -->
+    <string name="water_your_plants">Water your plants</string>
     <string name="login">Login</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_room_activity.kt">RoomActivity.kt</string>
-    <string name="title_activity_room">RoomActivity</string>
-    <string name="header_room">Rooms:</string>
-    <string name="placeholder_username">Username</string>
+    <string name="sign_up_here">Sign up here</string>
+
+    <!-- Home -->
+    <string name="placeholder_username">&lt;Username&gt;</string>
     <string name="placeholder_weather_description">Weather placeholder. Designed by Freepik.</string>
+
+    <!-- Room -->
+    <string name="header_room">Rooms:</string>
+    <string name="placeholder_room_name">&lt;Room name&gt;</string>
+
+    <!-- New plant -->
+    <string name="add_new_plant">Add new plant</string>
+    <string name="add_new_plant_image_search_button">Image search</string>
+    <string name="add_new_plant_search_button">Search</string>
+    <string name="add_new_plant_search_field">Plant search</string>
+    <string name="plant_species">Species</string>
+    <string name="add_new_plant_plant_species_latin">Species Latin</string>
+    <string name="add_new_plant_plant_classification">Classification</string>
+    <string name="add_new_plant_plant_age">Age</string>
+    <string name="add_new_plant_plant_watering_interval">Watering interval</string>
+    <string name="add_new_plant_plant_nutrition_interval">Nutrition interval</string>
+    <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
+    <string name="add_new_plant_plant_personal_note">Note</string>
 </resources>

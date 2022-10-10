@@ -13,24 +13,6 @@
         android:theme="@style/Theme.WaterYourPlants"
         tools:targetApi="31">
         <activity
-            android:name=".ui.home.RoomActivity"
-            android:exported="false"
-            android:label="@string/title_activity_room"
-            android:theme="@style/Theme.WaterYourPlants">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.home.HomeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_home"
-            android:theme="@style/Theme.WaterYourPlants">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
