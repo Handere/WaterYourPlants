@@ -17,12 +17,15 @@ class PlantEntity {
     var speciesName: String = ""
     var speciesLatinName: String = ""
     var plantClassification: String = ""
+    // TODO: consider to change plantAge datatype
     var plantAge: Int = 0
+    //TODO: painter may not work with database, consider image handling(coil)
     var painter: Painter? = null
     var wateringInterval: Int  = 0// Indicate how many days between
     var nutritionInterval: Int = 0// Indicate how many days between
     var sunRequirement: String = ""
     var note: String = ""
+
 
     constructor() {}
 
