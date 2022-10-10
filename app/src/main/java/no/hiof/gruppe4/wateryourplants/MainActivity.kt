@@ -1,17 +1,24 @@
 package no.hiof.gruppe4.wateryourplants
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import no.hiof.gruppe4.wateryourplants.room.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeScreen
@@ -25,6 +32,16 @@ class MainActivity : ComponentActivity() {
             WaterYourPlantsTheme {
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
+           /* val owner = LocalViewModelStoreOwner.current
+
+                owner?.let {
+                    val viewModel: PlantViewModel = viewModel(
+                        it,
+                        "PlantViewModel",
+                        PlantViewModelFactory(LocalContext.current.applicationContext as Application)
+                    )
+                    ScreenSetup(viewModel)
+                }*/
             }
         }
     }
@@ -156,3 +173,10 @@ fun DefaultPreview() {
         // WaterYourPlantsApp()
 
 }
+/*//TODO: added plantViewFactory
+class PlantViewModelFactory(val application: Application) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return PlantViewModel(application) as T
+    }
+}*/

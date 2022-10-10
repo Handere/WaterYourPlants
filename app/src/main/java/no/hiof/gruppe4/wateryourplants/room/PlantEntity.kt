@@ -5,6 +5,7 @@ import android.service.autofill.FieldClassification
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "plants")
@@ -20,7 +21,9 @@ class PlantEntity {
     // TODO: consider to change plantAge datatype
     var plantAge: Int = 0
     //TODO: painter may not work with database, consider image handling(coil)
+    @Ignore
     var painter: Painter? = null
+
     var wateringInterval: Int  = 0// Indicate how many days between
     var nutritionInterval: Int = 0// Indicate how many days between
     var sunRequirement: String = ""
@@ -34,7 +37,7 @@ class PlantEntity {
         speciesLatinName: String,
         plantClassification: String,
         plantAge: Int,
-        painter: Painter,
+        /*painter: Painter,*/
         wateringInterval: Int,
         nutritionInterval: Int,
         sunRequirement: String,
@@ -44,7 +47,7 @@ class PlantEntity {
         this.speciesLatinName = speciesLatinName
         this.plantClassification = plantClassification
         this.plantAge = plantAge
-        this.painter = painter
+        /*this.painter = painter*/
         this.wateringInterval = wateringInterval
         this.nutritionInterval = nutritionInterval
         this.sunRequirement = sunRequirement

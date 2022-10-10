@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import android.app.appsearch.AppSearchResult
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,13 +12,35 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import no.hiof.gruppe4.wateryourplants.Routes
+import no.hiof.gruppe4.wateryourplants.room.PlantEntity
+import no.hiof.gruppe4.wateryourplants.room.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
+
+/*//TODO: add viewModel
+@Composable
+fun ScreenSetup(viewModel: PlantViewModel) {
+
+    val allPlants by viewModel.allPlants.observeAsState(listOf())
+    val searchResults by viewModel.searchResults.observeAsState(listOf())
+
+    RoomScreen(
+        allPlants = allPlants,
+        searchResults = searchResults,
+        viewModel = viewModel
+    )
+}*/
 
 @Composable
 fun RoomScreen(
+    /*allPlants: List<PlantEntity>,
+    searchResults: List<PlantEntity>,
+    viewModel: PlantViewModel,*/
     onNavigationToCreatePlant: (String, String) -> Unit,
     userName: String?,
     roomName: String?,
