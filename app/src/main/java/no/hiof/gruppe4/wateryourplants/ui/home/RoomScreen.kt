@@ -47,8 +47,8 @@ fun RoomScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
-    ) {
-        Column(modifier = modifier.padding(16.dp, 0.dp)) {
+        ) {padding ->
+        Column(modifier = modifier.padding(padding)) {
             roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
             Spacer(modifier = modifier.height(5.dp))
             PlantCards(allPlants)
