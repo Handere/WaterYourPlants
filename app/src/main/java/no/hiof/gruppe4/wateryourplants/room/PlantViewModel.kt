@@ -32,8 +32,10 @@ class PlantViewModel(private val repository: PlantRepository) : ViewModel() {
 }
 
 //TODO: added plantViewFactory
+
 class PlantViewModelFactory(val repository: PlantRepository) :
     ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(PlantViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")

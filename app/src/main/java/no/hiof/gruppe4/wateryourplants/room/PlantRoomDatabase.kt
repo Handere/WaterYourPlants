@@ -25,28 +25,10 @@ abstract class PlantRoomDatabase: RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context, scope: CoroutineScope): PlantRoomDatabase {
-            return Room.databaseBuilder(context, PlantRoomDatabase::class.java, "plants")
+            return Room.databaseBuilder(context, PlantRoomDatabase::class.java, "plant_table")
                 .addCallback(PlantDatabaseCallback(scope))
                 .build()
         }
-
-        /*fun getInstance(context: Context): PlantRoomDatabase {
-            synchronized(this) {
-                var instance = INSTANCE
-
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        PlantRoomDatabase::class.java,
-                        "plants_database"
-                    ).fallbackToDestructiveMigration()
-                        .build()
-
-                    INSTANCE = instance
-                }
-                return instance
-            }
-        }*/
     }
     private class PlantDatabaseCallback(
         private val scope: CoroutineScope
@@ -58,12 +40,15 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                 scope.launch {
                     val plantDao = database.plantDao()
 
+                    //plantDao.insertPlant(PlantEntity("", "","") )
+
                     // Delete all content here.
                     /*movieDao.deleteAll()*/
 
                     // Add sample words.
 
-                }        }
+                }
+            }
         }
     }
 }
