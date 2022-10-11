@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import no.hiof.gruppe4.wateryourplants.room.PlantRepository
 import no.hiof.gruppe4.wateryourplants.room.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
@@ -32,7 +33,8 @@ class MainActivity : ComponentActivity() {
             WaterYourPlantsTheme {
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
-           /* val owner = LocalViewModelStoreOwner.current
+
+                /*val owner = LocalViewModelStoreOwner.current
 
                 owner?.let {
                     val viewModel: PlantViewModel = viewModel(
@@ -173,10 +175,3 @@ fun DefaultPreview() {
         // WaterYourPlantsApp()
 
 }
-/*//TODO: added plantViewFactory
-class PlantViewModelFactory(val application: Application) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PlantViewModel(application) as T
-    }
-}*/

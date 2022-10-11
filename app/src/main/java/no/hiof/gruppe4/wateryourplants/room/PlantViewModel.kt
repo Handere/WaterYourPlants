@@ -1,18 +1,16 @@
 package no.hiof.gruppe4.wateryourplants.room
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
-class PlantViewModel(application: Application) : ViewModel() {
+class PlantViewModel(private val repository: PlantRepository) : ViewModel() {
 
-    val allPlants: LiveData<List<PlantEntity>>
-    private val repository: PlantRepository
-    val searchResults: MutableLiveData<List<PlantEntity>>
+    var allPlants: LiveData<List<PlantEntity>> = repository.getPlants().asLiveData()
+
+    /*val searchResults: MutableLiveData<List<PlantEntity>>
 
     init {
-        val plantDb = PlantRoomDatabase.getInstance(application)
+        val plantDb = PlantRoomDatabase.getInstance()
         val plantDao = plantDb.plantDao()
         repository = PlantRepository(plantDao)
 
@@ -23,7 +21,7 @@ class PlantViewModel(application: Application) : ViewModel() {
     fun insertPlant(plantEntity: PlantEntity) {
         repository.insertPlant(plantEntity)
     }
-/*
+
     fun findProduct(name: String) {
         repository.findProduct(name)
     }
@@ -31,4 +29,16 @@ class PlantViewModel(application: Application) : ViewModel() {
     fun deleteProduct(name: String) {
         repository.deleteProduct(name)
     }*/
+}
+
+//TODO: added plantViewFactory
+class PlantViewModelFactory(val repository: PlantRepository) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if(modelClass.isAssignableFrom(PlantViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return PlantViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown viewModel class")
+    }
 }

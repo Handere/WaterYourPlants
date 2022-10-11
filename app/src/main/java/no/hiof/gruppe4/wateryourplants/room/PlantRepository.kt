@@ -8,32 +8,10 @@ import kotlinx.coroutines.launch
 
 class PlantRepository(private val plantDao: PlantDao) {
 
-    val allPlants: LiveData<List<PlantEntity>> = plantDao.getAllPlants()
+    fun getPlants() = plantDao.getAllPlants()
 
-    val searchResults = MutableLiveData<List<PlantEntity>>()
+   /* fun insertPlant() = plantDao.insertPlant()*/
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    /*fun getPlant() = plantDao.*/
 
-    fun insertPlant(newPlant: PlantEntity) {
-        coroutineScope.launch(Dispatchers.IO) {
-            plantDao.insertPlant(newPlant)
-        }
-    }
-/*
-    fun deleteProduct(name: String) {
-        coroutineScope.launch(Dispatchers.IO) {
-            productDao.deleteProduct(name)
-        }
-    }
-
-    fun findProduct(name: String) {
-        coroutineScope.launch(Dispatchers.Main) {
-            searchResults.value = asyncFind(name).await()
-        }
-    }
-
-    private fun asyncFind(name: String): Deferred<List<Product>?> =
-        coroutineScope.async(Dispatchers.IO) {
-            return@async productDao.findProduct(name)
-        }*/
 }
