@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 
 class PlantViewModel(private val repository: PlantRepository) : ViewModel() {
 
-    var plantRoomWithPlants: LiveData<List<PlantRoomWithPlants>> = repository.getPlantRoomWithPlants().asLiveData()
+    //var plantRoomWithPlants: LiveData<List<PlantRoomWithPlants>> = repository.getPlantRoomWithPlants().asLiveData()
 
     var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 

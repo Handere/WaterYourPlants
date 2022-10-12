@@ -13,11 +13,14 @@ interface PlantDao {
     fun insertPlant(plant: Plant)
 
     @Insert
-    fun insertPlantRoomWithPlants(plantRoomWithPlants: PlantRoomWithPlants)
+    fun insertPlantRoom(plantRoom: PlantRoom)
+
 
     @Transaction
     @Query("SELECT * FROM plantRoom_table")
     fun getPlantRoomWithPlants(): Flow<List<PlantRoomWithPlants>>
+
+
 
     @Query("SELECT * FROM plant_table")
     fun getAllPlants(): Flow<List<Plant>>

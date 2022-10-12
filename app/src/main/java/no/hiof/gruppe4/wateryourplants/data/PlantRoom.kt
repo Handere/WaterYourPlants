@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,6 +10,7 @@ data class PlantRoom(
 ) {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "plantRoomId")
     var plantRoomId: Int = 0
 
 }
