@@ -22,9 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
-import no.hiof.gruppe4.wateryourplants.data.PlantViewModel
-import no.hiof.gruppe4.wateryourplants.data.PlantViewModelFactory
-import no.hiof.gruppe4.wateryourplants.model.plantRoom
+import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
 @Composable

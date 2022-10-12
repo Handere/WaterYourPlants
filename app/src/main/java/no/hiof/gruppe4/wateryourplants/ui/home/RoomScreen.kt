@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
-import no.hiof.gruppe4.wateryourplants.data.*
+import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 

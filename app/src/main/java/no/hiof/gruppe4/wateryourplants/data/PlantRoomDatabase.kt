@@ -8,8 +8,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
-import no.hiof.gruppe4.wateryourplants.model.plantRoom
-import java.sql.Date
 
 @Database(entities = [(Plant::class), (PlantRoom::class)], version = 1)
 abstract class PlantRoomDatabase: RoomDatabase() {

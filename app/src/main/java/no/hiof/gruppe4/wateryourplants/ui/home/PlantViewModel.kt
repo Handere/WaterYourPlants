@@ -1,7 +1,7 @@
-package no.hiof.gruppe4.wateryourplants.data
+package no.hiof.gruppe4.wateryourplants.home
 
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.*
+import no.hiof.gruppe4.wateryourplants.data.*
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int) : ViewModel() {
 
