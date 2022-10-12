@@ -1,7 +1,6 @@
-package no.hiof.gruppe4.wateryourplants.room
+package no.hiof.gruppe4.wateryourplants.data
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,8 +8,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.model.plantRoom
+import java.sql.Date
 
-@Database(entities = [(PlantEntity::class)], version = 1)
+@Database(entities = [(Plant::class), (PlantRoom::class)], version = 1)
 abstract class PlantRoomDatabase: RoomDatabase() {
 
     abstract fun plantDao(): PlantDao
@@ -47,39 +48,51 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                     /*movieDao.deleteAll()*/
 
                     // Add sample words.
-                    plantDao.insertPlant(PlantEntity(
+                    plantDao.insertPlantRoom(
+                        PlantRoom("stue")
+                    )
+                    plantDao.insertPlantRoom(
+                        PlantRoom("kjøkken")
+                    )
+
+                   plantDao.insertPlant(Plant(
+                        1,
                         "Monstera",
                         "Monstera deliciosa",
                         "Blomsterplanter",
-                        2,
                         R.drawable.no_plant_image,
                         10,
                         10,
+                       "tirsdag",
                         "lite",
                         "") )
 
                     plantDao.insertPlant(
-                        PlantEntity("Bjørkefiken",
+                        Plant(2,
+                            "Bjørkefiken",
                              "Ficus benjamina 'Danielle'",
                             "Blomsterplanter",
-                             2,
+
                             R.drawable.no_plant_image,
                             5,
                             5,
+                            "tirsdag",
                             "halvskygge",
                             "")
                     )
 
                     plantDao.insertPlant(
-                        PlantEntity(
+                        Plant(
+                            2,
                             "Orkide",
                             "Orchidaceae",
                             "Blomsterplanter",
-                        1,
-                        R.drawable.no_plant_image,
-                        5,5,
-                        "halvskygge - sol",
-                        "")
+                            R.drawable.no_plant_image,
+                            5,
+                            5,
+                            "tirsdag",
+                            "halvskygge - sol",
+                            "")
                     )
                 }
             }
