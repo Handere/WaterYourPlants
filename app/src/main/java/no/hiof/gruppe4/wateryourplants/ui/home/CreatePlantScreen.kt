@@ -28,7 +28,7 @@ import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
-fun CreatePlantScreen(userName: String?, roomName: String?) {
+fun CreatePlantScreen(userName: String?, plantRoomId: Int?) {
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
         floatingActionButton = {
@@ -37,7 +37,8 @@ fun CreatePlantScreen(userName: String?, roomName: String?) {
             Icon(imageVector = Icons.Default.Create, contentDescription = "Create")
             }
         }
-    ) {
+    ) { padding -> // TODO: dafuq do we need this thing?
+        Box(modifier = Modifier.padding(padding))
         AddNewPlant()
     }
 }

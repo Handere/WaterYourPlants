@@ -29,7 +29,7 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
 @Composable
 fun HomeScreen(
-    onNavigateToRoom: (String, String) -> Unit,
+    onNavigateToRoom: (String, Int) -> Unit,
     userName: String?
 ) {
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
@@ -62,7 +62,7 @@ fun ScaffoldTopAppBar(userName: String?) {
 fun RoomCards(
     userName: String?,
     plantRoomList: List<PlantRoom>,
-    onNavigateToRoom: (String, String) -> Unit,
+    onNavigateToRoom: (String, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
@@ -85,7 +85,8 @@ fun RoomCards(
                 PlantRoomCard(
                     userName = userName,
                     onNavigationToRoom = onNavigateToRoom,
-                    buttonName = it.roomName)
+                    buttonName = it.roomName,
+                    plantRoomId = it.plantRoomId )
             }
         }
     }

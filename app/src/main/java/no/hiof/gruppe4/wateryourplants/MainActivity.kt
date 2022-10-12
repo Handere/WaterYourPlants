@@ -71,44 +71,45 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             HomeScreen(
-                onNavigateToRoom = { userName, roomName -> navController.navigate(Routes.RoomScreen.withArgs(userName, roomName)) },
+                onNavigateToRoom = { userName, plantRoomId -> navController.navigate(Routes.RoomScreen.withArgs(userName, plantRoomId.toString())) },
                 userName = args?.getString(Routes.HomeScreen.userName)
             )
         }
 
         // Room screen
         composable(
-            route = Routes.RoomScreen.withArgsFormat(Routes.RoomScreen.userName, Routes.RoomScreen.roomName),
+            route = Routes.RoomScreen.withArgsFormat(Routes.RoomScreen.userName, Routes.RoomScreen.plantRoomId),
             arguments = listOf(
                 navArgument(Routes.RoomScreen.userName) {
                     type = NavType.StringType
                     nullable = true
                 },
-                navArgument(Routes.RoomScreen.roomName) {
-                    type = NavType.StringType
-                    nullable = true
+                navArgument(Routes.RoomScreen.plantRoomId) {
+                    type = NavType.IntType
+                    nullable = false
                 }
             )
         ) { backStackEntry ->
             val args = backStackEntry.arguments
 
             RoomScreen(
-                onNavigationToCreatePlant = { userName, roomName -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, roomName))},
+                onNavigationToCreatePlant = { userName, plantRoomId -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, plantRoomId.toString()))},
                 userName = args?.getString(Routes.RoomScreen.userName),
-                roomName = args?.getString(Routes.RoomScreen.roomName))
+                plantRoomId = args?.getInt(Routes.RoomScreen.plantRoomId)!!
+            )
         }
 
         // Create plant screen
         composable(
-            route = Routes.CreatePlantScreen.withArgsFormat(Routes.CreatePlantScreen.userName, Routes.CreatePlantScreen.roomName),
+            route = Routes.CreatePlantScreen.withArgsFormat(Routes.CreatePlantScreen.userName, Routes.CreatePlantScreen.plantRoomId),
             arguments = listOf(
                 navArgument(Routes.CreatePlantScreen.userName) {
                     type = NavType.StringType
                     nullable = true
                 },
-                navArgument(Routes.CreatePlantScreen.roomName) {
-                    type = NavType.StringType
-                    nullable = true
+                navArgument(Routes.CreatePlantScreen.plantRoomId) {
+                    type = NavType.IntType
+                    nullable = false
                 }
             )
         ) { backStackEntry ->
@@ -116,7 +117,7 @@ fun AppNavHost(
 
             CreatePlantScreen(
                 userName = args?.getString(Routes.CreatePlantScreen.userName),
-                roomName = args?.getString(Routes.CreatePlantScreen.roomName))
+                plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId))
         }
     }
 }
@@ -131,11 +132,11 @@ sealed class Routes(val route: String) {
     }
     object RoomScreen : Routes("room_screen") {
         val userName = "userName"
-        val roomName = "roomName"
+        val plantRoomId = "plantRoomId"
     }
     object CreatePlantScreen : Routes("create_plant_screen") {
         val userName = "userName"
-        val roomName = "roomName"
+        val plantRoomId = "plantRoomId"
     }
 
     // Inspiration from https://github.com/vinchamp77/Demo_SimpleNavigationCompose

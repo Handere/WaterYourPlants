@@ -3,37 +3,25 @@ package no.hiof.gruppe4.wateryourplants.data
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.*
 
-class PlantViewModel(private val repository: PlantRepository) : ViewModel() {
+class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int) : ViewModel() {
 
-    //var plantRoomWithPlants: LiveData<List<PlantRoomWithPlants>> = repository.getPlantRoomWithPlants().asLiveData()
-
-    var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
+    //var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
     var plantRoomList: LiveData<List<PlantRoom>> = repository.getPlantRooms().asLiveData()
 
-    //TODO: no longer livedata
-    /*
-    fun getPlantRoomPlants(plantRoom: String?): List<Plant>? {
-        var plantList: List<Plant>? = null
-        plantRoomWithPlants.value?.forEach {
-            if (it.plantRoom.roomName.equals(plantRoom)){
-                plantList =  it.plantList
-            }
-        }
-        return plantList
-    }
-     */
+    var plantRoomPlantList: LiveData<List<Plant>> = repository.getPlantRoomPlants(plantRoomId).asLiveData()
+
+    var currentPlantRoom: LiveData<PlantRoom> = repository.getPlantRoom(plantRoomId).asLiveData()
 }
 
-//TODO: added plantViewFactory
-
-class PlantViewModelFactory(val repository: PlantRepository) :
+// TODO: Error handling if plantRoomId = 0 = no argument given
+class PlantViewModelFactory(val repository: PlantRepository, val plantRoomId: Int = 0) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(PlantViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
-            return PlantViewModel(repository) as T
+            return PlantViewModel(repository, plantRoomId) as T
         }
         throw IllegalArgumentException("Unknown viewModel class")
     }

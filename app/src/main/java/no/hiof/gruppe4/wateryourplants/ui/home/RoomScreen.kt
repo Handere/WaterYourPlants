@@ -25,30 +25,33 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
 fun RoomScreen(
-    onNavigationToCreatePlant: (String, String) -> Unit,
+    onNavigationToCreatePlant: (String, Int) -> Unit,
     userName: String?,
-    roomName: String?,
+    plantRoomId: Int,
     modifier: Modifier = Modifier
 ) {
 
-    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
+    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
-    val allPlants by viewModel.allPlants.observeAsState(listOf())
+    //val allPlants by viewModel.allPlants.observeAsState(listOf())
+
+    val plantRoomPlantList by viewModel.plantRoomPlantList.observeAsState(listOf())
+    val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigationToCreatePlant(userName.toString(),
-                roomName.toString()
+                plantRoomId
             ) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
         ) {padding ->
         Column(modifier = modifier.padding(padding)) {
-            roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
+            Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(allPlants)
+            PlantCards(plantRoomPlantList)
         }
     }
 }
