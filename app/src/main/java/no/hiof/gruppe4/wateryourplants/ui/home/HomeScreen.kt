@@ -1,32 +1,39 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.R
-import no.hiof.gruppe4.wateryourplants.model.plantRoom
+import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.data.PlantRoom
+import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
 @Composable
 fun HomeScreen(
-    onNavigateToRoom: (String, String) -> Unit,
+    onNavigateToRoom: (String, Int) -> Unit,
     userName: String?
 ) {
+    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
+
+    val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
+
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
@@ -34,10 +41,13 @@ fun HomeScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
-    ) {
-        RoomCards(
-            onNavigateToRoom = onNavigateToRoom,
-            userName = userName)
+    ) { padding -> // TODO: why tf do we need to do this shit?
+        Box(modifier = Modifier.padding(padding)) {
+            RoomCards(
+                onNavigateToRoom = onNavigateToRoom,
+                userName = userName,
+                plantRoomList = plantRoomList)
+        }
     }
 }
 
@@ -49,7 +59,8 @@ fun ScaffoldTopAppBar(userName: String?) {
 @Composable
 fun RoomCards(
     userName: String?,
-    onNavigateToRoom: (String, String) -> Unit,
+    plantRoomList: List<PlantRoom>,
+    onNavigateToRoom: (String, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
@@ -68,11 +79,12 @@ fun RoomCards(
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
         LazyColumn {
-            items(plantRoom) { // TODO: Change to list from view model
+            items(plantRoomList) { // TODO: Change to list from view model
                 PlantRoomCard(
                     userName = userName,
                     onNavigationToRoom = onNavigateToRoom,
-                    buttonName = it.name)
+                    buttonName = it.roomName,
+                    plantRoomId = it.plantRoomId )
             }
         }
     }

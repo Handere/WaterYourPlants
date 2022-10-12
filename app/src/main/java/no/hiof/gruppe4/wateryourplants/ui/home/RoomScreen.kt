@@ -11,31 +11,47 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
+
 
 @Composable
 fun RoomScreen(
-    onNavigationToCreatePlant: (String, String) -> Unit,
+    onNavigationToCreatePlant: (String, Int) -> Unit,
     userName: String?,
-    roomName: String?,
-    modifier: Modifier = Modifier) {
+    plantRoomId: Int,
+    modifier: Modifier = Modifier
+) {
+
+    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
+
+    //val allPlants by viewModel.allPlants.observeAsState(listOf())
+
+    val plantRoomPlantList by viewModel.plantRoomPlantList.observeAsState(listOf())
+    val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
+
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigationToCreatePlant(userName.toString(),
-                roomName.toString()
+                plantRoomId
             ) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
-    ) {
-        Column(modifier = modifier.padding(16.dp, 0.dp)) {
-            roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
+        ) {padding ->
+        Column(modifier = modifier.padding(padding)) {
+            Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards()
+            PlantCards(plantRoomPlantList)
         }
     }
 }

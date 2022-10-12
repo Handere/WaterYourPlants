@@ -9,11 +9,12 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun PlantRoomCard(
-    onNavigationToRoom: (String, String) -> Unit,
+    onNavigationToRoom: (String, Int) -> Unit,
     userName: String?,
     buttonName: String?,
+    plantRoomId: Int,
     modifier: Modifier = Modifier) {
-    Button(onClick = { onNavigationToRoom(userName.toString(), buttonName.toString()) },
+    Button(onClick = { onNavigationToRoom(userName.toString(), plantRoomId) },
         shape = Shapes.medium,
         modifier = modifier.fillMaxWidth()) {
         buttonName?.let { Text(text = it.uppercase()) }
