@@ -25,30 +25,15 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
 fun RoomScreen(
-
     onNavigationToCreatePlant: (String, String) -> Unit,
     userName: String?,
     roomName: String?,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
-    //val plantRoomWithPlants by viewModel.plantRoomWithPlants.observeAsState(listOf())
+
     val allPlants by viewModel.allPlants.observeAsState(listOf())
-    //val searchResults by viewModel.searchResults.observeAsState(listOf())
-
-    /*
-    // TODO: not LiveData anymore?
-    fun getPlantRoomPlants(plantRoom: String?): List<Plant> {
-        var plantList: List<Plant> = emptyList()
-        plantRoomWithPlants.forEach {
-            if (it.plantRoom.roomName.equals(plantRoom)){
-                plantList =  it.plantList
-            }
-        }
-        return plantList
-    }
-
-     */
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },

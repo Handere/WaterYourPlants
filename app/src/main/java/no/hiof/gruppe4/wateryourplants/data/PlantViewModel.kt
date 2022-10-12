@@ -9,6 +9,8 @@ class PlantViewModel(private val repository: PlantRepository) : ViewModel() {
 
     var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
+    var plantRoomList: LiveData<List<PlantRoom>> = repository.getPlantRooms().asLiveData()
+
     //TODO: no longer livedata
     /*
     fun getPlantRoomPlants(plantRoom: String?): List<Plant>? {

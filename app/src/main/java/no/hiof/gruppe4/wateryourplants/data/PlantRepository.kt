@@ -6,6 +6,8 @@ class PlantRepository(private val plantDao: PlantDao) {
 
     fun getPlants() = plantDao.getAllPlants()
 
+    fun getPlantRooms() = plantDao.getAllPlantRooms()
+
    /* fun insertPlant() = plantDao.insertPlant()*/
 
     /*fun getPlant() = plantDao.*/
