@@ -1,7 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.app.Application
-import android.app.appsearch.AppSearchResult
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -20,9 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import no.hiof.gruppe4.wateryourplants.Routes
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
-import no.hiof.gruppe4.wateryourplants.room.*
+import no.hiof.gruppe4.wateryourplants.data.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 
@@ -35,6 +32,7 @@ fun RoomScreen(
     modifier: Modifier = Modifier) {
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
+    //val plantRoomWithPlants by viewModel.getPlantRoomPlants(roomName)
     val allPlants by viewModel.allPlants.observeAsState(listOf())
     //val searchResults by viewModel.searchResults.observeAsState(listOf())
 
@@ -51,7 +49,7 @@ fun RoomScreen(
         Column(modifier = modifier.padding(padding)) {
             roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(allPlants)
+            PlantCards(plantRoomWithPlants)
         }
     }
 }

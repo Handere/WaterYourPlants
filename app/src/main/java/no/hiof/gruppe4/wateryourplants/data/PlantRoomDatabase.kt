@@ -1,7 +1,6 @@
-package no.hiof.gruppe4.wateryourplants.room
+package no.hiof.gruppe4.wateryourplants.data
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
 
-@Database(entities = [(PlantEntity::class)], version = 1)
+@Database(entities = [(Plant::class)], version = 1)
 abstract class PlantRoomDatabase: RoomDatabase() {
 
     abstract fun plantDao(): PlantDao
@@ -47,7 +46,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                     /*movieDao.deleteAll()*/
 
                     // Add sample words.
-                    plantDao.insertPlant(PlantEntity(
+                   /* plantDao.insertPlant(Plant(
                         "Monstera",
                         "Monstera deliciosa",
                         "Blomsterplanter",
@@ -59,7 +58,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         "") )
 
                     plantDao.insertPlant(
-                        PlantEntity("Bjørkefiken",
+                        Plant("Bjørkefiken",
                              "Ficus benjamina 'Danielle'",
                             "Blomsterplanter",
                              2,
@@ -71,7 +70,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                     )
 
                     plantDao.insertPlant(
-                        PlantEntity(
+                        Plant(
                             "Orkide",
                             "Orchidaceae",
                             "Blomsterplanter",
@@ -80,7 +79,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         5,5,
                         "halvskygge - sol",
                         "")
-                    )
+                    )*/
                 }
             }
         }
