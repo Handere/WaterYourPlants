@@ -32,9 +32,20 @@ fun RoomScreen(
     modifier: Modifier = Modifier) {
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
-    //val plantRoomWithPlants by viewModel.getPlantRoomPlants(roomName)
-    val allPlants by viewModel.allPlants.observeAsState(listOf())
+    val plantRoomWithPlants by viewModel.plantRoomWithPlants.observeAsState(listOf())
+    //val allPlants by viewModel.allPlants.observeAsState(listOf())
     //val searchResults by viewModel.searchResults.observeAsState(listOf())
+
+    // TODO: not LiveData anymore?
+    fun getPlantRoomPlants(plantRoom: String?): List<Plant> {
+        var plantList: List<Plant> = emptyList()
+        plantRoomWithPlants.forEach {
+            if (it.plantRoom.roomName.equals(plantRoom)){
+                plantList =  it.plantList
+            }
+        }
+        return plantList
+    }
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
@@ -49,7 +60,7 @@ fun RoomScreen(
         Column(modifier = modifier.padding(padding)) {
             roomName?.let { it1 -> Text(text = it1.uppercase(), fontSize = 30.sp) }
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(plantRoomWithPlants)
+            PlantCards(getPlantRoomPlants(roomName))
         }
     }
 }

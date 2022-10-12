@@ -4,6 +4,7 @@ package no.hiof.gruppe4.wateryourplants.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Date
 import java.time.LocalDate
 
 @Entity(tableName = "plant_table")
@@ -12,7 +13,7 @@ data class Plant(
     var speciesName: String,
     var speciesLatinName: String,
     var plantClassification: String,
-    var purchasedDate: LocalDate,
+    //var purchasedDate: Date,
     var photoUrl: Int,
     var wateringInterval: Int,
     var nutritionInterval: Int,

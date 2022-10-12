@@ -8,6 +8,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.model.plantRoom
+import java.sql.Date
 
 @Database(entities = [(Plant::class)], version = 1)
 abstract class PlantRoomDatabase: RoomDatabase() {
@@ -46,7 +48,53 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                     /*movieDao.deleteAll()*/
 
                     // Add sample words.
-                   /* plantDao.insertPlant(Plant(
+                    plantDao.insertPlantRoomWithPlants(
+                        PlantRoomWithPlants(
+                            PlantRoom("Soverom"),
+                            listOf(
+                                Plant(
+                                    0,
+                                    "Monstera",
+                                    "Monstera deliciosa",
+                                    "Blomsterplanter",
+                                    //Date(2008-11-11),
+                                    R.drawable.no_plant_image,
+                                    10,
+                                    10,
+                                    "Tirsdag",
+                                    "lite",
+                                    ""),
+                            Plant(0,
+                                "Bjørkefiken",
+                                "Ficus benjamina 'Danielle'",
+                                "Blomsterplanter",
+                                //Date(2008-11-11),
+                                R.drawable.no_plant_image,
+                                5,
+                                5,
+                                "Tirsdag",
+                                "halvskygge",
+                                ""),
+                            Plant(
+                                0,
+                                "Orkide",
+                                "Orchidaceae",
+                                "Blomsterplanter",
+                                //Date(2008-11-11),
+                                R.drawable.no_plant_image,
+                                5,
+                                5,
+                                "Tirsdag",
+                                "halvskygge - sol",
+                                "")
+                            )
+                        )
+                    )
+
+
+
+/*
+                   /plantDao.insertPlant(Plant(
                         "Monstera",
                         "Monstera deliciosa",
                         "Blomsterplanter",
@@ -79,7 +127,9 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         5,5,
                         "halvskygge - sol",
                         "")
-                    )*/
+                    )
+
+ */
                 }
             }
         }
