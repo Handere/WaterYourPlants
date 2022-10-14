@@ -2,6 +2,7 @@ package no.hiof.gruppe4.wateryourplants.data
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
@@ -9,11 +10,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlantDao {
 
-    @Insert
-    fun insertPlant(plant: Plant)
 
-    @Insert
-    fun insertPlantRoom(plantRoom: PlantRoom)
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlant(plant: Plant)
+
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlantRoom(plantRoom: PlantRoom)
 
     @Transaction
     @Query("SELECT * FROM plantRoom_table")

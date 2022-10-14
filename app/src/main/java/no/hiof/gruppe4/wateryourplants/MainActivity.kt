@@ -25,17 +25,6 @@ class MainActivity : ComponentActivity() {
             WaterYourPlantsTheme {
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
-
-                /*val owner = LocalViewModelStoreOwner.current
-
-                owner?.let {
-                    val viewModel: PlantViewModel = viewModel(
-                        it,
-                        "PlantViewModel",
-                        PlantViewModelFactory(LocalContext.current.applicationContext as Application)
-                    )
-                    ScreenSetup(viewModel)
-                }*/
             }
         }
     }
@@ -117,7 +106,8 @@ fun AppNavHost(
 
             CreatePlantScreen(
                 userName = args?.getString(Routes.CreatePlantScreen.userName),
-                plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId))
+                plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId)!!,
+                popBackStack = { navController.popBackStack()})
         }
     }
 }
