@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -33,6 +35,8 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
     fun LoginScreen(
         onNavigateToHomeScreen: (String) -> Unit,
         painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
+
+        val mContext = LocalContext.current
 
         Column(
             modifier = Modifier.padding(20.dp),
@@ -67,7 +71,13 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { onNavigateToHomeScreen(username.value.text) }, //TODO: Change to actual username
+                    onClick = {
+                        if (username.value.text.isEmpty()) {
+                            Toast.makeText(mContext, "Username can't be empty", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            onNavigateToHomeScreen(username.value.text) //TODO: Change to actual username
+                        } },
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
