@@ -117,7 +117,7 @@ fun AppNavHost(
 
             CreatePlantScreen(
                 userName = args?.getString(Routes.CreatePlantScreen.userName),
-                plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId))
+                plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId)!!)
         }
     }
 }

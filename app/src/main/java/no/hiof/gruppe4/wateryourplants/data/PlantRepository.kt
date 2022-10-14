@@ -1,8 +1,11 @@
 package no.hiof.gruppe4.wateryourplants.data
 
+import androidx.annotation.WorkerThread
+
 class PlantRepository(private val plantDao: PlantDao) {
 
-    fun getPlants() = plantDao.getAllPlants()
+    @WorkerThread
+    suspend fun insertPlant(plant: Plant) = plantDao.insertPlant(plant)
 
     fun getPlantRoom(plantRoomId: Int) = plantDao.getPlantRoom(plantRoomId)
 
