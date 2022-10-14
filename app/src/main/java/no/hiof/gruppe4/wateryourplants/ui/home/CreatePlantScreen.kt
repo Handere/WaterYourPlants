@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,23 +11,22 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.getSelectedText
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
@@ -36,10 +36,14 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun CreatePlantScreen(
-        userName: String?,
-        plantRoomId: Int,
-        modifier: Modifier = Modifier,
-        photoUrl: Int = R.drawable.no_plant_image) {
+    userName: String?,
+    plantRoomId: Int,
+    modifier: Modifier = Modifier,
+    photoUrl: Int = R.drawable.no_plant_image,
+    popBackStack: () -> Unit
+) {
+
+    val mContext = LocalContext.current
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
@@ -56,27 +60,41 @@ fun CreatePlantScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
         floatingActionButton = {
-            FloatingActionButton(onClick = {viewModel.insertPlant(
-                plantRoomId,
-                species.value.text,
-                speciesLatin.value.text,
-                classification.value.text,
-                photoUrl,
-                wateringInterval.value.text.toInt(),
-                nutritionInterval.value.text.toInt(),
-                wateringAndNutritionDay.value.text,
-                sunRequirement.value.text,
-                personalNote.value.text
-            ) })
+            FloatingActionButton(onClick = {
+                // TODO: Add more specific input validation and handling
+                val errorMessage = "All fields are required"
+                if (species.value.text.isEmpty() ||
+                    speciesLatin.value.text.isEmpty() ||
+                    classification.value.text.isEmpty() ||
+                    wateringInterval.value.text.isEmpty() ||
+                    nutritionInterval.value.text.isEmpty() ||
+                    wateringAndNutritionDay.value.text.isEmpty() ||
+                    sunRequirement.value.text.isEmpty() ||
+                    personalNote.value.text.isEmpty()
+                ) {
+                    Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    viewModel.insertPlant(
+                        plantRoomId,
+                        species.value.text,
+                        speciesLatin.value.text,
+                        classification.value.text,
+                        photoUrl,
+                        wateringInterval.value.text.toInt(),
+                        nutritionInterval.value.text.toInt(),
+                        wateringAndNutritionDay.value.text,
+                        sunRequirement.value.text,
+                        personalNote.value.text
+                    )
+                    popBackStack()
+                }
+            })
             {
-            Icon(imageVector = Icons.Default.Create, contentDescription = "Create")
+            Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
             }
         }
     ) { padding -> // TODO: dafuq do we need this thing?
-
-
-
-
 
         Box(modifier = modifier.padding(padding))
         Column(modifier = modifier
@@ -95,7 +113,8 @@ fun CreatePlantScreen(
                     TextField(
                         label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
                         value = plantSearch.value,
-                        onValueChange = { plantSearch.value = it })
+                        onValueChange = { plantSearch.value = it }
+                    )
 
                     // Plant search buttons
                     Spacer(modifier = modifier.height(20.dp))
