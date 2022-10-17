@@ -31,6 +31,7 @@
     <string name="add_new_plant_plant_age">Age</string>
     <string name="add_new_plant_plant_watering_interval">Watering interval</string>
     <string name="add_new_plant_plant_nutrition_interval">Nutrition interval</string>
+    <string name="add_new_plant_plant_watering_and_nutrition_day">Watering and nutrition day</string>
     <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
     <string name="add_new_plant_plant_personal_note">Note</string>
 </resources>
