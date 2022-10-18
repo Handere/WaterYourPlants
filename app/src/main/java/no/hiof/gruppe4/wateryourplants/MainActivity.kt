@@ -108,7 +108,7 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             PlantDetailsScreen(
-                onNavigationToCreatePlant = { userName, plantRoomId -> navController.navigate(Routes.PlantDetailsScreen.withArgs(userName, plantRoomId.toString()))},
+                onNavigationToPlantDetailsScreen = { userName, plantRoomId -> navController.navigate(Routes.PlantDetailsScreen.withArgs(userName, plantRoomId.toString()))},
                 userName = args?.getString(Routes.PlantDetailsScreen.userName),
                 plantRoomId = args?.getInt(Routes.PlantDetailsScreen.plantRoomId)!!
             )
