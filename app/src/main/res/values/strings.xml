@@ -6,6 +6,7 @@
     <string name="home_screen">home_screen</string>
     <string name="room_screen">room_screen</string>
     <string name="create_plant_screen">create_plant_screen</string>
+    <string name="error_all_fields_required">All fields are required</string>
 
     <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
@@ -20,7 +21,7 @@
     <string name="header_room">Rooms:</string>
     <string name="placeholder_room_name">&lt;Room name&gt;</string>
 
-    <!-- New plant -->
+    <!-- Create plant -->
     <string name="add_new_plant">Add new plant</string>
     <string name="add_new_plant_image_search_button">Image search</string>
     <string name="add_new_plant_search_button">Search</string>
@@ -34,4 +35,8 @@
     <string name="add_new_plant_plant_watering_and_nutrition_day">Watering and nutrition day</string>
     <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
     <string name="add_new_plant_plant_personal_note">Note</string>
+
+    <!-- Create room -->
+    <string name="add_new_room_title">Add new room</string>
+    <string name="add_new_room_name">Room name</string>
 </resources>

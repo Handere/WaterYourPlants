@@ -23,6 +23,8 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int) 
        repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note))
     }
 
+    fun insertPlantRoom(plantRoomName: String) = viewModelScope.launch {repository.insertPlantRoom(PlantRoom(plantRoomName))}
+
     var plantRoomList: LiveData<List<PlantRoom>> = repository.getPlantRooms().asLiveData()
 
     var plantRoomPlantList: LiveData<List<Plant>> = repository.getPlantRoomPlants(plantRoomId).asLiveData()

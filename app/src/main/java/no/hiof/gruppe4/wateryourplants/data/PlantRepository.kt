@@ -7,6 +7,9 @@ class PlantRepository(private val plantDao: PlantDao) {
     @WorkerThread
     suspend fun insertPlant(plant: Plant) = plantDao.insertPlant(plant)
 
+    @WorkerThread
+    suspend fun insertPlantRoom(plantRoom: PlantRoom) = plantDao.insertPlantRoom(plantRoom)
+
     fun getPlantRoom(plantRoomId: Int) = plantDao.getPlantRoom(plantRoomId)
 
     fun getPlantRooms() = plantDao.getAllPlantRooms()
