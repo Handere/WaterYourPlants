@@ -25,9 +25,10 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
 fun PlantDetailsScreen(
-    onNavigationToPlantDetailsScreen: (String, Int) -> Unit,
+    onNavigationToCreatePlant: (String, Int, Int) -> Unit,
     userName: String?,
     plantRoomId: Int,
+    plantId: Int,
     modifier: Modifier = Modifier
 ) {
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
@@ -38,9 +39,7 @@ fun PlantDetailsScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onNavigationToPlantDetailsScreen(userName.toString(),
-                plantRoomId
-            ) }) {
+            FloatingActionButton(onClick = {}) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -48,7 +47,7 @@ fun PlantDetailsScreen(
         Column(modifier = modifier.padding(padding)) {
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(plantRoomPlantList)
+
         }
     }
 }

@@ -16,10 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.ui.home.PlantDetailsScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun PlantCard(
+    onNavigationToCreatePlant: (String, Int, Int) -> Unit,
+    userName: String?,
+    plantRoomId: Int,
+    plantId: Int,
     painter: Painter = painterResource(id = R.drawable.no_plant_image),
     contentDescription: String,
     species: String,
@@ -33,6 +38,13 @@ fun PlantCard(
             .padding(0.dp, 0.dp, 0.dp, 5.dp),
         shape = Shapes.medium,
         elevation = 5.dp,) {
+        /*PlantDetailsScreen(
+            onNavigationToCreatePlant = onNavigationToCreatePlant,
+            userName = userName,
+            plantRoomId = plantRoomId,
+            plantId = plantId
+        )*/
+
 
         Box(modifier = modifier
             .height(200.dp)) {
