@@ -25,7 +25,8 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
 fun RoomScreen(
-    onNavigationToCreatePlant: (String, Int, Int) -> Unit,
+    onNavigationToCreatePlant: (String, Int) -> Unit,
+    onNavigationToPlantDetails: (String, Int, Int) -> Unit,
     userName: String?,
     plantRoomId: Int,
     modifier: Modifier = Modifier
@@ -42,8 +43,7 @@ fun RoomScreen(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigationToCreatePlant(userName.toString(),
-                plantRoomId,
-                0
+                plantRoomId
             ) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
@@ -52,7 +52,7 @@ fun RoomScreen(
         Column(modifier = modifier.padding(padding)) {
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(onNavigationToCreatePlant, userName, plantRoomId, 0, plantRoomPlantList)
+            PlantCards(onNavigationToPlantDetails, userName, plantRoomId, plantRoomPlantList)
         }
     }
 }

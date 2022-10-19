@@ -83,7 +83,8 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             RoomScreen(
-                onNavigationToCreatePlant = { userName, plantRoomId, plantId -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, plantRoomId.toString(), plantId.toString()))},
+                onNavigationToCreatePlant = { userName, plantRoomId -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, plantRoomId.toString()))},
+                onNavigationToPlantDetails = { userName, plantRoomId, plantId -> navController.navigate(Routes.PlantDetailsScreen.withArgs(userName, plantRoomId.toString(), plantId.toString()))},
                 userName = args?.getString(Routes.RoomScreen.userName),
                 plantRoomId = args?.getInt(Routes.RoomScreen.plantRoomId)!!
             )
@@ -115,10 +116,9 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             PlantDetailsScreen(
-                onNavigationToCreatePlant = { userName, plantRoomId, plantId -> navController.navigate(Routes.PlantDetailsScreen.withArgs(userName, plantRoomId.toString(), plantId.toString()))},
                 userName = args?.getString(Routes.PlantDetailsScreen.userName),
                 plantRoomId = args?.getInt(Routes.PlantDetailsScreen.plantRoomId)!!,
-                plantId = args?.getInt(Routes.PlantDetailsScreen.plantId)
+                plantId = args?.getInt(Routes.PlantDetailsScreen.plantId)!!
 
             )
         }

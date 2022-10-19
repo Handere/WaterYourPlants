@@ -10,13 +10,12 @@ fun PlantCards(
     onNavigationToCreatePlant: (String, Int, Int) -> Unit,
     userName: String?,
     plantRoomId: Int,
-    plantId: Int,
     plantList: List<Plant>) {
     
     LazyColumn() {
         items(plantList) { // TODO: Change to list from view model
             PlantCard(
-                onNavigationToCreatePlant = onNavigationToCreatePlant,
+                onNavigationToPlantDetails = onNavigationToCreatePlant,
                 userName = userName,
                 plantRoomId = plantRoomId,
                 plantId = it.plantId,

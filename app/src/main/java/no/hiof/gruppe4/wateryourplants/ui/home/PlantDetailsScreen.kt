@@ -25,7 +25,6 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 
 @Composable
 fun PlantDetailsScreen(
-    onNavigationToCreatePlant: (String, Int, Int) -> Unit,
     userName: String?,
     plantRoomId: Int,
     plantId: Int,
@@ -47,6 +46,7 @@ fun PlantDetailsScreen(
         Column(modifier = modifier.padding(padding)) {
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
+            Text(text = "heihei")
 
         }
     }
