@@ -20,6 +20,10 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @Composable
 fun PlantCard(
+    onNavigationToPlantDetails: (String, Int, Int) -> Unit,
+    userName: String?,
+    plantRoomId: Int,
+    plantId: Int,
     painter: Painter = painterResource(id = R.drawable.no_plant_image),
     contentDescription: String,
     species: String,
@@ -29,7 +33,7 @@ fun PlantCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickable { onNavigationToPlantDetails(userName.toString(), plantRoomId, plantId) }
             .padding(0.dp, 0.dp, 0.dp, 5.dp),
         shape = Shapes.medium,
         elevation = 5.dp,) {

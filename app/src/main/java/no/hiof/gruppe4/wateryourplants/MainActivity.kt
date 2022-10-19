@@ -16,6 +16,7 @@ import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantRoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeScreen
+import no.hiof.gruppe4.wateryourplants.ui.home.PlantDetailsScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.RoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
@@ -85,8 +86,42 @@ fun AppNavHost(
 
             RoomScreen(
                 onNavigationToCreatePlant = { userName, plantRoomId -> navController.navigate(Routes.CreatePlantScreen.withArgs(userName, plantRoomId.toString()))},
+                onNavigationToPlantDetails = { userName, plantRoomId, plantId -> navController.navigate(Routes.PlantDetailsScreen.withArgs(userName, plantRoomId.toString(), plantId.toString()))},
                 userName = args?.getString(Routes.RoomScreen.userName),
                 plantRoomId = args?.getInt(Routes.RoomScreen.plantRoomId)!!
+            )
+        }
+
+        //Plant details screen
+        composable(
+            route = Routes.PlantDetailsScreen.withArgsFormat(
+                Routes.PlantDetailsScreen.userName,
+                Routes.PlantDetailsScreen.plantRoomId,
+                Routes.PlantDetailsScreen.plantId),
+
+            arguments = listOf(
+                navArgument(Routes.PlantDetailsScreen.userName) {
+                    type = NavType.StringType
+                    nullable = true },
+                navArgument(Routes.PlantDetailsScreen.plantRoomId) {
+                    type = NavType.IntType
+                    nullable = false
+                },
+                navArgument(Routes.PlantDetailsScreen.plantId){
+                    type = NavType.IntType
+                    nullable = false
+                }
+
+            )
+
+        ){ backStackEntry ->
+            val args = backStackEntry.arguments
+
+            PlantDetailsScreen(
+                userName = args?.getString(Routes.PlantDetailsScreen.userName),
+                plantRoomId = args?.getInt(Routes.PlantDetailsScreen.plantRoomId)!!,
+                plantId = args?.getInt(Routes.PlantDetailsScreen.plantId)!!
+
             )
         }
 
@@ -149,6 +184,12 @@ sealed class Routes(val route: String) {
     }
     object CreatePlantRoomScreen: Routes("create_plant_room_screen") {
         val username = "username"
+    }
+
+    object PlantDetailsScreen : Routes("plant_details_screen"){
+        val userName = "userName"
+        val plantRoomId = "plantRoomId"
+        val plantId = "plantId"
     }
 
     // Inspiration from https://github.com/vinchamp77/Demo_SimpleNavigationCompose

@@ -5,8 +5,10 @@
     <string name="login_screen">login_screen</string>
     <string name="home_screen">home_screen</string>
     <string name="room_screen">room_screen</string>
+    <string name="plant_details_screen">plant_details_screen</string>
     <string name="create_plant_screen">create_plant_screen</string>
     <string name="error_all_fields_required">All fields are required</string>
+
 
     <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
