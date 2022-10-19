@@ -28,6 +28,9 @@ interface PlantDao {
     @Query("SELECT * FROM plantRoom_table WHERE plantRoomId = :plantRoomId")
     fun getPlantRoom(plantRoomId: Int): Flow<PlantRoom>
 
+    @Query("SELECT * FROM plant_table WHERE roomId = :plantRoomId and plantId = :plantId")
+    fun getPlant(plantRoomId: Int, plantId: Int): Plant
+
     @Query("SELECT * FROM plant_table")
     fun getAllPlants(): Flow<List<Plant>>
 
