@@ -29,7 +29,7 @@ interface PlantDao {
     fun getPlantRoom(plantRoomId: Int): Flow<PlantRoom>
 
     @Query("SELECT * FROM plant_table WHERE roomId = :plantRoomId and plantId = :plantId")
-    fun getPlant(plantRoomId: Int, plantId: Int): Plant
+    fun getPlant(plantRoomId: Int, plantId: Int): Flow<Plant>
 
     @Query("SELECT * FROM plant_table")
     fun getAllPlants(): Flow<List<Plant>>
