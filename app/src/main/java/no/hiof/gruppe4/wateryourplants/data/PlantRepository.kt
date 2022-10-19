@@ -19,4 +19,6 @@ class PlantRepository(private val plantDao: PlantDao) {
 
     fun getPlantRoomPlants(plantRoomId: Int) = plantDao.getPlantRoomPlants(plantRoomId)
 
+    fun getPlant(plantRoomId: Int, plantId: Int) = plantDao.getPlant(plantRoomId, plantId)
+
 }
