@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
+import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantRoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.HomeScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.PlantDetailsScreen
@@ -62,6 +63,7 @@ fun AppNavHost(
 
             HomeScreen(
                 onNavigateToRoom = { userName, plantRoomId -> navController.navigate(Routes.RoomScreen.withArgs(userName, plantRoomId.toString())) },
+                onNavigateToCreatePlantRoom = {username -> navController.navigate(Routes.CreatePlantRoomScreen.withArgs(username))},
                 userName = args?.getString(Routes.HomeScreen.userName)
             )
         }
@@ -144,6 +146,23 @@ fun AppNavHost(
                 plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId)!!,
                 popBackStack = { navController.popBackStack()})
         }
+
+        // Create plant room screen
+        composable(
+            route = Routes.CreatePlantRoomScreen.withArgsFormat(Routes.CreatePlantRoomScreen.username),
+            arguments = listOf(
+                navArgument(Routes.CreatePlantRoomScreen.username) {
+                    type = NavType.StringType
+                    nullable = false
+                }
+            )
+        ) { backStackEntry ->
+            val args = backStackEntry.arguments
+
+            CreatePlantRoomScreen(
+                username = args?.getString(Routes.CreatePlantRoomScreen.username),
+                popBackStack = {navController.popBackStack()})
+        }
     }
 }
 
@@ -162,6 +181,9 @@ sealed class Routes(val route: String) {
     object CreatePlantScreen : Routes("create_plant_screen") {
         val userName = "userName"
         val plantRoomId = "plantRoomId"
+    }
+    object CreatePlantRoomScreen: Routes("create_plant_room_screen") {
+        val username = "username"
     }
 
     object PlantDetailsScreen : Routes("plant_details_screen"){

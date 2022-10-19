@@ -1,6 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,6 +17,9 @@ interface PlantDao {
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlantRoom(plantRoom: PlantRoom)
+
+    @Delete
+    suspend fun deletePlantRoomAndPlants(plantRoom: PlantRoom, plantRoomPlants: List<Plant>)
 
     @Transaction
     @Query("SELECT * FROM plantRoom_table")

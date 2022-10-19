@@ -28,6 +28,7 @@ import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
+    onNavigateToCreatePlantRoom: (String) -> Unit,
     userName: String?
 ) {
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
@@ -37,7 +38,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO: Add functionality*/ }) {
+            FloatingActionButton(onClick = { onNavigateToCreatePlantRoom(userName.toString()) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -79,7 +80,7 @@ fun RoomCards(
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
         LazyColumn {
-            items(plantRoomList) { // TODO: Change to list from view model
+            items(plantRoomList) {
                 PlantRoomCard(
                     userName = userName,
                     onNavigationToRoom = onNavigateToRoom,
