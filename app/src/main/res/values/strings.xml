@@ -20,6 +20,7 @@
     <!-- Room -->
     <string name="header_room">Rooms:</string>
     <string name="placeholder_room_name">&lt;Room name&gt;</string>
+    <string name="delete_room_and_plants">Delete room with plants</string>
 
     <!-- Create plant -->
     <string name="add_new_plant">Add new plant</string>

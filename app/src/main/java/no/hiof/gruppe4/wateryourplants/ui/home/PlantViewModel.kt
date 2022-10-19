@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.home
 
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
@@ -24,6 +25,8 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int) 
     }
 
     fun insertPlantRoom(plantRoomName: String) = viewModelScope.launch {repository.insertPlantRoom(PlantRoom(plantRoomName))}
+
+    fun deletePlantRoomAndPlants(plantRoom: PlantRoom, plantRoomPlants: List<Plant>) = viewModelScope.launch { repository.deletePlantRoomAndPlants(plantRoom, plantRoomPlants) }
 
     var plantRoomList: LiveData<List<PlantRoom>> = repository.getPlantRooms().asLiveData()
 

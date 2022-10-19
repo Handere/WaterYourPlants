@@ -80,7 +80,7 @@ fun RoomCards(
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
         LazyColumn {
-            items(plantRoomList) { // TODO: Change to list from view model
+            items(plantRoomList) {
                 PlantRoomCard(
                     userName = userName,
                     onNavigationToRoom = onNavigateToRoom,
