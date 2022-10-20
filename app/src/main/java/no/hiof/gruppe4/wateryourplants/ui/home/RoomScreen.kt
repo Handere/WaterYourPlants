@@ -26,6 +26,7 @@ import no.hiof.gruppe4.wateryourplants.R
 fun RoomScreen(
     onNavigationToCreatePlant: (String, Int) -> Unit,
     onNavigationToPlantDetails: (String, Int, Int) -> Unit,
+    popBackStack: () -> Unit,
     userName: String?,
     plantRoomId: Int,
     modifier: Modifier = Modifier
@@ -52,7 +53,10 @@ fun RoomScreen(
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
             PlantCards(onNavigationToPlantDetails, userName, plantRoomId, plantRoomPlantList)
-            Button(onClick = { viewModel.deletePlantRoomAndPlants(currentPlantRoom!!, plantRoomPlantList) }) {
+            Button(onClick = {
+                viewModel.deletePlantRoomAndPlants(currentPlantRoom!!, plantRoomPlantList)
+                popBackStack()
+            }) {
                 Text(text = stringResource(id = R.string.delete_room_and_plants))
             }
         }
