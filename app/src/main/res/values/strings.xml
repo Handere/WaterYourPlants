@@ -13,6 +13,8 @@
     <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
     <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="sign_up_here">Sign up here</string>
 
     <!-- Home -->
