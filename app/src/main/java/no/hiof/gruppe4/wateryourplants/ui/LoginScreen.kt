@@ -1,14 +1,17 @@
 package no.hiof.gruppe4.wateryourplants.screen
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -54,30 +58,38 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
             // Text(text = "Login", style = TextStyle(fontSize = 40.sp))
 
+            // Username
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
-                label = { Text(text = "Username") },
+                label = { Text(text = stringResource(id = R.string.username)) },
                 value = username.value,
-                onValueChange = { username.value = it })
+                onValueChange = { username.value = it },
+                singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            )
 
+            // Password
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
-                label = { Text(text = "Password") },
+                label = { Text(text = stringResource(id = R.string.password)) },
                 value = password.value,
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = { password.value = it })
+                onValueChange = { password.value = it },
+                singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { login(
+                    onNavigateToHomeScreen = onNavigateToHomeScreen,
+                    mContext = mContext,
+                    username = username) })
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = {
-                        if (username.value.text.isEmpty()) {
-                            Toast.makeText(mContext, "Username can't be empty", Toast.LENGTH_SHORT).show()
-                        }
-                        else {
-                            onNavigateToHomeScreen(username.value.text) //TODO: Change to actual username
-                        } },
+                    onClick = { login(
+                        onNavigateToHomeScreen = onNavigateToHomeScreen,
+                        mContext = mContext,
+                        username = username)},
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -90,7 +102,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             ClickableText(
                 text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
-                onClick = { },
+                onClick = { /* TODO: Add functionality */ },
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontFamily = FontFamily.Default
@@ -98,3 +110,15 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             )
         }
     }
+
+fun login(
+    onNavigateToHomeScreen: (String) -> Unit,
+    mContext: Context,
+    username: MutableState<TextFieldValue>) {
+    if (username.value.text.isEmpty()) {
+        Toast.makeText(mContext, "Username can't be empty", Toast.LENGTH_SHORT).show()
+    }
+    else {
+        onNavigateToHomeScreen(username.value.text)
+    }
+}
