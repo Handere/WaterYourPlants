@@ -51,10 +51,13 @@ fun PlantDetailsScreen(
             .fillMaxWidth()
             .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = currentPlantRoom?.roomName?.uppercase().toString(),
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Left,
-                    modifier = modifier.fillMaxWidth())
+                TopAppBar( modifier = modifier.fillMaxWidth()) {
+                    Text(text = currentPlantRoom?.roomName?.uppercase().toString(),
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Left,
+                       )
+                }
+
                 Image(
                     painter = painterResource(id = R.drawable.no_plant_image),
                     contentDescription = plantDetails.value?.speciesName,
@@ -62,6 +65,7 @@ fun PlantDetailsScreen(
                     modifier = modifier.fillMaxWidth(0.5f),
                     alignment = Alignment.Center
                 )
+
                 Row(){
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = plantDetails.value?.speciesName.toString(),
@@ -75,11 +79,12 @@ fun PlantDetailsScreen(
                         fontSize = 18.sp,
                         fontStyle = FontStyle.Italic
                     )}
+
                 Row(){
                     //TODO: Symbols for nutrition, watering and sun conditions
                 }
-                Text(text = plantDetails.value?.note.toString())
 
+                Text(text = plantDetails.value?.note.toString())
         }
     }
 }
