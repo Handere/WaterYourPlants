@@ -2,10 +2,7 @@ package no.hiof.gruppe4.wateryourplants.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
@@ -19,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,20 +47,22 @@ fun PlantDetailsScreen(
         }
     ) {padding ->
 
-        Box(modifier = modifier.padding(padding)
-            .height(200.dp)) {
-            Row(modifier = modifier
-                .fillMaxWidth()
-                .padding(5.dp),
-                verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = currentPlantRoom?.roomName?.uppercase().toString(),
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Left,
+                    modifier = modifier.fillMaxWidth())
                 Image(
                     painter = painterResource(id = R.drawable.no_plant_image),
                     contentDescription = plantDetails.value?.speciesName,
                     contentScale = ContentScale.Crop,
-                    modifier = modifier.fillMaxWidth(0.5f))
-                Column(modifier = modifier
-                    .fillMaxHeight()) {
-                    Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
+                    modifier = modifier.fillMaxWidth(0.5f),
+                    alignment = Alignment.Center
+                )
+                Row(){
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = plantDetails.value?.speciesName.toString(),
                         modifier = modifier.padding(5.dp),
@@ -70,13 +70,16 @@ fun PlantDetailsScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    Text(text = plantDetails.value?.speciesLatinName.toString(),
-                        fontSize = 14.sp,
+                    Text(text = "(" + plantDetails.value?.speciesLatinName.toString() + ")",
                         modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
                         fontStyle = FontStyle.Italic
-                    )
+                    )}
+                Row(){
+                    //TODO: Symbols for nutrition, watering and sun conditions
                 }
-            }
+                Text(text = plantDetails.value?.note.toString())
+
         }
     }
 }
