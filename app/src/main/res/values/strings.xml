@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">WaterYourPlants</string>
 
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
+
     <!-- Screens -->
     <string name="login_screen">login_screen</string>
     <string name="home_screen">home_screen</string>
@@ -13,6 +16,8 @@
     <!-- Login -->
     <string name="water_your_plants">Water your plants</string>
     <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="sign_up_here">Sign up here</string>
 
     <!-- Home -->
@@ -23,6 +28,7 @@
     <string name="header_room">Rooms:</string>
     <string name="placeholder_room_name">&lt;Room name&gt;</string>
     <string name="delete_room_and_plants">Delete room with plants</string>
+    <string name="delete_room_and_plants_info">This will delete the room and all its plants.</string>
 
     <!-- Create plant -->
     <string name="add_new_plant">Add new plant</string>

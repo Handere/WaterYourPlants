@@ -1,14 +1,10 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,12 +16,15 @@ import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.data.Plant
+import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 
 
 @Composable
 fun RoomScreen(
     onNavigationToCreatePlant: (String, Int) -> Unit,
     onNavigationToPlantDetails: (String, Int, Int) -> Unit,
+    popBackStack: () -> Unit,
     userName: String?,
     plantRoomId: Int,
     modifier: Modifier = Modifier
@@ -33,10 +32,22 @@ fun RoomScreen(
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
+    val openDialog = remember { mutableStateOf(false) }
+
     //val allPlants by viewModel.allPlants.observeAsState(listOf())
 
     val plantRoomPlantList by viewModel.plantRoomPlantList.observeAsState(listOf())
     val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
+
+    if (openDialog.value) {
+        DeleteRoomWithPlantsDialog(
+            popBackStack = popBackStack,
+            openDialog = openDialog,
+            viewModel = viewModel,
+            currentPlantRoom = currentPlantRoom,
+            plantRoomPlantList = plantRoomPlantList)
+    }
+
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
@@ -47,14 +58,49 @@ fun RoomScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         }
-        ) {padding ->
-        Column(modifier = modifier.padding(padding)) {
+        ) {padding -> // TODO: ...
+        Column(modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
             PlantCards(onNavigationToPlantDetails, userName, plantRoomId, plantRoomPlantList)
-            Button(onClick = { viewModel.deletePlantRoomAndPlants(currentPlantRoom!!, plantRoomPlantList) }) {
+            Button(onClick = {
+                if (!openDialog.value) {
+                    openDialog.value = true
+                }
+            }) {
                 Text(text = stringResource(id = R.string.delete_room_and_plants))
             }
         }
     }
+}
+
+@Composable
+fun DeleteRoomWithPlantsDialog(
+    popBackStack: () -> Unit,
+    openDialog: MutableState<Boolean>,
+    viewModel: PlantViewModel,
+    currentPlantRoom: PlantRoom?,
+    plantRoomPlantList: List<Plant>) {
+
+    AlertDialog(
+        onDismissRequest = { openDialog.value = false },
+        title = { Text(text = stringResource(id = R.string.delete_room_and_plants) + "?") },
+        text = { Text(stringResource(id = R.string.delete_room_and_plants_info)) },
+        confirmButton = { TextButton(
+                onClick = {
+                    openDialog.value = false
+                    viewModel.deletePlantRoomAndPlants(currentPlantRoom!!, plantRoomPlantList)
+                    popBackStack()
+                }
+            ) {
+                Text(stringResource(id = R.string.confirm))
+            }
+        },
+        dismissButton = { TextButton(onClick = { openDialog.value = false }) {
+                Text(stringResource(id = R.string.dismiss))
+            }
+        }
+    )
 }

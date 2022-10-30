@@ -24,7 +24,7 @@ fun PlantCard(
     userName: String?,
     plantRoomId: Int,
     plantId: Int,
-    painter: Painter = painterResource(id = R.drawable.no_plant_image),
+    painter: Painter = painterResource(id = R.drawable.no_plant_image), // TODO: Change to photo from db
     contentDescription: String,
     species: String,
     speciesLatin: String,
