@@ -1,6 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -8,12 +9,10 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -30,17 +29,29 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
+import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
+import no.hiof.gruppe4.wateryourplants.screen.LoadingState
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 // Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
+// and https://ericampire.com/firebase-auth-with-jetpack-compose
 
     @Composable
     fun LoginScreen(
         onNavigateToHomeScreen: (String) -> Unit,
         painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
 
+        val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
         val mContext = LocalContext.current
+        // val userEmail = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
+        // val userPassword = remember { mutableStateOf(TextFieldValue()) }
+        var userEmail by remember { mutableStateOf("") }
+        var userPassword by remember { mutableStateOf("") }
+        val state by viewModel.loadingState.collectAsState()
 
         Column(
             modifier = Modifier.padding(20.dp),
@@ -48,8 +59,9 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
-            val password = remember { mutableStateOf(TextFieldValue()) }
+            if (state.status == LoadingState.Status.RUNNING) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
 
             // Picture designed by Freepik, modified by Handere
             Image(painter = painter,
@@ -62,8 +74,8 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = stringResource(id = R.string.username)) },
-                value = username.value,
-                onValueChange = { username.value = it },
+                value = userEmail,
+                onValueChange = { userEmail = it },
                 singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
@@ -72,24 +84,24 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 label = { Text(text = stringResource(id = R.string.password)) },
-                value = password.value,
+                value = userPassword,
                 visualTransformation = PasswordVisualTransformation(),
-                onValueChange = { password.value = it },
+                onValueChange = { userPassword = it },
                 singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { login(
+                keyboardActions = KeyboardActions(onDone = { viewModel.signInWithEmailAndPassword(userEmail.trim(), userPassword.trim()) /*login(
                     onNavigateToHomeScreen = onNavigateToHomeScreen,
                     mContext = mContext,
-                    username = username) })
+                    username = userEmail) */})
             )
 
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { login(
+                    onClick = { viewModel.signInWithEmailAndPassword(userEmail.trim(), userPassword.trim()) /*login(
                         onNavigateToHomeScreen = onNavigateToHomeScreen,
                         mContext = mContext,
-                        username = username)},
+                        username = username)*/},
                     shape = Shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -108,17 +120,48 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
                     fontFamily = FontFamily.Default
                 )
             )
+
+            // TODO: Running multiple times making it crash
+            when(state.status) {
+                LoadingState.Status.SUCCESS -> {
+                    Text(text = "Success")
+                    // login(onNavigateToHomeScreen, mContext, userEmail)
+                    Log.d("login", "success")
+                }
+                LoadingState.Status.FAILED -> {
+                    Text(text = state.msg ?: "Error")
+                    Log.d("login", "failed")
+                }
+                else -> {}
+            }
         }
     }
 
 fun login(
     onNavigateToHomeScreen: (String) -> Unit,
     mContext: Context,
-    username: MutableState<TextFieldValue>) {
-    if (username.value.text.isEmpty()) {
+    username: String) {
+    if (username.isEmpty()) {
         Toast.makeText(mContext, "Username can't be empty", Toast.LENGTH_SHORT).show()
     }
     else {
-        onNavigateToHomeScreen(username.value.text)
+        onNavigateToHomeScreen(username)
+    }
+}
+
+// Code from: https://ericampire.com/firebase-auth-with-jetpack-compose
+data class LoadingState private constructor(val status: Status, val msg: String? = null) {
+    companion object {
+        val LOADED = LoadingState(Status.SUCCESS)
+        val IDLE = LoadingState(Status.IDLE)
+        val LOADING = LoadingState(Status.RUNNING)
+        fun error(msg: String?) = LoadingState(Status.FAILED, msg)
+    }
+
+    enum class Status {
+        RUNNING,
+        SUCCESS,
+        FAILED,
+        IDLE,
     }
 }

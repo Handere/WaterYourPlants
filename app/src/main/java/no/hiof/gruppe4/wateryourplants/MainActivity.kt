@@ -29,16 +29,12 @@ import no.hiof.gruppe4.wateryourplants.ui.home.RoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var authStateListener : FirebaseAuth.AuthStateListener
+    // private lateinit var auth: FirebaseAuth
+    // private lateinit var authStateListener : FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = Firebase.auth
-
-        createAuthenticationListener()
-
-        Log.d("AuthUser", "User: " + auth.currentUser?.email)
+        // auth = Firebase.auth
 
         setContent {
             WaterYourPlantsTheme {
@@ -48,7 +44,22 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun createAuthenticationListener() {
+/*
+    override fun onResume() {
+        super.onResume()
+
+        auth.addAuthStateListener(authStateListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        auth.removeAuthStateListener(authStateListener)
+    }
+ */
+/*
+    @Composable
+    fun CreateAuthenticationListener() {
         authStateListener = FirebaseAuth.AuthStateListener {
             val firebaseUser = auth.currentUser
             if (firebaseUser == null) {
@@ -93,6 +104,7 @@ class MainActivity : ComponentActivity() {
             // ...
         }
     }
+    */
 }
 
 @Composable
