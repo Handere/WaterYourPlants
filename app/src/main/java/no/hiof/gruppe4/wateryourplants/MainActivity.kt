@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantRoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
@@ -21,6 +23,7 @@ import no.hiof.gruppe4.wateryourplants.ui.home.RoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

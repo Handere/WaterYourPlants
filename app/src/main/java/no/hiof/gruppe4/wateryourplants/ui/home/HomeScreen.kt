@@ -1,5 +1,13 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Bundle
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,12 +26,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationAvailability
+import com.google.android.gms.location.LocationServices
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
+
 
 @Composable
 fun HomeScreen(
@@ -34,6 +47,7 @@ fun HomeScreen(
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
 
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
+
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
@@ -77,6 +91,7 @@ fun RoomCards(
                 .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
                 .fillMaxWidth(),
             contentScale = ContentScale.Fit)
+        GetGPS()
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
         LazyColumn {
@@ -88,5 +103,75 @@ fun RoomCards(
                     plantRoomId = it.plantRoomId )
             }
         }
+    }
+}
+
+@Composable
+fun GetGPS(){
+    val context: Context = LocalContext.current.applicationContext
+    //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
+    val permissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+    val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) {
+        permissionsMap ->
+        val areGranted = permissionsMap.values.reduce{ acc, next -> acc && next}
+        if (areGranted) {
+
+
+            println("permission")
+        } else {
+            println("Make permission request")
+        }
+    }
+
+    Button(
+        modifier = Modifier.padding(top = 30.dp),
+        onClick = {
+            checkAndRequestLocationPermissions(
+                context,
+                permissions,
+                launcherMultiplePermissions
+            )
+        }
+    ) {
+        Text(text = "give permissions for location")
+    }
+
+}
+
+
+fun checkAndRequestLocationPermissions(
+    context: Context,
+    permissions: Array<String>,
+    launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
+) {
+    if (
+        permissions.all {
+            ContextCompat.checkSelfPermission(
+                context,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    ) {
+        lateinit var fusedLocationClient: FusedLocationProviderClient
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                var latitude: Double? = location?.latitude
+                var longitude: Double? = location?.longitude
+                println("lat: " +
+                        latitude + ", long: " + longitude)
+            // Got last known location. In some rare situations this can be null.
+            }
+
+           println("fused_provider: ")
+        // Use location because permissions are already granted
+    } else {
+        // Request permissions
+        launcher.launch(permissions)
     }
 }
