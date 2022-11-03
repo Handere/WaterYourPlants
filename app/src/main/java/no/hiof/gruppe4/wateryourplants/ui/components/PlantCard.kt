@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
+import java.sql.Date
 
 @Composable
 fun PlantCard(
@@ -28,6 +29,7 @@ fun PlantCard(
     contentDescription: String,
     species: String,
     speciesLatin: String,
+    nextWateringDay: Date,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -57,6 +59,11 @@ fun PlantCard(
                         fontWeight = FontWeight.Bold
                     )
                     Text(text = speciesLatin,
+                        fontSize = 14.sp,
+                        modifier = modifier.padding(5.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+                    Text(text = "Water: " + nextWateringDay.toString(),
                         fontSize = 14.sp,
                         modifier = modifier.padding(5.dp),
                         fontStyle = FontStyle.Italic

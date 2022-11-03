@@ -81,6 +81,34 @@ fun PlantDetailsScreen(
                     )}
 
                 Row(){
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Last watering day:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.lastWateringDate.toString(),
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )}
+
+                Row(){
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Next watering day:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.nextWateringDate.toString(),
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )}
+
+                Row(){
                     //TODO: Symbols for nutrition, watering and sun conditions
                 }
 

@@ -21,7 +21,8 @@ fun PlantCards(
                 plantId = it.plantId,
                 contentDescription = it.speciesName,
                 species = it.speciesName,
-                speciesLatin = it.speciesLatinName)
+                speciesLatin = it.speciesLatinName,
+                nextWateringDay = it.nextWateringDate)
         }
     }
 }

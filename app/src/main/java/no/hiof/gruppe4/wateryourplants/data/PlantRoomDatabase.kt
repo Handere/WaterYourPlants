@@ -68,7 +68,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         "lite",
                         "",
                        Date(1565209665),
-                       Date(1565309665))
+                       Date(1865309665))
                         )
 
                     plantDao.insertPlant(
@@ -84,7 +84,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             "halvskygge",
                             "",
                             Date(1565209665),
-                            Date(1565309665))
+                            Date(1865309665))
                     )
 
                     plantDao.insertPlant(
@@ -100,7 +100,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             "halvskygge - sol",
                             "",
                             Date(1565209665),
-                            Date(1565309665))
+                            Date(1865309665))
                     )
                 }
             }
