@@ -1,6 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -30,7 +31,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationAvailability
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.Task
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
@@ -158,8 +163,11 @@ fun checkAndRequestLocationPermissions(
         lateinit var fusedLocationClient: FusedLocationProviderClient
 
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        val tokenSource  = CancellationTokenSource()
 
-        fusedLocationClient.lastLocation
+        val token : CancellationToken = tokenSource.token
+
+        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, token)
             .addOnSuccessListener { location : Location? ->
                 var latitude: Double? = location?.latitude
                 var longitude: Double? = location?.longitude
@@ -168,7 +176,9 @@ fun checkAndRequestLocationPermissions(
             // Got last known location. In some rare situations this can be null.
             }
 
-           println("fused_provider: ")
+
+
+
         // Use location because permissions are already granted
     } else {
         // Request permissions
