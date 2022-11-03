@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
+import java.sql.Date
 
 @Database(entities = [(Plant::class), (PlantRoom::class)], version = 1)
+@TypeConverters(Converters::class)
 abstract class PlantRoomDatabase: RoomDatabase() {
 
     abstract fun plantDao(): PlantDao
@@ -63,7 +66,10 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         10,
                        "tirsdag",
                         "lite",
-                        "") )
+                        "",
+                       Date(1565209665),
+                       Date(1565309665))
+                        )
 
                     plantDao.insertPlant(
                         Plant(2,
@@ -76,7 +82,9 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             5,
                             "tirsdag",
                             "halvskygge",
-                            "")
+                            "",
+                            Date(1565209665),
+                            Date(1565309665))
                     )
 
                     plantDao.insertPlant(
@@ -90,7 +98,9 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             5,
                             "tirsdag",
                             "halvskygge - sol",
-                            "")
+                            "",
+                            Date(1565209665),
+                            Date(1565309665))
                     )
                 }
             }

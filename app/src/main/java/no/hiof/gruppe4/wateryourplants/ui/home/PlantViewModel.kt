@@ -4,6 +4,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
+import java.sql.Date
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
@@ -21,7 +22,7 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
         sunRequirement: String,
         note: String
     ) = viewModelScope.launch {
-       repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note))
+       repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, Date(1565209665), Date(1565309665))) // TODO: Change dates to dates from input
     }
 
     fun insertPlantRoom(plantRoomName: String) = viewModelScope.launch {repository.insertPlantRoom(PlantRoom(plantRoomName))}
