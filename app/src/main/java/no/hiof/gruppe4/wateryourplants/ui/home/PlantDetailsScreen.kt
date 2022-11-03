@@ -66,6 +66,7 @@ fun PlantDetailsScreen(
                     alignment = Alignment.Center
                 )
 
+                // Plant name
                 Row(){
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = plantDetails.value?.speciesName.toString(),
@@ -80,6 +81,23 @@ fun PlantDetailsScreen(
                         fontStyle = FontStyle.Italic
                     )}
 
+                // Watering interval
+                Row(){
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Watering interval:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.wateringInterval.toString() + " days",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+
+                // Last watering day
                 Row(){
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = "Last watering day:",
@@ -94,6 +112,7 @@ fun PlantDetailsScreen(
                         fontStyle = FontStyle.Italic
                     )}
 
+                // Next watering day
                 Row(){
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = "Next watering day:",

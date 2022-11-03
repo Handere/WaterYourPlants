@@ -1,6 +1,8 @@
 package no.hiof.gruppe4.wateryourplants.data
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.R
 import java.sql.Date
+import java.time.LocalDate
 
 @Database(entities = [(Plant::class), (PlantRoom::class)], version = 1)
 @TypeConverters(Converters::class)
@@ -37,13 +40,13 @@ abstract class PlantRoomDatabase: RoomDatabase() {
         private val scope: CoroutineScope
     ) : Callback() {
 
+        // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
                     val plantDao = database.plantDao()
-
-
 
                     // Delete all content here.
                     /*movieDao.deleteAll()*/
@@ -67,8 +70,8 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                        "tirsdag",
                         "lite",
                         "",
-                       Date(1565209665),
-                       Date(1865309665))
+                       Date.valueOf(LocalDate.now().toString()),
+                       Date.valueOf(LocalDate.now().plusDays(10).toString()))
                         )
 
                     plantDao.insertPlant(
@@ -83,8 +86,8 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             "tirsdag",
                             "halvskygge",
                             "",
-                            Date(1565209665),
-                            Date(1865309665))
+                            Date.valueOf(LocalDate.now().toString()),
+                            Date.valueOf(LocalDate.now().plusDays(5).toString()))
                     )
 
                     plantDao.insertPlant(
@@ -94,13 +97,13 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             "Orchidaceae",
                             "Blomsterplanter",
                             R.drawable.no_plant_image,
-                            5,
-                            5,
+                            29,
+                            29,
                             "tirsdag",
                             "halvskygge - sol",
                             "",
-                            Date(1565209665),
-                            Date(1865309665))
+                            Date.valueOf(LocalDate.now().toString()),
+                            Date.valueOf(LocalDate.now().plusDays(29).toString()))
                     )
                 }
             }
