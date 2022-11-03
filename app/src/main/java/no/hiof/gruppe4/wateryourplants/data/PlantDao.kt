@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
+import java.sql.Date
 
 @Dao
 interface PlantDao {
@@ -39,6 +40,9 @@ interface PlantDao {
 
     @Query("SELECT * FROM plantRoom_table")
     fun getAllPlantRooms(): Flow<List<PlantRoom>>
+
+    @Query("UPDATE plant_table SET lastWateringDate = :lastWateringDate, nextWateringDate = :nextWateringDate WHERE plantId = :id")
+    suspend fun updateWateringDate(lastWateringDate: Date, nextWateringDate: Date, id: Int)
 
     //TODO: add queries as needed
 }

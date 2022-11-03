@@ -1,5 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,7 +28,10 @@ import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
+import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
+// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlantDetailsScreen(
     userName: String?,
@@ -126,6 +132,15 @@ fun PlantDetailsScreen(
                         fontSize = 18.sp,
                         fontStyle = FontStyle.Italic
                     )}
+
+                Row(){
+                    Button(onClick = { viewModel.updateWateringDate(plantDetails.value?.wateringInterval!!, plantId) },
+                        shape = Shapes.medium,
+                        modifier = modifier.height(50.dp)
+                    ) {
+                        Text(text = "Water now!")
+                    }
+                }
 
                 Row(){
                     //TODO: Symbols for nutrition, watering and sun conditions

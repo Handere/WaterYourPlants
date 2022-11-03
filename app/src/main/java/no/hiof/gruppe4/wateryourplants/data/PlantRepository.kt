@@ -1,6 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.data
 
 import androidx.annotation.WorkerThread
+import java.sql.Date
 
 class PlantRepository(private val plantDao: PlantDao) {
 
@@ -20,5 +21,8 @@ class PlantRepository(private val plantDao: PlantDao) {
     fun getPlantRoomPlants(plantRoomId: Int) = plantDao.getPlantRoomPlants(plantRoomId)
 
     fun getPlant(plantRoomId: Int, plantId: Int) = plantDao.getPlant(plantRoomId, plantId)
+
+    @WorkerThread
+    suspend fun updateWateringDate(lastWateringDate: Date, nextWateringDate: Date, id: Int) = plantDao.updateWateringDate(lastWateringDate, nextWateringDate, id)
 
 }

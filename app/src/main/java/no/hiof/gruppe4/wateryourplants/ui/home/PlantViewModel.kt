@@ -28,7 +28,19 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     ) = viewModelScope.launch {
         val currentDate = Date.valueOf(LocalDate.now().toString())
         val nextWateringDay = Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
+
        repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, currentDate, nextWateringDay))
+    }
+
+    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateWateringDate(
+        wateringInterval: Int,
+        plantId: Int) = viewModelScope.launch {
+        val currentDate = Date.valueOf(LocalDate.now().toString())
+        val nextWateringDay = Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
+
+        repository.updateWateringDate(currentDate, nextWateringDay, plantId)
     }
 
     fun insertPlantRoom(plantRoomName: String) = viewModelScope.launch {repository.insertPlantRoom(PlantRoom(plantRoomName))}
