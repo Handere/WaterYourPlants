@@ -1,15 +1,19 @@
 package no.hiof.gruppe4.wateryourplants.home
 
-import androidx.compose.runtime.livedata.observeAsState
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
 import java.sql.Date
+import java.time.LocalDate
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
     //var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
+    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun insertPlant(
         roomId: Int,
         speciesName: String,
@@ -22,7 +26,9 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
         sunRequirement: String,
         note: String
     ) = viewModelScope.launch {
-       repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, Date(1565209665), Date(1565309665))) // TODO: Change dates to dates from input
+        val currentDate = Date.valueOf(LocalDate.now().toString())
+        val nextWateringDay = Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
+       repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, currentDate, nextWateringDay))
     }
 
     fun insertPlantRoom(plantRoomName: String) = viewModelScope.launch {repository.insertPlantRoom(PlantRoom(plantRoomName))}
