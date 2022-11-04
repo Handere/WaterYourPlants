@@ -136,6 +136,22 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             Date.valueOf(LocalDate.now().minusDays(94).toString()),
                             Date.valueOf(LocalDate.now().plusDays(29).toString()))
                     )
+
+                    plantDao.insertPlant(
+                        Plant(
+                            2,
+                            "Draketre",
+                            "Dracaena draco",
+                            "Blomsterplanter",
+                            R.drawable.no_plant_image,
+                            4,
+                            4,
+                            "tirsdag",
+                            "halvskygge - sol",
+                            "",
+                            Date.valueOf(LocalDate.now().minusDays(94).toString()),
+                            Date.valueOf(LocalDate.now().toString()))
+                    )
                 }
             }
         }
