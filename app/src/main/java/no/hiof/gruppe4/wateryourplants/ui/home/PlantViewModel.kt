@@ -6,6 +6,8 @@ import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
 import java.sql.Date
 import java.time.LocalDate
+import no.hiof.gruppe4.wateryourplants.ui.home.GetGPS
+import no.hiof.gruppe4.wateryourplants.ui.home.checkAndRequestLocationPermissions
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
