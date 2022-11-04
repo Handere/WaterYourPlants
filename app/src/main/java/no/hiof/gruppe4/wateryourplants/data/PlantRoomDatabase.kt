@@ -74,6 +74,21 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                        Date.valueOf(LocalDate.now().plusDays(10).toString()))
                         )
 
+                   plantDao.insertPlant(Plant(
+                        1,
+                        "Julestjerne",
+                        "Euphorbia pulcherrima",
+                        "Blomsterplanter",
+                        R.drawable.no_plant_image,
+                        0,
+                        0,
+                       "tirsdag",
+                        "lite",
+                        "",
+                       Date.valueOf(LocalDate.now().toString()),
+                       Date.valueOf(LocalDate.now().plusDays(0).toString()))
+                        )
+
                     plantDao.insertPlant(
                         Plant(2,
                             "Bjørkefiken",
