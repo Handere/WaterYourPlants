@@ -4,6 +4,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
+import no.hiof.gruppe4.wateryourplants.ui.home.GetGPS
+import no.hiof.gruppe4.wateryourplants.ui.home.checkAndRequestLocationPermissions
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
