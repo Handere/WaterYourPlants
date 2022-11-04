@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.home
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch

@@ -38,8 +38,6 @@ fun RoomScreen(
 
     val openDialog = remember { mutableStateOf(false) }
 
-    //val allPlants by viewModel.allPlants.observeAsState(listOf())
-
     val plantRoomPlantList by viewModel.plantRoomPlantList.observeAsState(listOf())
     val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
 

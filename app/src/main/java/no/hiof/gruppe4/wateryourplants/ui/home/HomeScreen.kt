@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
