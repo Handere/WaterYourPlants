@@ -123,26 +123,13 @@ fun GetGPS(){
         permissionsMap ->
         val areGranted = permissionsMap.values.reduce{ acc, next -> acc && next}
         if (areGranted) {
-
-
             println("permission")
         } else {
             println("Make permission request")
         }
     }
 
-    Button(
-        modifier = Modifier.padding(top = 30.dp),
-        onClick = {
-            checkAndRequestLocationPermissions(
-                context,
-                permissions,
-                launcherMultiplePermissions
-            )
-        }
-    ) {
-        Text(text = "give permissions for location")
-    }
+    checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
 
 }
 
@@ -161,11 +148,10 @@ fun checkAndRequestLocationPermissions(
         }
     ) {
         lateinit var fusedLocationClient: FusedLocationProviderClient
-
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         val tokenSource  = CancellationTokenSource()
 
         val token : CancellationToken = tokenSource.token
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, token)
             .addOnSuccessListener { location : Location? ->
@@ -173,13 +159,8 @@ fun checkAndRequestLocationPermissions(
                 var longitude: Double? = location?.longitude
                 println("lat: " +
                         latitude + ", long: " + longitude)
-            // Got last known location. In some rare situations this can be null.
+
             }
-
-
-
-
-        // Use location because permissions are already granted
     } else {
         // Request permissions
         launcher.launch(permissions)
