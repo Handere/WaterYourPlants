@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,8 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantRoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen

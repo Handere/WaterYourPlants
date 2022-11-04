@@ -1,11 +1,9 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.Manifest
-import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Bundle
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,17 +28,21 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.Task
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
+import no.hiof.gruppe4.wateryourplants.data.WeatherData
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 @Composable
@@ -129,16 +131,41 @@ fun GetGPS(){
         }
     }
 
+
+
     checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
 
 }
+const val gpsLocalisation : String = "" //lat=60&lon=11
 
+var YR_API_URL = "https://api.met.no/weatherapi/locationforecast/2.0/compact?"
+interface APIService {
+    @GET(gpsLocalisation)
+    suspend fun getWeather(): List<WeatherData>
 
-fun checkAndRequestLocationPermissions(
+    companion object {
+        var apiService: APIService? = null
+        fun getInstance(): APIService {
+            if (apiService == null) {
+                apiService = Retrofit.Builder()
+                    .baseUrl(YR_API_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build().create(APIService::class.java)
+            }
+            return apiService!!
+        }
+    }}
+
+fun checkAndRequestLocationPermissions (
     context: Context,
     permissions: Array<String>,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
-) {
+) : String {
+
+    var latitude: BigDecimal
+    var longitude: BigDecimal
+    var gpsLatAndLong: String = ""
+
     if (
         permissions.all {
             ContextCompat.checkSelfPermission(
@@ -155,14 +182,17 @@ fun checkAndRequestLocationPermissions(
 
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, token)
             .addOnSuccessListener { location : Location? ->
-                var latitude: Double? = location?.latitude
-                var longitude: Double? = location?.longitude
-                println("lat: " +
-                        latitude + ", long: " + longitude)
+                latitude = location?.latitude?.let { BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN) } as BigDecimal
+                longitude = location.longitude.let { BigDecimal(it).setScale(2,RoundingMode.HALF_EVEN) } as BigDecimal
+
+                gpsLatAndLong = "lat=" + latitude + "&lon=" + longitude
+
+                println(gpsLatAndLong)
 
             }
     } else {
         // Request permissions
         launcher.launch(permissions)
     }
+    return gpsLatAndLong
 }
