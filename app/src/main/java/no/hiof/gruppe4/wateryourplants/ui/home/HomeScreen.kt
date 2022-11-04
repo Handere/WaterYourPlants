@@ -141,6 +141,7 @@ fun GetGPS(){
             )
         }
     ) {
+        println("test")
         Text(text = "give permissions for location")
     }
 
