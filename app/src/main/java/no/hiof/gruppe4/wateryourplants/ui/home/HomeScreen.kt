@@ -35,12 +35,8 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
-import no.hiof.gruppe4.wateryourplants.data.WeatherData
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -114,7 +110,7 @@ fun RoomCards(
 }
 
 @Composable
-fun GetGPS(){
+fun GetGPS(): String {
     val context: Context = LocalContext.current.applicationContext
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
     val permissions = arrayOf(
@@ -132,29 +128,8 @@ fun GetGPS(){
     }
 
 
-
-    checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
-
+    return checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
 }
-const val gpsLocalisation : String = "" //lat=60&lon=11
-
-var YR_API_URL = "https://api.met.no/weatherapi/locationforecast/2.0/compact?"
-interface APIService {
-    @GET(gpsLocalisation)
-    suspend fun getWeather(): List<WeatherData>
-
-    companion object {
-        var apiService: APIService? = null
-        fun getInstance(): APIService {
-            if (apiService == null) {
-                apiService = Retrofit.Builder()
-                    .baseUrl(YR_API_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build().create(APIService::class.java)
-            }
-            return apiService!!
-        }
-    }}
 
 fun checkAndRequestLocationPermissions (
     context: Context,
