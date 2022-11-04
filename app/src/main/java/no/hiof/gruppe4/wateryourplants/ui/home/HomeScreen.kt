@@ -202,9 +202,6 @@ fun checkAndRequestLocationPermissions(
                             println(mapJsonRaw["properties"])
 
 
-
-
-
                             //val prettyJson = gson.toJson(jsonParser.parse(response))
 
                            // println(prettyJson)
