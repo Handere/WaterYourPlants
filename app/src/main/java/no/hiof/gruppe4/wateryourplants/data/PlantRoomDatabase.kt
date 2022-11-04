@@ -48,17 +48,20 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                 scope.launch {
                     val plantDao = database.plantDao()
 
-                    // Delete all content here.
-                    /*movieDao.deleteAll()*/
+                    // Seeding
 
-                    // Add sample words.
+                    // Seed rooms
                     plantDao.insertPlantRoom(
                         PlantRoom("stue")
                     )
                     plantDao.insertPlantRoom(
                         PlantRoom("kjøkken")
                     )
+                    plantDao.insertPlantRoom(
+                        PlantRoom("hage")
+                    )
 
+                    // Seed plants
                    plantDao.insertPlant(Plant(
                         1,
                         "Monstera",
@@ -67,7 +70,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         R.drawable.no_plant_image,
                         10,
                         10,
-                       "tirsdag",
+                       " ",
                         "lite",
                         "",
                        Date.valueOf(LocalDate.now().toString()),
@@ -82,7 +85,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         R.drawable.no_plant_image,
                         0,
                         0,
-                       "tirsdag",
+                       " ",
                         "lite",
                         "",
                        Date.valueOf(LocalDate.now().toString()),
@@ -98,11 +101,11 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             R.drawable.no_plant_image,
                             5,
                             5,
-                            "tirsdag",
+                            " ",
                             "halvskygge",
                             "",
-                            Date.valueOf(LocalDate.now().toString()),
-                            Date.valueOf(LocalDate.now().plusDays(5).toString()))
+                            Date.valueOf(LocalDate.now().minusDays(5).toString()),
+                            Date.valueOf(LocalDate.now().toString()))
                     )
 
                     plantDao.insertPlant(
@@ -114,7 +117,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             R.drawable.no_plant_image,
                             29,
                             29,
-                            "tirsdag",
+                            " ",
                             "halvskygge - sol",
                             "",
                             Date.valueOf(LocalDate.now().toString()),
@@ -130,27 +133,43 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             R.drawable.no_plant_image,
                             4,
                             4,
-                            "tirsdag",
+                            " ",
                             "halvskygge - sol",
                             "",
                             Date.valueOf(LocalDate.now().minusDays(94).toString()),
-                            Date.valueOf(LocalDate.now().plusDays(29).toString()))
+                            Date.valueOf(LocalDate.now().minusDays(90).toString()))
                     )
 
                     plantDao.insertPlant(
                         Plant(
                             2,
-                            "Draketre",
-                            "Dracaena draco",
+                            "Plommetre",
+                            "Prunus domestica",
                             "Blomsterplanter",
                             R.drawable.no_plant_image,
                             4,
                             4,
-                            "tirsdag",
+                            " ",
                             "halvskygge - sol",
                             "",
-                            Date.valueOf(LocalDate.now().minusDays(94).toString()),
-                            Date.valueOf(LocalDate.now().toString()))
+                            Date.valueOf(LocalDate.now().minusDays(2).toString()),
+                            Date.valueOf(LocalDate.now().plusDays(2).toString()))
+                    )
+
+                    plantDao.insertPlant(
+                        Plant(
+                            3,
+                            "Draketre",
+                            "Dracaena draco",
+                            "Blomsterplanter",
+                            R.drawable.no_plant_image,
+                            30,
+                            30,
+                            " ",
+                            "halvskygge - sol",
+                            "",
+                            Date.valueOf(LocalDate.now().toString()),
+                            Date.valueOf(LocalDate.now().plusDays(30).toString()))
                     )
                 }
             }
