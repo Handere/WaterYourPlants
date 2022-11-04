@@ -109,8 +109,10 @@ fun RoomCards(
     }
 }
 
+
+
 @Composable
-fun GetGPS(): String {
+fun GetGPS() {
     val context: Context = LocalContext.current.applicationContext
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
     val permissions = arrayOf(
@@ -126,10 +128,18 @@ fun GetGPS(): String {
             println("Make permission request")
         }
     }
+    var weatherGpsUrl: String = ""
+    var gpsCoordinates: String = checkAndRequestLocationPermissions(
+        context,
+        permissions,
+        launcherMultiplePermissions
+    )
 
-
-    return checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
+    weatherGpsUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?$gpsCoordinates"
+    println(weatherGpsUrl)
 }
+
+
 
 fun checkAndRequestLocationPermissions (
     context: Context,
@@ -137,8 +147,8 @@ fun checkAndRequestLocationPermissions (
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
 ) : String {
 
-    var latitude: BigDecimal
-    var longitude: BigDecimal
+    var latitude: BigDecimal = BigDecimal(0.0)
+    var longitude: BigDecimal = BigDecimal(0.0)
     var gpsLatAndLong: String = ""
 
     if (
@@ -160,14 +170,15 @@ fun checkAndRequestLocationPermissions (
                 latitude = location?.latitude?.let { BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN) } as BigDecimal
                 longitude = location.longitude.let { BigDecimal(it).setScale(2,RoundingMode.HALF_EVEN) } as BigDecimal
 
-                gpsLatAndLong = "lat=" + latitude + "&lon=" + longitude
-
+                gpsLatAndLong = "lat=$latitude&lon=$longitude"
                 println(gpsLatAndLong)
 
             }
+
     } else {
         // Request permissions
         launcher.launch(permissions)
     }
+    println(latitude)
     return gpsLatAndLong
 }
