@@ -13,7 +13,7 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     //var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(value = 26)
     fun insertPlant(
         roomId: Int,
         speciesName: String,
@@ -33,7 +33,7 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     }
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(value = 26)
     fun updateWateringDate(
         wateringInterval: Int,
         plantId: Int) = viewModelScope.launch {
@@ -54,6 +54,22 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     var plantRoomPlantList: LiveData<List<Plant>> = repository.getPlantRoomPlants(plantRoomId).asLiveData()
 
     var currentPlantRoom: LiveData<PlantRoom> = repository.getPlantRoom(plantRoomId).asLiveData()
+
+    fun getPlantRoomPlantList(plantRoomId: Int): LiveData<List<Plant>> {
+        return repository.getPlantRoomPlants(plantRoomId).asLiveData()
+    }
+
+    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+    @RequiresApi(value = 26)
+    fun numberOfNotifyingPlants(plantList: List<Plant>): Int {
+        var notifications = 0
+        plantList.forEach {
+            if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
+                notifications++
+            }
+        }
+        return notifications
+    }
 }
 
 // TODO: Error handling if plantRoomId = 0 = no argument given

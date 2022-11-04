@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,14 +17,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.*
-import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.data.Plant
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantCard
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(value = 26)
 @Composable
 fun RoomScreen(
     onNavigationToCreatePlant: (String, Int) -> Unit,

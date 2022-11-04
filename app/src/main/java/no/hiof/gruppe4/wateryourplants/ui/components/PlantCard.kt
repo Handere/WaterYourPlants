@@ -30,7 +30,7 @@ import java.sql.Date
 import java.time.LocalDate
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(value = 26)
 @Composable
 fun PlantCard(
     onNavigationToPlantDetails: (String, Int, Int) -> Unit,

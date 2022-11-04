@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,11 +25,10 @@ import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.R
-import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(value = 26)
 @Composable
 fun PlantDetailsScreen(
     userName: String?,
@@ -133,20 +130,30 @@ fun PlantDetailsScreen(
                         fontStyle = FontStyle.Italic
                     )}
 
+                // Note
                 Row(){
-                    Button(onClick = { viewModel.updateWateringDate(plantDetails.value?.wateringInterval!!, plantId) },
-                        shape = Shapes.medium,
-                        modifier = modifier.height(50.dp)
-                    ) {
-                        Text(text = "Water now!")
-                    }
-                }
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Note:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.note.toString(),
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )}
 
-                Row(){
-                    //TODO: Symbols for nutrition, watering and sun conditions
+            // Water now button
+            Row(){
+                Button(onClick = { viewModel.updateWateringDate(plantDetails.value?.wateringInterval!!, plantId) },
+                    shape = Shapes.medium,
+                    modifier = modifier.height(50.dp)
+                ) {
+                    Text(text = "Water now!")
                 }
-
-                Text(text = plantDetails.value?.note.toString())
+            }
         }
     }
 }
