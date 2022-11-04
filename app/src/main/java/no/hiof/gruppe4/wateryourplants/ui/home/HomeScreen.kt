@@ -131,19 +131,7 @@ fun GetGPS(){
         }
     }
 
-    Button(
-        modifier = Modifier.padding(top = 30.dp),
-        onClick = {
-            checkAndRequestLocationPermissions(
-                context,
-                permissions,
-                launcherMultiplePermissions
-            )
-        }
-    ) {
-        println("test")
-        Text(text = "give permissions for location")
-    }
+    checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions)
 
 }
 
