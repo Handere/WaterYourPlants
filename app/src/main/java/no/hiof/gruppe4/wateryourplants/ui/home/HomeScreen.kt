@@ -130,19 +130,7 @@ fun GetGPS(){
             println("Make permission request")
         }
     }
-
-    Button(
-        modifier = Modifier.padding(top = 30.dp),
-        onClick = {
-            checkAndRequestLocationPermissions(
-                context,
-                permissions,
-                launcherMultiplePermissions
-            )
-        }
-    ) {
-        Text(text = "give permissions for location")
-    }
+    checkAndRequestLocationPermissions(context,permissions,launcherMultiplePermissions)
 
 }
 
@@ -173,13 +161,7 @@ fun checkAndRequestLocationPermissions(
                 var longitude: Double? = location?.longitude
                 println("lat: " +
                         latitude + ", long: " + longitude)
-            // Got last known location. In some rare situations this can be null.
             }
-
-
-
-
-        // Use location because permissions are already granted
     } else {
         // Request permissions
         launcher.launch(permissions)
