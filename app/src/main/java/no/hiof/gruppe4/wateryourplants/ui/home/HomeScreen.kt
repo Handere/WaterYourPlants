@@ -5,8 +5,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.util.Log.d
-import android.util.Log.e
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +33,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.logging.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
@@ -50,7 +47,6 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.net.HttpURLConnection
 import java.net.URL
-
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
 @RequiresApi(value = 26)
