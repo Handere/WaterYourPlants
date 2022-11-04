@@ -1,5 +1,7 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +27,8 @@ import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 
+// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+@RequiresApi(value = 26)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -47,7 +51,8 @@ fun HomeScreen(
             RoomCards(
                 onNavigateToRoom = onNavigateToRoom,
                 userName = userName,
-                plantRoomList = plantRoomList)
+                plantRoomList = plantRoomList,
+                viewModel = viewModel)
         }
     }
 }
@@ -57,11 +62,14 @@ fun ScaffoldTopAppBar(userName: String?) {
     TopAppBar(title = { userName?.let { Text(text = it) } }) // TODO: Placeholder. Change to actual username
 }
 
+// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+@RequiresApi(value = 26)
 @Composable
 fun RoomCards(
     userName: String?,
     plantRoomList: List<PlantRoom>,
     onNavigateToRoom: (String, Int) -> Unit,
+    viewModel: PlantViewModel,
     modifier: Modifier = Modifier
 ) {
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
@@ -85,7 +93,8 @@ fun RoomCards(
                     userName = userName,
                     onNavigationToRoom = onNavigateToRoom,
                     buttonName = it.roomName,
-                    plantRoomId = it.plantRoomId )
+                    plantRoomId = it.plantRoomId,
+                    viewModel1 = viewModel)
             }
         }
     }

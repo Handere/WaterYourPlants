@@ -1,7 +1,9 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,6 +38,7 @@ import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
+@RequiresApi(value = 26)
 @Composable
 fun CreatePlantScreen(
     userName: String?,
@@ -55,7 +58,7 @@ fun CreatePlantScreen(
     val classification = remember { mutableStateOf(TextFieldValue()) }
     val wateringInterval = remember { mutableStateOf(TextFieldValue()) }
     val nutritionInterval = remember { mutableStateOf(TextFieldValue()) }
-    val wateringAndNutritionDay = remember{ mutableStateOf(TextFieldValue()) }
+    val wateringAndNutritionDay = remember{ mutableStateOf(TextFieldValue(" ")) }
     val sunRequirement = remember { mutableStateOf(TextFieldValue()) }
     val personalNote = remember { mutableStateOf(TextFieldValue()) }
 
@@ -96,7 +99,7 @@ fun CreatePlantScreen(
                 .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-                item {
+                /*item {
                     // Plant search field
                     TextField(
                         label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
@@ -107,21 +110,21 @@ fun CreatePlantScreen(
                     // Plant search buttons
                     Spacer(modifier = modifier.height(20.dp))
                     Row(modifier = modifier) {
-                        Button(onClick = { /*TODO*/ },
+                        Button(onClick = { *//*TODO*//* },
                             shape = Shapes.medium,
                             modifier = modifier.height(50.dp)
                         ) {
                             Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
                         }
                         Spacer(modifier = modifier.width(20.dp))
-                        Button(onClick = { /*TODO*/ },
+                        Button(onClick = { *//*TODO*//* },
                             shape = Shapes.medium,
                             modifier = modifier.height(50.dp)
                         ) {
                             Text(text = stringResource(id = R.string.add_new_plant_search_button))
                         }
                     }
-                }
+                }*/
 
                 // Image
                 item {
@@ -193,6 +196,7 @@ fun CreatePlantScreen(
                 }
 
                 //watering and nutrition day
+                /*
                 item {
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
@@ -202,6 +206,7 @@ fun CreatePlantScreen(
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
+                 */
 
                 // Sun requirement
                 item {
@@ -246,6 +251,7 @@ fun CreatePlantScreen(
     }
 }
 
+@RequiresApi(value = 26)
 fun createPlant(
     viewModel: PlantViewModel,
     mContext: Context,

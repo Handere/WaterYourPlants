@@ -1,6 +1,9 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,12 +17,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.*
-import no.hiof.gruppe4.wateryourplants.ui.components.PlantCards
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.data.Plant
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
+import no.hiof.gruppe4.wateryourplants.ui.components.PlantCard
 
-
+// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+@RequiresApi(value = 26)
 @Composable
 fun RoomScreen(
     onNavigationToCreatePlant: (String, Int) -> Unit,
@@ -60,17 +64,31 @@ fun RoomScreen(
         }
         ) {padding -> // TODO: ...
         Column(modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp)) {
+            .fillMaxWidth()
+            .padding(16.dp, 0.dp)) {
             Text(text = currentPlantRoom?.roomName?.uppercase().toString(), fontSize = 30.sp)
             Spacer(modifier = modifier.height(5.dp))
-            PlantCards(onNavigationToPlantDetails, userName, plantRoomId, plantRoomPlantList)
-            Button(onClick = {
-                if (!openDialog.value) {
-                    openDialog.value = true
+            LazyColumn() {
+                items(plantRoomPlantList) {
+                    PlantCard(
+                        onNavigationToPlantDetails = onNavigationToPlantDetails,
+                        userName = userName,
+                        plantRoomId = plantRoomId,
+                        plantId = it.plantId,
+                        contentDescription = it.speciesName,
+                        species = it.speciesName,
+                        speciesLatin = it.speciesLatinName,
+                        nextWateringDay = it.nextWateringDate)
                 }
-            }) {
-                Text(text = stringResource(id = R.string.delete_room_and_plants))
+                item {
+                    Button(onClick = {
+                        if (!openDialog.value) {
+                            openDialog.value = true
+                        }
+                    }) {
+                        Text(text = stringResource(id = R.string.delete_room_and_plants))
+                    }
+                }
             }
         }
     }
