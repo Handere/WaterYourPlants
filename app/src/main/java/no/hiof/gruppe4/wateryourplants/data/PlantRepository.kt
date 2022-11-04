@@ -14,6 +14,9 @@ class PlantRepository(private val plantDao: PlantDao) {
     @WorkerThread
     suspend fun deletePlantRoomAndPlants(plantRoom: PlantRoom, plantRoomPlants: List<Plant>) = plantDao.deletePlantRoomAndPlants(plantRoom, plantRoomPlants)
 
+    @WorkerThread
+    suspend fun deletePlant(plant: Plant) = plantDao.deletePlant(plant)
+
     fun getPlantRoom(plantRoomId: Int) = plantDao.getPlantRoom(plantRoomId)
 
     fun getPlantRooms() = plantDao.getAllPlantRooms()

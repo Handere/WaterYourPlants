@@ -1,8 +1,10 @@
 package no.hiof.gruppe4.wateryourplants
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +23,7 @@ import no.hiof.gruppe4.wateryourplants.ui.home.RoomScreen
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(value = 26)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,6 +35,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(value = 26)
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
@@ -119,6 +123,7 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             PlantDetailsScreen(
+                popBackStack = { navController.popBackStack() },
                 userName = args?.getString(Routes.PlantDetailsScreen.userName),
                 plantRoomId = args?.getInt(Routes.PlantDetailsScreen.plantRoomId)!!,
                 plantId = args?.getInt(Routes.PlantDetailsScreen.plantId)!!

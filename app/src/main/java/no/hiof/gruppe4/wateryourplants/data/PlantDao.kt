@@ -12,7 +12,6 @@ import java.sql.Date
 @Dao
 interface PlantDao {
 
-
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlant(plant: Plant)
 
@@ -21,6 +20,9 @@ interface PlantDao {
 
     @Delete
     suspend fun deletePlantRoomAndPlants(plantRoom: PlantRoom, plantRoomPlants: List<Plant>)
+
+    @Delete
+    suspend fun deletePlant(plant: Plant)
 
     @Transaction
     @Query("SELECT * FROM plantRoom_table")

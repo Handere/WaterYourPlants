@@ -48,4 +48,12 @@
     <!-- Create room -->
     <string name="add_new_room_title">Add new room</string>
     <string name="add_new_room_name">Room name</string>
+
+    <!-- Plant details -->
+    <string name="plant_details_last_watering_day">Last watering day:</string>
+    <string name="plant_details_next_watering_day">Next watering day:</string>
+    <string name="delete_plant">Delete plant</string>
+    <string name="delete_plant_info">This will delete the plant permanently.</string>
+    <string name="water_now_button">Water now!</string>
+
 </resources>
