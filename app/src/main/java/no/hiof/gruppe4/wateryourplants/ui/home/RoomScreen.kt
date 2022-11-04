@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -12,6 +13,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -78,14 +83,24 @@ fun RoomScreen(
                         speciesLatin = it.speciesLatinName,
                         nextWateringDay = it.nextWateringDate)
                 }
+
+                // Delete button
                 item {
-                    Button(onClick = {
-                        if (!openDialog.value) {
-                            openDialog.value = true
-                        }
-                    }) {
-                        Text(text = stringResource(id = R.string.delete_room_and_plants))
-                    }
+                    Spacer(modifier = modifier.height(5.dp))
+                    ClickableText(
+                        text = AnnotatedString(stringResource(id = R.string.delete_room_and_plants)) ,
+                        onClick = {
+                            if (!openDialog.value) {
+                                openDialog.value = true
+                            }
+                        },
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily.Default,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
                 }
             }
         }

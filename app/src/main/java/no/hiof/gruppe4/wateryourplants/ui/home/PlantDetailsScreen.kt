@@ -2,7 +2,10 @@ package no.hiof.gruppe4.wateryourplants.ui.home
 
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -14,9 +17,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,7 +32,6 @@ import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.data.Plant
-import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
@@ -72,119 +78,91 @@ fun PlantDetailsScreen(
                        )
                 }
 
-                Image(
-                    painter = painterResource(id = R.drawable.no_plant_image),
-                    contentDescription = currentPlant.value?.speciesName,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier.fillMaxWidth(0.5f),
-                    alignment = Alignment.Center
-                )
+            LazyColumn(modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                item {
+                    Image(
+                        painter = painterResource(id = R.drawable.no_plant_image),
+                        contentDescription = currentPlant.value?.speciesName,
+                        contentScale = ContentScale.Crop,
+                        modifier = modifier.fillMaxWidth(0.5f),
+                        alignment = Alignment.Center
+                    )
+                }
 
                 // Plant name
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.speciesName.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = "(" + currentPlant.value?.speciesLatinName.toString() + ")",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                item {
+                    Row(){
+                        Spacer(modifier = modifier.height(5.dp))
+                        Text(text = currentPlant.value?.speciesName.toString(),
+                            modifier = modifier.padding(5.dp),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = modifier.height(5.dp))
+                        Text(text = "(" + currentPlant.value?.speciesLatinName.toString() + ")",
+                            modifier = modifier.padding(5.dp),
+                            fontSize = 18.sp,
+                            fontStyle = FontStyle.Italic
+                        )}
+                }
 
                 // Watering interval
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval) + ":",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.wateringInterval.toString() + " days",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.add_new_plant_plant_watering_interval),
+                        detail = currentPlant.value?.wateringInterval.toString() + " days",
+                        modifier = modifier
                     )
                 }
 
                 // Last watering day
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.plant_details_last_watering_day),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.plant_details_last_watering_day),
+                        detail = currentPlant.value?.lastWateringDate.toString(),
+                        modifier = modifier
                     )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.lastWateringDate.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                }
 
                 // Next watering day
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.plant_details_next_watering_day),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.plant_details_next_watering_day),
+                        detail = currentPlant.value?.nextWateringDate.toString(),
+                        modifier = modifier
                     )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.nextWateringDate.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                }
 
                 // Classification
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.add_new_plant_plant_classification) + ":",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.add_new_plant_plant_classification),
+                        detail = currentPlant.value?.plantClassification.toString(),
+                        modifier = modifier
                     )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.plantClassification.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                }
 
                 // Sun requirements
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement) + ":",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.add_new_plant_plant_sun_requirement),
+                        detail = currentPlant.value?.sunRequirement.toString(),
+                        modifier = modifier
                     )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.sunRequirement.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                }
 
                 // Note
-                Row(){
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note) + ":",
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                item {
+                    PlantDetail(
+                        detailTitle = stringResource(id = R.string.add_new_plant_plant_personal_note),
+                        detail = currentPlant.value?.note.toString(),
+                        modifier = modifier
                     )
-                    Spacer(modifier = modifier.height(5.dp))
-                    Text(text = currentPlant.value?.note.toString(),
-                        modifier = modifier.padding(5.dp),
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )}
+                }
+            }
 
             // Water now button
             Row(){
@@ -195,15 +173,44 @@ fun PlantDetailsScreen(
                     Text(text = stringResource(id = R.string.water_now_button))
                 }
             }
+
+            // Delete button
             Spacer(modifier = modifier.height(5.dp))
-            Button(onClick = {
-                if (!openDialog.value) {
-                    openDialog.value = true
-                }
-            }) {
-                Text(text = stringResource(id = R.string.delete_plant))
-            }
+            ClickableText(
+                text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
+                onClick = {
+                    if (!openDialog.value) {
+                        openDialog.value = true
+                    }
+                },
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily.Default,
+                    textDecoration = TextDecoration.Underline
+                )
+            )
         }
+    }
+}
+
+@Composable
+fun PlantDetail(detailTitle: String, detail: String, modifier: Modifier) {
+    Row(modifier = modifier.fillMaxWidth()) {
+        Spacer(modifier = modifier.height(5.dp))
+        Text(text = "$detailTitle:",
+            modifier = modifier
+                .padding(5.dp)
+                .fillMaxWidth(0.5f),
+            fontSize = 18.sp,
+            fontStyle = FontStyle.Italic
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(text = detail,
+            modifier = modifier
+                .padding(5.dp)
+                .fillMaxWidth(),
+            fontSize = 18.sp
+        )
     }
 }
 
