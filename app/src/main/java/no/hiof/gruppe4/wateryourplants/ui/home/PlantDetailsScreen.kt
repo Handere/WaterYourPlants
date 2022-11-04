@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -125,6 +124,36 @@ fun PlantDetailsScreen(
                     )
                     Spacer(modifier = modifier.height(5.dp))
                     Text(text = plantDetails.value?.nextWateringDate.toString(),
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )}
+
+                // Classification
+                Row(){
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Classification:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.plantClassification.toString(),
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic
+                    )}
+
+                // Sun requirements
+                Row(){
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = "Sun requirements:",
+                        modifier = modifier.padding(5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = modifier.height(5.dp))
+                    Text(text = plantDetails.value?.sunRequirement.toString(),
                         modifier = modifier.padding(5.dp),
                         fontSize = 18.sp,
                         fontStyle = FontStyle.Italic
