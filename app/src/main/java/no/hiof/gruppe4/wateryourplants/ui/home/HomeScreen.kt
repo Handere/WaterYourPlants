@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
@@ -43,6 +45,8 @@ import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
+import org.json.JSONArray
+import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.net.HttpURLConnection
@@ -107,7 +111,7 @@ fun RoomCards(
                 .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
                 .fillMaxWidth(),
             contentScale = ContentScale.Fit)
-        GetGPS()
+        GetGPS(modifier = modifier)
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
         LazyColumn {
@@ -125,7 +129,8 @@ fun RoomCards(
 
 
 @Composable
-fun GetGPS() {
+fun GetGPS(modifier: Modifier) {
+    var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
     val context: Context = LocalContext.current.applicationContext
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
     val permissions = arrayOf(
@@ -144,8 +149,29 @@ fun GetGPS() {
         }
     }
 
-    SideEffect{ checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions) }
+    SideEffect{ weatherMutableMap = checkAndRequestLocationPermissions(context, permissions, launcherMultiplePermissions) }
 
+    // TODO: Have to await API response
+/*
+    Row(modifier = modifier.fillMaxWidth()) {
+        Spacer(modifier = modifier.height(5.dp))
+        Text(text = "Clouds",
+            modifier = modifier
+                .padding(5.dp)
+                .fillMaxWidth(0.5f),
+            fontSize = 18.sp,
+            fontStyle = FontStyle.Italic
+        )
+        Spacer(modifier = modifier.height(5.dp))
+        Text(text = weatherMutableMap.get("clouds")!!,
+            modifier = modifier
+                .padding(5.dp)
+                .fillMaxWidth(),
+            fontSize = 18.sp
+        )
+    }
+
+ */
 }
 
 
@@ -153,7 +179,9 @@ fun checkAndRequestLocationPermissions(
     context: Context,
     permissions: Array<String>,
     launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
-) {
+): MutableMap<String, String> {
+    var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
+
     if (
         permissions.all {
             ContextCompat.checkSelfPermission(
@@ -199,11 +227,6 @@ fun checkAndRequestLocationPermissions(
                             val gson = GsonBuilder().setPrettyPrinting().create()
                             var jsonParser = JsonParser()
 
-                            var mapJsonRaw: Map<String, Any> = gson.fromJson(response, object : TypeToken<Map<String, Any>>() {}.type)
-
-                            println(mapJsonRaw.keys)
-
-                            println(mapJsonRaw["properties"])
 
 
                             //val prettyJson = gson.toJson(jsonParser.parse(response))
@@ -211,6 +234,24 @@ fun checkAndRequestLocationPermissions(
                            // println(prettyJson)
                             //Log.d("Pretty Printed JSON :", prettyJson)
 
+                            val jsonObject = JSONObject(response)
+                            val airTemp = jsonObject.getJSONObject("properties")
+                                .getJSONArray("timeseries")
+                                .getJSONObject(1)
+                                .getJSONObject("data")
+                                .getJSONObject("instant")
+                                .getJSONObject("details")
+                                .get("air_temperature")
+                            val clouds = jsonObject.getJSONObject("properties")
+                                .getJSONArray("timeseries")
+                                .getJSONObject(1)
+                                .getJSONObject("data")
+                                .getJSONObject("next_1_hours")
+                                .getJSONObject("summary")
+                                .get("symbol_code")
+
+                            weatherMutableMap.put(key = "airTemp", value = airTemp.toString())
+                            weatherMutableMap.put(key = "clouds", value = clouds.toString())
                         }
                     } else {
                         println("HTTPURLCONNECTION_ERROR" +responseCode.toString())
@@ -226,4 +267,5 @@ fun checkAndRequestLocationPermissions(
         // Request permissions
         launcher.launch(permissions)
     }
+    return weatherMutableMap
 }
