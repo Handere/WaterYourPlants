@@ -5,6 +5,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,7 +54,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(value = 26)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -89,7 +90,7 @@ fun ScaffoldTopAppBar(userName: String?) {
 }
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(value = 26)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun RoomCards(
     userName: String?,
@@ -128,6 +129,7 @@ fun RoomCards(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun GetGPS(modifier: Modifier) {
     var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
@@ -136,7 +138,7 @@ fun GetGPS(modifier: Modifier) {
     val permissions = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.POST_NOTIFICATIONS
+        Manifest.permission.POST_NOTIFICATIONS // Only needed for API 33+
     )
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) {
         permissionsMap ->
