@@ -135,7 +135,8 @@ fun GetGPS(modifier: Modifier) {
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
     val permissions = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.POST_NOTIFICATIONS
     )
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) {
         permissionsMap ->
