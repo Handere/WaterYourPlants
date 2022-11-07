@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,76 +39,90 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
     @Composable
     fun LoginScreen(
         onNavigateToHomeScreen: (String) -> Unit,
-        painter: Painter = painterResource(id = R.drawable.water_your_plants)) {
+        painter: Painter = painterResource(id = R.drawable.water_your_plants),
+        modifier: Modifier = Modifier) {
 
         val mContext = LocalContext.current
+        val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
+        val password = remember { mutableStateOf(TextFieldValue()) }
 
-        Column(
+        LazyColumn(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
-            val password = remember { mutableStateOf(TextFieldValue()) }
-
             // Picture designed by Freepik, modified by Handere
-            Image(painter = painter,
-                contentDescription = stringResource(id = R.string.water_your_plants),
-                contentScale = ContentScale.Crop)
+            item {
+                Image(painter = painter,
+                    contentDescription = stringResource(id = R.string.water_your_plants),
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier.fillMaxWidth())
+            }
+
 
             // Text(text = "Login", style = TextStyle(fontSize = 40.sp))
 
             // Username
-            Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = stringResource(id = R.string.username)) },
-                value = username.value,
-                onValueChange = { username.value = it },
-                singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-            )
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    label = { Text(text = stringResource(id = R.string.username)) },
+                    value = username.value,
+                    onValueChange = { username.value = it },
+                    singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
 
             // Password
-            Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = stringResource(id = R.string.password)) },
-                value = password.value,
-                visualTransformation = PasswordVisualTransformation(),
-                onValueChange = { password.value = it },
-                singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { login(
-                    onNavigateToHomeScreen = onNavigateToHomeScreen,
-                    mContext = mContext,
-                    username = username) })
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
-                Button(
-                    onClick = { login(
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    label = { Text(text = stringResource(id = R.string.password)) },
+                    value = password.value,
+                    visualTransformation = PasswordVisualTransformation(),
+                    onValueChange = { password.value = it },
+                    singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = { login(
                         onNavigateToHomeScreen = onNavigateToHomeScreen,
                         mContext = mContext,
-                        username = username)},
-                    shape = Shapes.large,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.login))
+                        username = username) })
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+                    Button(
+                        onClick = { login(
+                            onNavigateToHomeScreen = onNavigateToHomeScreen,
+                            mContext = mContext,
+                            username = username)},
+                        shape = Shapes.large,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.login))
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
-                onClick = { /* TODO: Add functionality */ },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default
+            item {
+                Spacer(modifier = Modifier.height(20.dp))
+                ClickableText(
+                    text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
+                    onClick = { /* TODO: Add functionality */ },
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily.Default
+                    )
                 )
-            )
+            }
+
+
         }
     }
 
