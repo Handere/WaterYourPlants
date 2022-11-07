@@ -52,7 +52,7 @@ fun CreatePlantScreen(
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
-    val plantSearch = remember { mutableStateOf(TextFieldValue()) }
+    // val plantSearch = remember { mutableStateOf(TextFieldValue()) }
     val species = remember { mutableStateOf(TextFieldValue()) }
     val speciesLatin = remember { mutableStateOf(TextFieldValue()) }
     val classification = remember { mutableStateOf(TextFieldValue()) }
@@ -269,7 +269,7 @@ fun createPlant(
 
     ) {
     // TODO: Add more specific input validation and handling
-    val errorMessage = "All fields are required"
+    val errorMessage = "All fields are required" // Can't use stringResource because it's not Composable
     if (species.value.text.isEmpty() ||
         speciesLatin.value.text.isEmpty() ||
         classification.value.text.isEmpty() ||

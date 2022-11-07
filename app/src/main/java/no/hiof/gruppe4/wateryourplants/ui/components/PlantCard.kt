@@ -1,7 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.components
 
-import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,10 +8,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

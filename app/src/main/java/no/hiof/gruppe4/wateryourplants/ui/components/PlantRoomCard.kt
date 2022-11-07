@@ -1,7 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.components
 
-import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
@@ -13,11 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
-import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @RequiresApi(value = 26)

@@ -1,12 +1,13 @@
 package no.hiof.gruppe4.wateryourplants.home
 
-import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
 import java.sql.Date
 import java.time.LocalDate
+import no.hiof.gruppe4.wateryourplants.ui.home.GetGPS
+import no.hiof.gruppe4.wateryourplants.ui.home.checkAndRequestLocationPermissions
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
@@ -32,6 +33,8 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
        repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, currentDate, nextWateringDay))
     }
 
+    fun deletePlant(plant: Plant) = viewModelScope.launch { repository.deletePlant(plant) }
+
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
     @RequiresApi(value = 26)
     fun updateWateringDate(
@@ -47,7 +50,7 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
 
     fun deletePlantRoomAndPlants(plantRoom: PlantRoom, plantRoomPlants: List<Plant>) = viewModelScope.launch { repository.deletePlantRoomAndPlants(plantRoom, plantRoomPlants) }
 
-    var plantDetails: LiveData<Plant> = repository.getPlant(plantRoomId, plantId).asLiveData()
+    var currentPlant: LiveData<Plant> = repository.getPlant(plantRoomId, plantId).asLiveData()
 
     var plantRoomList: LiveData<List<PlantRoom>> = repository.getPlantRooms().asLiveData()
 
