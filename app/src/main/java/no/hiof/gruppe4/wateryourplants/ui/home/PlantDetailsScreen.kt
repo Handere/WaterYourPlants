@@ -162,33 +162,37 @@ fun PlantDetailsScreen(
                         modifier = modifier
                     )
                 }
-            }
 
-            // Water now button
-            Row(){
-                Button(onClick = { viewModel.updateWateringDate(currentPlant.value?.wateringInterval!!, plantId) },
-                    shape = Shapes.medium,
-                    modifier = modifier.height(50.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.water_now_button))
+                // Water now button
+                item {
+                    Row(){
+                        Button(onClick = { viewModel.updateWateringDate(currentPlant.value?.wateringInterval!!, plantId) },
+                            shape = Shapes.medium,
+                            modifier = modifier.height(50.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.water_now_button))
+                        }
+                    }
+                }
+
+                // Delete button
+                item {
+                    Spacer(modifier = modifier.height(5.dp))
+                    ClickableText(
+                        text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
+                        onClick = {
+                            if (!openDialog.value) {
+                                openDialog.value = true
+                            }
+                        },
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily.Default,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
                 }
             }
-
-            // Delete button
-            Spacer(modifier = modifier.height(5.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
-                onClick = {
-                    if (!openDialog.value) {
-                        openDialog.value = true
-                    }
-                },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline
-                )
-            )
         }
     }
 }
