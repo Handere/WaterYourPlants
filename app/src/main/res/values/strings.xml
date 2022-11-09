@@ -4,6 +4,9 @@
     <string name="confirm">Confirm</string>
     <string name="dismiss">Dismiss</string>
 
+    <!-- Notifications -->
+    <string name="channel_name">Watering</string>
+
     <!-- Screens -->
     <string name="login_screen">login_screen</string>
     <string name="home_screen">home_screen</string>

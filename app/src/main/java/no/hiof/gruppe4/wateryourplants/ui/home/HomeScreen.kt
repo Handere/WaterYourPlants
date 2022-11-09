@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
-import androidx.annotation.RequiresApi
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -24,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -36,9 +34,7 @@ import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 
 import no.hiof.gruppe4.wateryourplants.R
@@ -46,7 +42,6 @@ import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.home.*
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
-import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -54,7 +49,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -90,7 +84,6 @@ fun ScaffoldTopAppBar(userName: String?) {
 }
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun RoomCards(
     userName: String?,
@@ -122,24 +115,28 @@ fun RoomCards(
                     onNavigationToRoom = onNavigateToRoom,
                     buttonName = it.roomName,
                     plantRoomId = it.plantRoomId,
-                    viewModel1 = viewModel)
+                    viewModel = viewModel)
             }
         }
     }
 }
 
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun GetGPS(modifier: Modifier) {
     var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
     val context: Context = LocalContext.current.applicationContext
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
-    val permissions = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.POST_NOTIFICATIONS // Only needed for API 33+
-    )
+    val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.POST_NOTIFICATIONS
+
+        )
+    } else {
+        TODO("VERSION.SDK_INT < TIRAMISU")
+    }
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) {
         permissionsMap ->
         val areGranted = permissionsMap.values.reduce{ acc, next -> acc && next}

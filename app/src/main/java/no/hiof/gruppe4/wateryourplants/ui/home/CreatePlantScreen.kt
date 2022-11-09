@@ -1,7 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.content.Context
-import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -36,7 +35,6 @@ import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
-import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 @RequiresApi(value = 26)
 @Composable

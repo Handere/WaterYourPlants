@@ -1,12 +1,24 @@
 package no.hiof.gruppe4.wateryourplants
 
+import android.Manifest
+import android.Manifest.permission.POST_NOTIFICATIONS
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,12 +26,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
-import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantRoomScreen
-import no.hiof.gruppe4.wateryourplants.ui.home.CreatePlantScreen
-import no.hiof.gruppe4.wateryourplants.ui.home.HomeScreen
-import no.hiof.gruppe4.wateryourplants.ui.home.PlantDetailsScreen
-import no.hiof.gruppe4.wateryourplants.ui.home.RoomScreen
+import no.hiof.gruppe4.wateryourplants.ui.home.*
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
+import no.hiof.gruppe4.wateryourplants.R
+
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(value = 26)
@@ -27,10 +37,55 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WaterYourPlantsTheme {
+                val context = LocalContext.current
+                var hasNotificationPermission = remember {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        mutableStateOf(
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED
+                        )
+                    } else mutableStateOf(true)
+                }
+
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        hasNotificationPermission = mutableStateOf(isGranted)
+
+                    }
+                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    SideEffect {
+                        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+
+                if(hasNotificationPermission.value) {
+                    showNotification()
+                }
+
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
             }
         }
+        showNotification()
+    }
+
+    private fun showNotification() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(applicationContext, "water_channel")
+            .setContentTitle("Water your plant!")
+            .setContentText("It's time to water your plant(s).")
+            .setSmallIcon(R.drawable.no_plant_image)
+            .build()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (notificationManager.areNotificationsEnabled()) {
+                    notificationManager.notify(1, notification)
+                }
+            }
     }
 }
 

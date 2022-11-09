@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.home
 
+import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -63,13 +64,16 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     }
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(value = 26)
     fun numberOfNotifyingPlants(plantList: List<Plant>): Int {
         var notifications = 0
         plantList.forEach {
-            if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
-                notifications++
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
+                    notifications++
+                }
+                } else {
+                    TODO("VERSION.SDK_INT < O")
+                }
         }
         return notifications
     }
