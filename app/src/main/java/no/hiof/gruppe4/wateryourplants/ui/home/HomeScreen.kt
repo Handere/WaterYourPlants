@@ -127,16 +127,11 @@ fun GetGPS(modifier: Modifier) {
     var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
     val context: Context = LocalContext.current.applicationContext
     //https://betterprogramming.pub/jetpack-compose-request-permissions-in-two-ways-fd81c4a702c
-    val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(
+    val permissions = arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.POST_NOTIFICATIONS
 
         )
-    } else {
-        TODO("VERSION.SDK_INT < TIRAMISU")
-    }
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()) {
         permissionsMap ->
         val areGranted = permissionsMap.values.reduce{ acc, next -> acc && next}
