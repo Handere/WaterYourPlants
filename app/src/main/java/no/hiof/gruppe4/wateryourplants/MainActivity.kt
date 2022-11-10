@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
         val notification = NotificationCompat.Builder(applicationContext, "water_channel")
             .setContentTitle("Water your plant!")
             .setContentText("It's time to water your plant(s).")
-            .setSmallIcon(R.drawable.no_plant_image)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (notificationManager.areNotificationsEnabled()) {
