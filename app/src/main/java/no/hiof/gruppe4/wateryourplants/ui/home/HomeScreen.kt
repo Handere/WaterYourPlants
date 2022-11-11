@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -63,28 +64,35 @@ fun HomeScreen(
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
 
     //logic
+    val context: Context = LocalContext.current.applicationContext
+
+    var permissionString: Int = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+    var permissionsGiven by remember {
+        mutableStateOf(permissionString)
+    }
     var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
+    var weatherMapChange by remember { mutableStateOf(weatherMutableMap) }
     var weatherString = ""
     var weatherChange by remember{ mutableStateOf(weatherString) }
 
 
-    val context: Context = LocalContext.current.applicationContext
+
     val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     val tokenSource = CancellationTokenSource()
     val token: CancellationToken = tokenSource.token
-    val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestMultiplePermissions()){}
-    val permissions = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
-    if (
-        permissions.all {
-            ContextCompat.checkSelfPermission(
-                context,
-                it
-            ) == PackageManager.PERMISSION_GRANTED
-        }
-    ) {
+
+    val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()){
+        isGranted ->
+            if (isGranted) {
+                permissionString = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                permissionsGiven = permissionString
+            } else {
+                println("permissionDenied")
+            }
+    }
+
+    if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, token)
             .addOnCompleteListener { location: Task<Location> ->
@@ -107,18 +115,17 @@ fun HomeScreen(
     } else {
         // Request permissions
 
-        launcherMultiplePermissions.launch(permissions)}
-
-
-
-        LaunchedEffect(weatherChange){
-
-            delay(300)
-
-            weatherMutableMap = getWeather(weatherString)
-
+        SideEffect {
+            launcherMultiplePermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
+    }
 
+        LaunchedEffect(weatherChange, permissionsGiven){
+
+            if(permissionsGiven == 0 && weatherChange != "") {weatherMutableMap = getWeather(weatherChange)}
+
+            weatherMapChange = weatherMutableMap
+        }
 
 
 
@@ -132,6 +139,7 @@ fun HomeScreen(
     ) { padding -> // TODO: why tf do we need to do this shit?
         Column(modifier = Modifier.padding(padding)) {
 
+            weatherMapChange.get("airTemp")?.let { Text(text = it) }
 
             RoomCards(
                 onNavigateToRoom = onNavigateToRoom,
@@ -189,6 +197,7 @@ fun RoomCards(
         }
     }
 }
+
 
 
 
