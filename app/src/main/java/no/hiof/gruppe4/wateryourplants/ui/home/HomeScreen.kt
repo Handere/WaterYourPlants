@@ -81,6 +81,10 @@ fun HomeScreen(
     val tokenSource = CancellationTokenSource()
     val token: CancellationToken = tokenSource.token
 
+    val launchScope = CoroutineScope(Dispatchers.IO)
+
+    launchScope.launch {  }
+
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()){
         isGranted ->
             if (isGranted) {
@@ -116,7 +120,7 @@ fun HomeScreen(
         // Request permissions
 
         SideEffect {
-            launcherMultiplePermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            launchScope.launch { launcherMultiplePermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION) }
         }
     }
 
