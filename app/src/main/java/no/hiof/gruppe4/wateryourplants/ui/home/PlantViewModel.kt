@@ -12,7 +12,7 @@ import no.hiof.gruppe4.wateryourplants.ui.home.checkAndRequestLocationPermission
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
-    //var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
+    var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
     @RequiresApi(value = 26)

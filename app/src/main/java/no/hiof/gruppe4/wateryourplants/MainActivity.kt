@@ -1,24 +1,19 @@
 package no.hiof.gruppe4.wateryourplants
 
-import android.Manifest
-import android.Manifest.permission.POST_NOTIFICATIONS
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -28,7 +23,8 @@ import androidx.navigation.navArgument
 import no.hiof.gruppe4.wateryourplants.screen.LoginScreen
 import no.hiof.gruppe4.wateryourplants.ui.home.*
 import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
-import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
+import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 
 
 class MainActivity : ComponentActivity() {
@@ -37,56 +33,44 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WaterYourPlantsTheme {
-                val context = LocalContext.current
-                var hasNotificationPermission = remember {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        mutableStateOf(
-                            ContextCompat.checkSelfPermission(
-                                context,
-                                Manifest.permission.POST_NOTIFICATIONS
-                            ) == PackageManager.PERMISSION_GRANTED
-                        )
-                    } else mutableStateOf(true)
-                }
-
-                val launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-                        hasNotificationPermission = mutableStateOf(isGranted)
-
-                    }
-                )
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    SideEffect {
-                        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    }
-                }
-
-                if(hasNotificationPermission.value) {
-                    showNotification()
-                }
-
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
+
+                showNotification(notifyingPlants())
             }
         }
-        showNotification()
     }
 
-    private fun showNotification() {
+    private fun showNotification(numberOfNotifyingPlants: Int) {
+        val notificationId = 1
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(applicationContext, "water_channel")
-            .setContentTitle("Water your plant!")
-            .setContentText("It's time to water your plant(s).")
+        val notification = NotificationCompat.Builder(applicationContext, "Watering")
+            .setContentTitle("Water your plants!")
+            .setContentText("You have $numberOfNotifyingPlants plants in need of water.")
             .setSmallIcon(R.mipmap.water_your_plants_launcher_foreground)
             .build()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (numberOfNotifyingPlants > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (notificationManager.areNotificationsEnabled()) {
-                    notificationManager.notify(1, notification)
+                    notificationManager.notify(notificationId, notification)
+                }
+                else {
+                    notificationManager.notify(notificationId, notification)
                 }
             }
+        }
+        else {
+            notificationManager.cancel(notificationId)
+        }
     }
+}
+
+@Composable
+fun notifyingPlants(): Int {
+    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
+    val allPlants by viewModel.allPlants.observeAsState(listOf())
+
+    return viewModel.numberOfNotifyingPlants(allPlants)
 }
 
 @RequiresApi(value = 26)
