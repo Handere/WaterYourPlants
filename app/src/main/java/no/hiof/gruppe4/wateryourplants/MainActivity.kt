@@ -54,9 +54,9 @@ class MainActivity : ComponentActivity() {
                 if (notificationManager.areNotificationsEnabled()) {
                     notificationManager.notify(notificationId, notification)
                 }
-                else {
-                    notificationManager.notify(notificationId, notification)
-                }
+            }
+            else {
+                notificationManager.notify(notificationId, notification)
             }
         }
         else {
