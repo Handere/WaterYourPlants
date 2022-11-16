@@ -1,8 +1,14 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
+
 import android.content.Context
-import android.os.Build
+import android.net.Uri
+
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -15,10 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,12 +34,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
-import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
+
 
 @RequiresApi(value = 26)
 @Composable
@@ -47,7 +52,8 @@ fun CreatePlantScreen(
     photoUrl: Int = R.drawable.no_plant_image,
     popBackStack: () -> Unit
 ) {
-
+    var photoUri: Uri? = null
+    var photoFromUser by remember {mutableStateOf(photoUri)}
     val mContext = LocalContext.current
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
@@ -61,6 +67,19 @@ fun CreatePlantScreen(
     val wateringAndNutritionDay = remember{ mutableStateOf(TextFieldValue(" ")) }
     val sunRequirement = remember { mutableStateOf(TextFieldValue()) }
     val personalNote = remember { mutableStateOf(TextFieldValue()) }
+
+
+    val pickmedia: ActivityResultLauncher<PickVisualMediaRequest> = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia() ){
+            uri ->
+        if(uri != null ){
+            println("Photo, selected")
+            photoUri = uri
+            photoFromUser = photoUri
+        } else {
+            println("photo not selected")
+        }
+    }
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
@@ -86,6 +105,8 @@ fun CreatePlantScreen(
             }
         }
     ) { padding -> // TODO: dafuq do we need this thing?
+
+
 
         Box(modifier = modifier.padding(padding))
         Column(modifier = modifier
@@ -128,6 +149,7 @@ fun CreatePlantScreen(
 
                 // Image
                 item {
+                    AsyncImage(model = photoFromUser, contentDescription = "pictured picked")
                     Spacer(modifier = modifier.height(20.dp))
                     Image(
                         painter = painterResource(id = photoUrl),
@@ -135,7 +157,11 @@ fun CreatePlantScreen(
                         modifier = modifier
                             .clip(CircleShape)
                             .border(1.5.dp, Color.Black, CircleShape)
-                            .clickable { /*TODO: Add uploading functionality*/ })
+                            .clickable { /*TODO: Add uploading functionality*/
+                                pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                                println(photoUrl)
+                            })
+
                 }
 
                 // Species
