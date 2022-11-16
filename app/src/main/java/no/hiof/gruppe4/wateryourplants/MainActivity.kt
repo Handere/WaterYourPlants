@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
@@ -36,19 +37,38 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
 
+                createNotificationChannel()
                 showNotification(notifyingPlants())
             }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        // Create notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelName = getString(R.string.watering_notification_channel_name)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val notificationChannel = NotificationChannel(getString(R.string.watering_notification_channel_id), channelName, importance).apply {
+                description = getString(R.string.watering_notification_channel_description)
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 
     private fun showNotification(numberOfNotifyingPlants: Int) {
         val notificationId = 1
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(applicationContext, "Watering")
+
+        // Create notification
+        val notification = NotificationCompat.Builder(applicationContext, getString(R.string.watering_notification_channel_name))
             .setContentTitle("Water your plants!")
             .setContentText("You have $numberOfNotifyingPlants plants in need of water.")
             .setSmallIcon(R.mipmap.water_your_plants_launcher_foreground)
             .build()
+
+        // Send notification
         if (numberOfNotifyingPlants > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (notificationManager.areNotificationsEnabled()) {
