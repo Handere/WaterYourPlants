@@ -5,15 +5,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -21,12 +17,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -49,6 +49,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.math.roundToInt
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -59,6 +60,8 @@ fun HomeScreen(
     onNavigateToCreatePlantRoom: (String) -> Unit,
     userName: String?
 ) {
+    val weatherPlaceholder: Painter = painterResource(id = R.drawable.weather_forcast)
+    val descriptionPlaceholder = stringResource(id = R.string.placeholder_weather_description)
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
@@ -67,13 +70,11 @@ fun HomeScreen(
     val context: Context = LocalContext.current.applicationContext
 
     var permissionString: Int = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-    var permissionsGiven by remember {
-        mutableStateOf(permissionString)
-    }
-    var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
-    var weatherMapChange by remember { mutableStateOf(weatherMutableMap) }
-    var weatherString = ""
-    var weatherChange by remember{ mutableStateOf(weatherString) }
+    var permissionsGiven by remember { mutableStateOf(permissionString) }
+    var weatherFromApi = ""
+    var weatherFromApiRememberState by remember { mutableStateOf(weatherFromApi) }
+    var gpsFromUserString = ""
+    var gpsLocationFromUserRememberState by remember{ mutableStateOf(gpsFromUserString) }
 
 
 
@@ -82,8 +83,6 @@ fun HomeScreen(
     val token: CancellationToken = tokenSource.token
 
     val launchScope = CoroutineScope(Dispatchers.IO)
-
-    launchScope.launch {  }
 
     val launcherMultiplePermissions = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()){
         isGranted ->
@@ -110,9 +109,10 @@ fun HomeScreen(
                     BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN).toDouble()
                 }
 
-                weatherString = "lat=$latitude&lon=$longitude"
+                gpsFromUserString = "lat=$latitude&lon=$longitude"
+                println(gpsFromUserString)
 
-                weatherChange = weatherString
+                gpsLocationFromUserRememberState = gpsFromUserString
             }
 
 
@@ -123,14 +123,11 @@ fun HomeScreen(
             launchScope.launch { launcherMultiplePermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION) }
         }
     }
+        LaunchedEffect(gpsLocationFromUserRememberState, permissionsGiven){
+            if(permissionsGiven == 0 && gpsLocationFromUserRememberState != "") {weatherFromApi = getWeather(gpsLocationFromUserRememberState)}
 
-        LaunchedEffect(weatherChange, permissionsGiven){
-
-            if(permissionsGiven == 0 && weatherChange != "") {weatherMutableMap = getWeather(weatherChange)}
-
-            weatherMapChange = weatherMutableMap
+            weatherFromApiRememberState = weatherFromApi
         }
-
 
 
     Scaffold(
@@ -141,17 +138,33 @@ fun HomeScreen(
             }
         }
     ) { padding -> // TODO: why tf do we need to do this shit?
-        Column(modifier = Modifier.padding(padding)) {
+        Column(modifier = Modifier.padding(16.dp)) {
 
-            weatherMapChange.get("airTemp")?.let { Text(text = it) }
+            Box(modifier = Modifier.weight(1f, fill = false)
+                .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
+                .fillMaxWidth() ){
+
+                Image(painter = weatherPlaceholder,
+                contentDescription = descriptionPlaceholder,
+                    contentScale = ContentScale.Fit
+                )
+
+                Text(text = weatherFromApiRememberState,
+                    modifier = Modifier.fillMaxWidth()
+                        .align(Alignment.BottomStart)
+                        .padding(20.dp, 30.dp),
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontSize =20.sp,
+                    )
+            }
+
 
             RoomCards(
                 onNavigateToRoom = onNavigateToRoom,
                 userName = userName,
                 plantRoomList = plantRoomList,
                 viewModel = viewModel)
-
-
         }
     }
 }
@@ -172,20 +185,11 @@ fun RoomCards(
     modifier: Modifier = Modifier
 ) {
 
-    val weatherPlaceholder: Painter = painterResource(id = R.drawable.placeholder_weather)
-    val descriptionPlaceholder = stringResource(id = R.string.placeholder_weather_description)
+
     Column(
         Modifier
             .fillMaxWidth()
             .padding(16.dp)) {
-
-        Image(painter = weatherPlaceholder,
-            contentDescription = descriptionPlaceholder,
-            modifier
-                .weight(1f, fill = false)
-                .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Fit)
 
         Text(text = stringResource(id = R.string.header_room), modifier.fillMaxWidth(),
             fontSize = 30.sp)
@@ -205,8 +209,8 @@ fun RoomCards(
 
 
 
-suspend fun getWeather(latAndLon: String): MutableMap<String, String> {
-    var weatherMutableMap: MutableMap<String, String> = mutableMapOf()
+suspend fun getWeather(latAndLon: String): String {
+    var weatherWithCelsiusAndCondition = ""
     val urlWithGps = URL("https://api.met.no/weatherapi/locationforecast/2.0/compact?$latAndLon")
     println(urlWithGps)
     var responseCode: Int = 0
@@ -245,9 +249,7 @@ suspend fun getWeather(latAndLon: String): MutableMap<String, String> {
                 .getJSONObject("summary")
                 .get("symbol_code")
 
-            weatherMutableMap["airTemp"] = airTemp.toString()
-            weatherMutableMap.put(key = "clouds", value = clouds.toString())
-            println("weather 0" + weatherMutableMap)
+            weatherWithCelsiusAndCondition = "Temperature:" + (airTemp as Double).roundToInt() + "°C \nwith " + clouds
 
         } else {
             println("HTTPURLCONNECTION_ERROR" + responseCode.toString())
@@ -255,7 +257,7 @@ suspend fun getWeather(latAndLon: String): MutableMap<String, String> {
 
     }.join()
 
-        return weatherMutableMap
+        return weatherWithCelsiusAndCondition
     }
 
 
