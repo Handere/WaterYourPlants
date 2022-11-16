@@ -71,7 +71,7 @@ fun HomeScreen(
 
     var permissionString: Int = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
     var permissionsGiven by remember { mutableStateOf(permissionString) }
-    var weatherFromApi = ""
+    var weatherFromApi = "We are working on \ngetting your weather..."
     var weatherFromApiRememberState by remember { mutableStateOf(weatherFromApi) }
     var gpsFromUserString = ""
     var gpsLocationFromUserRememberState by remember{ mutableStateOf(gpsFromUserString) }
