@@ -13,7 +13,7 @@ data class Plant(
     var speciesName: String,
     var speciesLatinName: String,
     var plantClassification: String,
-    var photoUrl: Int,
+    var photoUrl: String,
     var wateringInterval: Int,
     var nutritionInterval: Int,
     var wateringAndNutritionDay: String,

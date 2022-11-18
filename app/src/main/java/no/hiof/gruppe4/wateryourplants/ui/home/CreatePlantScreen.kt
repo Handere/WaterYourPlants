@@ -1,7 +1,11 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.net.Uri
 
 import android.widget.Toast
@@ -52,9 +56,14 @@ fun CreatePlantScreen(
     photoUrl: Int = R.drawable.no_plant_image,
     popBackStack: () -> Unit
 ) {
+    val flag = Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+
+
     var photoUri: Uri? = null
     var photoFromUser by remember {mutableStateOf(photoUri)}
     val mContext = LocalContext.current
+
+
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
@@ -73,6 +82,7 @@ fun CreatePlantScreen(
         ActivityResultContracts.PickVisualMedia() ){
             uri ->
         if(uri != null ){
+
             println("Photo, selected")
             photoUri = uri
             photoFromUser = photoUri
@@ -89,7 +99,7 @@ fun CreatePlantScreen(
                 mContext = mContext,
                 popBackStack = popBackStack,
                 plantRoomId = plantRoomId,
-                photoUrl = photoUrl,
+                photoUrl = photoFromUser.toString(),
                 species = species,
                 speciesLatin = speciesLatin,
                 classification = classification,
@@ -147,11 +157,13 @@ fun CreatePlantScreen(
                     }
                 }*/
 
+
                 // Image
                 item {
-                    AsyncImage(model = photoFromUser, contentDescription = "pictured picked")
+
                     Spacer(modifier = modifier.height(20.dp))
-                    Image(
+                    if(photoFromUser == null ) {
+                        Image(
                         painter = painterResource(id = photoUrl),
                         contentDescription = "Placeholder image",
                         modifier = modifier
@@ -159,8 +171,24 @@ fun CreatePlantScreen(
                             .border(1.5.dp, Color.Black, CircleShape)
                             .clickable { /*TODO: Add uploading functionality*/
                                 pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
                                 println(photoUrl)
+                                photoFromUser?.let {
+                                    mContext.contentResolver.takePersistableUriPermission(
+                                        it, FLAG_GRANT_READ_URI_PERMISSION )
+                                }
+
                             })
+                    } else {
+                        //AsyncImage(model = photoFromUser, contentDescription = "pictured picked")
+                        AsyncImage(model = photoFromUser, contentDescription = "test" )
+                        val photoTest by remember {
+                            mutableStateOf(photoFromUser.toString())
+                        }
+                        AsyncImage(model = photoTest, contentDescription ="test" )
+                    }
+                    println("photo: " +photoFromUser)
+
 
                 }
 
@@ -259,7 +287,7 @@ fun CreatePlantScreen(
                             mContext = mContext,
                             popBackStack = popBackStack,
                             plantRoomId = plantRoomId,
-                            photoUrl = photoUrl,
+                            photoUrl = photoFromUser.toString(),
                             species = species,
                             speciesLatin = speciesLatin,
                             classification = classification,
@@ -283,7 +311,7 @@ fun createPlant(
     mContext: Context,
     popBackStack: () -> Unit,
     plantRoomId: Int,
-    photoUrl: Int,
+    photoUrl: String,
     species: MutableState<TextFieldValue>,
     speciesLatin: MutableState<TextFieldValue>,
     classification: MutableState<TextFieldValue>,
