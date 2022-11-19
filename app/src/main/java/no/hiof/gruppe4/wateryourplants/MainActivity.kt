@@ -238,24 +238,24 @@ sealed class Routes(val route: String) {
 
     }
     object HomeScreen : Routes("home_screen") {
-        val userName = "userName"
+        const val userName = "userName"
     }
     object RoomScreen : Routes("room_screen") {
-        val userName = "userName"
-        val plantRoomId = "plantRoomId"
+        const val userName = "userName"
+        const val plantRoomId = "plantRoomId"
     }
     object CreatePlantScreen : Routes("create_plant_screen") {
-        val userName = "userName"
-        val plantRoomId = "plantRoomId"
+        const val userName = "userName"
+        const val plantRoomId = "plantRoomId"
     }
     object CreatePlantRoomScreen: Routes("create_plant_room_screen") {
-        val username = "username"
+        const val username = "username"
     }
 
     object PlantDetailsScreen : Routes("plant_details_screen"){
-        val userName = "userName"
-        val plantRoomId = "plantRoomId"
-        val plantId = "plantId"
+        const val userName = "userName"
+        const val plantRoomId = "plantRoomId"
+        const val plantId = "plantId"
     }
 
     // Inspiration from https://github.com/vinchamp77/Demo_SimpleNavigationCompose
