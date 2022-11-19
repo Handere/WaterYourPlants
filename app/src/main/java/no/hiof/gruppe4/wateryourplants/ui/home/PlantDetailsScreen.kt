@@ -51,7 +51,6 @@ fun PlantDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
-    val context = LocalContext.current
 
     val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
     val currentPlant = viewModel.currentPlant.observeAsState()
@@ -75,7 +74,7 @@ fun PlantDetailsScreen(
         }
     ) {padding ->
 
-        RequestNotificationPermission(context = context)
+        RequestNotificationPermission()
 
         Column(modifier = modifier
             .fillMaxWidth(),
@@ -207,24 +206,11 @@ fun PlantDetailsScreen(
 }
 
 @Composable
-fun RequestNotificationPermission(context: Context) {
-/*    var hasNotificationPermission = remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mutableStateOf(
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            )
-        } else mutableStateOf(true)
-    }
-*/
+fun RequestNotificationPermission() {
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { _ ->
-            //hasNotificationPermission = mutableStateOf(isGranted)
-
-        }
+        onResult = { _ ->}
     )
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
