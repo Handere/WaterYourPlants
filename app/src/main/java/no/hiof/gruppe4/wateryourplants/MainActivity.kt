@@ -1,12 +1,16 @@
 package no.hiof.gruppe4.wateryourplants
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -14,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -37,8 +42,38 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 AppNavHost(navController = navController)
 
-                createNotificationChannel()
-                showNotification(notifyingPlants())
+                //createNotificationChannel()
+                //showNotification(notifyingPlants())
+/*
+                val context = LocalContext.current
+                var hasNotificationPermission = remember {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        mutableStateOf(
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED
+                        )
+                    } else mutableStateOf(true)
+                }
+
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        hasNotificationPermission = mutableStateOf(isGranted)
+
+                    }
+                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    SideEffect {
+                        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+*/
+                //if(hasNotificationPermission.value) {
+                    showNotification(notifyingPlants())
+                //}
             }
         }
     }
@@ -56,7 +91,32 @@ class MainActivity : ComponentActivity() {
             notificationManager.createNotificationChannel(notificationChannel)
         }
     }
-
+/*
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun showNotification(plants: Int) {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = NotificationCompat.Builder(applicationContext, "water_channel")
+            .setContentTitle("Water your plant!")
+            .setContentText("You have $plants plants in need of water.")
+            .setSmallIcon(R.mipmap.water_your_plants_launcher_foreground)
+            .build()
+        if (plants > 0) {
+            if (notificationManager.areNotificationsEnabled()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    if (notificationManager.areNotificationsEnabled()) {
+                        notificationManager.notify(1, notification)
+                    }
+                }
+                else {
+                    notificationManager.notify(1, notification)
+                }
+            }
+        }
+        else {
+            notificationManager.cancel(1)
+        }
+    }
+*/
     private fun showNotification(numberOfNotifyingPlants: Int) {
         val notificationId = 1
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

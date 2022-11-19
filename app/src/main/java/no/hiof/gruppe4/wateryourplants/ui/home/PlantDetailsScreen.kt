@@ -221,7 +221,7 @@ fun RequestNotificationPermission(context: Context) {
 */
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
+        onResult = { _ ->
             //hasNotificationPermission = mutableStateOf(isGranted)
 
         }
