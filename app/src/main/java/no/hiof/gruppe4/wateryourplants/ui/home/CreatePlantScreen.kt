@@ -1,11 +1,10 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 
-import android.annotation.SuppressLint
+import android.Manifest
+
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.net.Uri
 
 import android.widget.Toast
@@ -38,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -56,7 +56,7 @@ fun CreatePlantScreen(
     photoUrl: Int = R.drawable.no_plant_image,
     popBackStack: () -> Unit
 ) {
-    val flag = Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
 
     var photoUri: Uri? = null
@@ -83,9 +83,11 @@ fun CreatePlantScreen(
             uri ->
         if(uri != null ){
 
+            mContext.applicationContext.contentResolver.takePersistableUriPermission(uri, flag)
             println("Photo, selected")
             photoUri = uri
             photoFromUser = photoUri
+
         } else {
             println("photo not selected")
         }
@@ -173,23 +175,11 @@ fun CreatePlantScreen(
                                 pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
                                 println(photoUrl)
-                                photoFromUser?.let {
-                                    mContext.contentResolver.takePersistableUriPermission(
-                                        it, FLAG_GRANT_READ_URI_PERMISSION )
-                                }
-
                             })
                     } else {
-                        //AsyncImage(model = photoFromUser, contentDescription = "pictured picked")
-                        AsyncImage(model = photoFromUser, contentDescription = "test" )
-                        val photoTest by remember {
-                            mutableStateOf(photoFromUser.toString())
-                        }
-                        AsyncImage(model = photoTest, contentDescription ="test" )
+                        AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
                     }
                     println("photo: " +photoFromUser)
-
-
                 }
 
                 // Species
