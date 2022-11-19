@@ -53,7 +53,10 @@
     <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
     <string name="add_new_plant_plant_personal_note">Note</string>
 
-    <!-- Create room -->
+    <!-- Update plant -->
+    <string name="update_plant_title">Update plant</string>
+
+    <!-- Create plant-room -->
     <string name="add_new_room_title">Add new room</string>
     <string name="add_new_room_name">Room name</string>
 

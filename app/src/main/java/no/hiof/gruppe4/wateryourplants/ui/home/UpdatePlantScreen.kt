@@ -52,6 +52,8 @@ fun UpdatePlantScreen(
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
     val currentPlant = viewModel.currentPlant.observeAsState()
+
+    // TODO: First output is null
     println("Plant: \n" + currentPlant + "\n :end")
 
     val species = remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesName.toString())) }
@@ -93,7 +95,7 @@ fun UpdatePlantScreen(
         Column(modifier = modifier
             .fillMaxWidth()
             .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
+            Text(text = stringResource(id = R.string.update_plant_title), fontSize = 30.sp)
 
             // TODO: Make DRY...
             LazyColumn(modifier = modifier
