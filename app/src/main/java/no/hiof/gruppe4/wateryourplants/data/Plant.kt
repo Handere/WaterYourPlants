@@ -21,14 +21,10 @@ data class Plant(
     var note: String,
     var lastWateringDate: Date,
     var nextWateringDate: Date,
-) {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "plantId")
     var plantId: Int = 0
-
-    //TODO: painter may not work with database, consider image handling(coil)
-
-    }
+) {}
 
 
