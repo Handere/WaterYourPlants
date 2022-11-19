@@ -61,22 +61,26 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
         note: String
     ) = viewModelScope.launch {
         val currentDate = Date.valueOf(LocalDate.now().toString())
-        val nextWateringDay = Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
+        val nextWateringDay =
+            Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
 
-        repository.updatePlant(Plant(
-            roomId,
-            speciesName,
-            speciesLatinName,
-            plantClassification,
-            photoUrl,
-            wateringInterval,
-            nutritionInterval,
-            wateringAndNutritionDay,
-            sunRequirement,
-            note,
-            currentDate,
-            nextWateringDay,
-            plantId))
+        repository.updatePlant(
+            Plant(
+                roomId,
+                speciesName,
+                speciesLatinName,
+                plantClassification,
+                photoUrl,
+                wateringInterval,
+                nutritionInterval,
+                wateringAndNutritionDay,
+                sunRequirement,
+                note,
+                currentDate,
+                nextWateringDay,
+                plantId
+            )
+        )
     }
 
     fun deletePlant(plant: Plant) = viewModelScope.launch { repository.deletePlant(plant) }
