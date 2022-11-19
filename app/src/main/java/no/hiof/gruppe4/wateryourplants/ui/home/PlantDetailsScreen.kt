@@ -44,6 +44,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 @RequiresApi(value = 26)
 @Composable
 fun PlantDetailsScreen(
+    onNavigateToUpdatePlantScreen: (Int, String, Int) -> Unit,
     popBackStack: () -> Unit,
     userName: String?,
     plantRoomId: Int,
@@ -68,7 +69,9 @@ fun PlantDetailsScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = {
+                onNavigateToUpdatePlantScreen(plantId, userName.toString(), plantRoomId)
+            }) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
             }
         }

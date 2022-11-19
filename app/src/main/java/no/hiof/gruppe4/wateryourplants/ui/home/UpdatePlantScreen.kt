@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,7 +39,8 @@ import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 
 @RequiresApi(value = 26)
 @Composable
-fun CreatePlantScreen(
+fun UpdatePlantScreen(
+    plantId: Int,
     userName: String?,
     plantRoomId: Int,
     modifier: Modifier = Modifier,
@@ -48,25 +50,27 @@ fun CreatePlantScreen(
 
     val mContext = LocalContext.current
 
-    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
+    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
+    val currentPlant = viewModel.currentPlant.observeAsState()
+    println("Plant: \n" + currentPlant + "\n :end")
 
-    // val plantSearch = remember { mutableStateOf(TextFieldValue()) }
-    val species = remember { mutableStateOf(TextFieldValue()) }
-    val speciesLatin = remember { mutableStateOf(TextFieldValue()) }
-    val classification = remember { mutableStateOf(TextFieldValue()) }
-    val wateringInterval = remember { mutableStateOf(TextFieldValue()) }
-    val nutritionInterval = remember { mutableStateOf(TextFieldValue()) }
+    val species = remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesName.toString())) }
+    val speciesLatin = remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesLatinName.toString())) }
+    val classification = remember { mutableStateOf(TextFieldValue(currentPlant.value?.plantClassification.toString())) }
+    val wateringInterval = remember { mutableStateOf(TextFieldValue(currentPlant.value?.wateringInterval.toString())) }
+    val nutritionInterval = remember { mutableStateOf(TextFieldValue(currentPlant.value?.nutritionInterval.toString())) }
     val wateringAndNutritionDay = remember{ mutableStateOf(TextFieldValue(" ")) }
-    val sunRequirement = remember { mutableStateOf(TextFieldValue()) }
-    val personalNote = remember { mutableStateOf(TextFieldValue()) }
+    val sunRequirement = remember { mutableStateOf(TextFieldValue(currentPlant.value?.sunRequirement.toString())) }
+    val personalNote = remember { mutableStateOf(TextFieldValue(currentPlant.value?.note.toString())) }
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
         floatingActionButton = {
-            FloatingActionButton(onClick = { createPlant(
+            FloatingActionButton(onClick = { updatePlant(
                 viewModel = viewModel,
                 mContext = mContext,
                 popBackStack = popBackStack,
+                plantId = plantId,
                 plantRoomId = plantRoomId,
                 photoUrl = photoUrl,
                 species = species,
@@ -80,7 +84,7 @@ fun CreatePlantScreen(
 
             ) })
             {
-            Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
+                Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
             }
         }
     ) { padding -> // TODO: dafuq do we need this thing?
@@ -226,10 +230,11 @@ fun CreatePlantScreen(
                         onValueChange = { personalNote.value = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = { createPlant(
+                        keyboardActions = KeyboardActions(onDone = { updatePlant(
                             viewModel = viewModel,
                             mContext = mContext,
                             popBackStack = popBackStack,
+                            plantId = plantId,
                             plantRoomId = plantRoomId,
                             photoUrl = photoUrl,
                             species = species,
@@ -250,10 +255,11 @@ fun CreatePlantScreen(
 }
 
 @RequiresApi(value = 26)
-fun createPlant(
+fun updatePlant(
     viewModel: PlantViewModel,
     mContext: Context,
     popBackStack: () -> Unit,
+    plantId: Int,
     plantRoomId: Int,
     photoUrl: Int,
     species: MutableState<TextFieldValue>,
@@ -280,7 +286,8 @@ fun createPlant(
         Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show()
     }
     else {
-        viewModel.insertPlant(
+        viewModel.updatePlant(
+            plantId = plantId,
             roomId = plantRoomId,
             speciesName = species.value.text,
             speciesLatinName = speciesLatin.value.text,

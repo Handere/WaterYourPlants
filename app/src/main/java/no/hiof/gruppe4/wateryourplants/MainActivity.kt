@@ -183,6 +183,7 @@ fun AppNavHost(
             val args = backStackEntry.arguments
 
             PlantDetailsScreen(
+                onNavigateToUpdatePlantScreen = { plantId, userName, plantRoomId -> navController.navigate(Routes.UpdatePlantScreen.withArgs(plantId.toString(), userName, plantRoomId.toString()))},
                 popBackStack = { navController.popBackStack() },
                 userName = args?.getString(Routes.PlantDetailsScreen.userName),
                 plantRoomId = args?.getInt(Routes.PlantDetailsScreen.plantRoomId)!!,
@@ -210,6 +211,33 @@ fun AppNavHost(
             CreatePlantScreen(
                 userName = args?.getString(Routes.CreatePlantScreen.userName),
                 plantRoomId = args?.getInt(Routes.CreatePlantScreen.plantRoomId)!!,
+                popBackStack = { navController.popBackStack()})
+        }
+
+        // Update plant screen
+        composable(
+            route = Routes.UpdatePlantScreen.withArgsFormat(Routes.UpdatePlantScreen.plantId, Routes.UpdatePlantScreen.userName, Routes.UpdatePlantScreen.plantRoomId),
+            arguments = listOf(
+                navArgument(Routes.UpdatePlantScreen.plantId) {
+                  type = NavType.IntType
+                  nullable = false
+                },
+                navArgument(Routes.UpdatePlantScreen.userName) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(Routes.UpdatePlantScreen.plantRoomId) {
+                    type = NavType.IntType
+                    nullable = false
+                }
+            )
+        ) { backStackEntry ->
+            val args = backStackEntry.arguments
+
+            UpdatePlantScreen(
+                plantId = args?.getInt(Routes.UpdatePlantScreen.plantId)!!,
+                userName = args.getString(Routes.UpdatePlantScreen.userName),
+                plantRoomId = args.getInt(Routes.UpdatePlantScreen.plantRoomId),
                 popBackStack = { navController.popBackStack()})
         }
 
@@ -248,10 +276,14 @@ sealed class Routes(val route: String) {
         const val userName = "userName"
         const val plantRoomId = "plantRoomId"
     }
+    object UpdatePlantScreen : Routes("update_plant_screen") {
+        const val userName = "userName"
+        const val plantRoomId = "plantRoomId"
+        const val plantId = "plantId"
+    }
     object CreatePlantRoomScreen: Routes("create_plant_room_screen") {
         const val username = "username"
     }
-
     object PlantDetailsScreen : Routes("plant_details_screen"){
         const val userName = "userName"
         const val plantRoomId = "plantRoomId"
