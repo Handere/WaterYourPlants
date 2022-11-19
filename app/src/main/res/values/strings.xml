@@ -8,6 +8,9 @@
     <string name="watering_notification_channel_id">watering_channel_01</string>
     <string name="watering_notification_channel_name">Watering</string>
     <string name="watering_notification_channel_description">Send a push notification with the number of plants currently in need of watering.</string>
+    <string name="watering_notification_title_water_your_plants">Water your plants!</string>
+    <string name="watering_notification_content_text_first_part">You have </string>
+    <string name="watering_notification_content_text_second_part"> plants in need of water.</string>
 
     <!-- Screens -->
     <string name="login_screen">login_screen</string>

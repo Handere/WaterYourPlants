@@ -63,8 +63,10 @@ class MainActivity : ComponentActivity() {
 
         // Create notification
         val notification = NotificationCompat.Builder(applicationContext, getString(R.string.watering_notification_channel_id))
-            .setContentTitle("Water your plants!")
-            .setContentText("You have $numberOfNotifyingPlants plants in need of water.")
+            .setContentTitle(getString(R.string.watering_notification_title_water_your_plants))
+            .setContentText(getString(R.string.watering_notification_content_text_first_part)
+                    + " " + numberOfNotifyingPlants
+                    + " " + getString(R.string.watering_notification_content_text_second_part))
             .setSmallIcon(R.mipmap.water_your_plants_launcher_foreground)
             .build()
 
