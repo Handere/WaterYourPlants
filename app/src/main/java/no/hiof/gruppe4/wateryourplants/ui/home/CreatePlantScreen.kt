@@ -1,12 +1,9 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 
-import android.Manifest
-
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -37,8 +34,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import no.hiof.gruppe4.wateryourplants.R
