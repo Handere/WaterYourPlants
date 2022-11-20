@@ -50,17 +50,35 @@ fun UpdatePlantScreen(
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
     val currentPlant = viewModel.currentPlant.observeAsState()
 
-    // TODO: First output is null (use launch effect)
-    println("Plant: \n" + currentPlant + "\n :end")
+    var species = TextFieldValue(currentPlant.value?.speciesName.toString())
+    var speciesLatin = TextFieldValue(currentPlant.value?.speciesLatinName.toString())
+    var classification = TextFieldValue(currentPlant.value?.plantClassification.toString())
+    var wateringInterval = TextFieldValue(currentPlant.value?.wateringInterval.toString())
+    var nutritionInterval = TextFieldValue(currentPlant.value?.nutritionInterval.toString())
+    var wateringAndNutritionDay = TextFieldValue(currentPlant.value?.wateringAndNutritionDay.toString())
+    var sunRequirement = TextFieldValue(currentPlant.value?.sunRequirement.toString())
+    var personalNote = TextFieldValue(currentPlant.value?.note.toString())
 
-    var species by remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesName.toString())) }
-    var speciesLatin by remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesLatinName.toString())) }
-    var classification by remember { mutableStateOf(TextFieldValue(currentPlant.value?.plantClassification.toString())) }
-    var wateringInterval by remember { mutableStateOf(TextFieldValue(currentPlant.value?.wateringInterval.toString())) }
-    var nutritionInterval by remember { mutableStateOf(TextFieldValue(currentPlant.value?.nutritionInterval.toString())) }
-    var wateringAndNutritionDay by remember{ mutableStateOf(TextFieldValue(" ")) }
-    var sunRequirement by remember { mutableStateOf(TextFieldValue(currentPlant.value?.sunRequirement.toString())) }
-    var personalNote by remember { mutableStateOf(TextFieldValue(currentPlant.value?.note.toString())) }
+
+    var placeholderSpecies by remember { mutableStateOf(species) }
+    var placeholderSpeciesLatin by remember { mutableStateOf(speciesLatin) }
+    var placeholderClassification by remember { mutableStateOf(classification) }
+    var placeholderWateringInterval by remember { mutableStateOf(wateringInterval) }
+    var placeholderNutritionInterval by remember { mutableStateOf(nutritionInterval) }
+    var placeholderWateringAndNutritionDay by remember{ mutableStateOf(wateringAndNutritionDay) }
+    var placeholderSunRequirement by remember { mutableStateOf(sunRequirement) }
+    var placeholderPersonalNote by remember { mutableStateOf(personalNote) }
+
+    LaunchedEffect(key1 = species) {
+        placeholderSpecies = species
+        placeholderSpeciesLatin = speciesLatin
+        placeholderClassification = classification
+        placeholderWateringInterval = wateringInterval
+        placeholderNutritionInterval = nutritionInterval
+        placeholderWateringAndNutritionDay = wateringAndNutritionDay
+        placeholderSunRequirement = sunRequirement
+        placeholderPersonalNote = personalNote
+    }
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
@@ -72,14 +90,14 @@ fun UpdatePlantScreen(
                 plantId = plantId,
                 plantRoomId = plantRoomId,
                 photoUrl = photoUrl,
-                species = species,
-                speciesLatin = speciesLatin,
-                classification = classification,
-                wateringInterval = wateringInterval,
-                nutritionInterval = nutritionInterval,
-                wateringAndNutritionDay = wateringAndNutritionDay,
-                sunRequirement = sunRequirement,
-                personalNote = personalNote
+                species = placeholderSpecies,
+                speciesLatin = placeholderSpeciesLatin,
+                classification = placeholderClassification,
+                wateringInterval = placeholderWateringInterval,
+                nutritionInterval = placeholderNutritionInterval,
+                wateringAndNutritionDay = placeholderWateringAndNutritionDay,
+                sunRequirement = placeholderSunRequirement,
+                personalNote = placeholderPersonalNote
 
             ) })
             {
@@ -144,8 +162,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.plant_species)) },
-                        value = species,
-                        onValueChange = { species = it },
+                        value = placeholderSpecies,
+                        onValueChange = { placeholderSpecies = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -155,8 +173,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
-                        value = speciesLatin,
-                        onValueChange = { speciesLatin = it },
+                        value = placeholderSpeciesLatin,
+                        onValueChange = { placeholderSpeciesLatin = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -166,8 +184,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
-                        value = classification,
-                        onValueChange = { classification = it },
+                        value = placeholderClassification,
+                        onValueChange = { placeholderClassification = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -177,8 +195,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
-                        value = wateringInterval,
-                        onValueChange = { wateringInterval = it },
+                        value = placeholderWateringInterval,
+                        onValueChange = { placeholderWateringInterval = it },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
                         singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
                     )
@@ -189,8 +207,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
-                        value = nutritionInterval,
-                        onValueChange = { nutritionInterval = it },
+                        value = placeholderNutritionInterval,
+                        onValueChange = { placeholderNutritionInterval = it },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
                         singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
                     )
@@ -214,8 +232,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
-                        value = sunRequirement,
-                        onValueChange = { sunRequirement = it },
+                        value = placeholderSunRequirement,
+                        onValueChange = { placeholderSunRequirement = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -225,8 +243,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
-                        value = personalNote,
-                        onValueChange = { personalNote = it },
+                        value = placeholderPersonalNote,
+                        onValueChange = { placeholderPersonalNote = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { updatePlant(
@@ -236,14 +254,14 @@ fun UpdatePlantScreen(
                             plantId = plantId,
                             plantRoomId = plantRoomId,
                             photoUrl = photoUrl,
-                            species = species,
-                            speciesLatin = speciesLatin,
-                            classification = classification,
-                            wateringInterval = wateringInterval,
-                            nutritionInterval = nutritionInterval,
-                            wateringAndNutritionDay = wateringAndNutritionDay,
-                            sunRequirement = sunRequirement,
-                            personalNote = personalNote
+                            species = placeholderSpecies,
+                            speciesLatin = placeholderSpeciesLatin,
+                            classification = placeholderClassification,
+                            wateringInterval = placeholderWateringInterval,
+                            nutritionInterval = placeholderNutritionInterval,
+                            wateringAndNutritionDay = placeholderWateringAndNutritionDay,
+                            sunRequirement = placeholderSunRequirement,
+                            personalNote = placeholderPersonalNote
 
                         ) })
                     )
