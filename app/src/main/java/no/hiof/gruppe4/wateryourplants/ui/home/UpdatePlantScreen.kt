@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.WindowInfo
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
+import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 
 @RequiresApi(value = 26)
 @Composable
@@ -44,7 +46,7 @@ fun UpdatePlantScreen(
     photoUrl: Int = R.drawable.no_plant_image,
     popBackStack: () -> Unit
 ) {
-
+    val windowInfo = rememberWindowInfo()
     val mContext = LocalContext.current
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
@@ -58,7 +60,6 @@ fun UpdatePlantScreen(
     var wateringAndNutritionDay = TextFieldValue(currentPlant.value?.wateringAndNutritionDay.toString())
     var sunRequirement = TextFieldValue(currentPlant.value?.sunRequirement.toString())
     var personalNote = TextFieldValue(currentPlant.value?.note.toString())
-
 
     var placeholderSpecies by remember { mutableStateOf(species) }
     var placeholderSpeciesLatin by remember { mutableStateOf(speciesLatin) }
@@ -112,24 +113,35 @@ fun UpdatePlantScreen(
             .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(id = R.string.update_plant_title), fontSize = 30.sp)
 
-            // TODO: Make DRY...
-            LazyColumn(modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(modifier = modifier.fillMaxWidth()) {
+                if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
+                    // Image
+                    Image(
+                        painter = painterResource(id = photoUrl),
+                        contentDescription = "Placeholder image",
+                        modifier = modifier
+                            .clip(CircleShape)
+                            .border(1.5.dp, Color.Black, CircleShape)
+                            .clickable { /*TODO: Add uploading functionality*/ })
+                }
+                // TODO: Make DRY...
+                LazyColumn(modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
 
-                /*item {
-                    // Plant search field
-                    TextField(
-                        label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
-                        value = plantSearch.value,
-                        onValueChange = { plantSearch.value = it }
-                    )
+                    /*item {
+                        // Plant search field
+                        TextField(
+                            label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
+                            value = plantSearch.value,
+                            onValueChange = { plantSearch.value = it }
+                        )
 
-                    // Plant search buttons
-                    Spacer(modifier = modifier.height(20.dp))
-                    Row(modifier = modifier) {
-                        Button(onClick = { *//*TODO*//* },
+                        // Plant search buttons
+                        Spacer(modifier = modifier.height(20.dp))
+                        Row(modifier = modifier) {
+                            Button(onClick = { *//*TODO*//* },
                             shape = Shapes.medium,
                             modifier = modifier.height(50.dp)
                         ) {
@@ -145,128 +157,132 @@ fun UpdatePlantScreen(
                     }
                 }*/
 
-                // Image
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    Image(
-                        painter = painterResource(id = photoUrl),
-                        contentDescription = "Placeholder image",
-                        modifier = modifier
-                            .clip(CircleShape)
-                            .border(1.5.dp, Color.Black, CircleShape)
-                            .clickable { /*TODO: Add uploading functionality*/ })
-                }
+                    if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
+                        // Image
+                        item {
+                            Spacer(modifier = modifier.height(20.dp))
+                            Image(
+                                painter = painterResource(id = photoUrl),
+                                contentDescription = "Placeholder image",
+                                modifier = modifier
+                                    .clip(CircleShape)
+                                    .border(1.5.dp, Color.Black, CircleShape)
+                                    .clickable { /*TODO: Add uploading functionality*/ })
+                        }
+                    }
 
-                // Species
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.plant_species)) },
-                        value = placeholderSpecies,
-                        onValueChange = { placeholderSpecies = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Species
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.plant_species)) },
+                            value = placeholderSpecies,
+                            onValueChange = { placeholderSpecies = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Species Latin
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
-                        value = placeholderSpeciesLatin,
-                        onValueChange = { placeholderSpeciesLatin = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Species Latin
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
+                            value = placeholderSpeciesLatin,
+                            onValueChange = { placeholderSpeciesLatin = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Classification
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
-                        value = placeholderClassification,
-                        onValueChange = { placeholderClassification = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Classification
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
+                            value = placeholderClassification,
+                            onValueChange = { placeholderClassification = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Watering interval
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
-                        value = placeholderWateringInterval,
-                        onValueChange = { placeholderWateringInterval = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                        singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    )
-                }
+                    // Watering interval
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
+                            value = placeholderWateringInterval,
+                            onValueChange = { placeholderWateringInterval = it },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        )
+                    }
 
-                // Nutrition interval
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
-                        value = placeholderNutritionInterval,
-                        onValueChange = { placeholderNutritionInterval = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                        singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    )
-                }
+                    // Nutrition interval
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
+                            value = placeholderNutritionInterval,
+                            onValueChange = { placeholderNutritionInterval = it },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        )
+                    }
 
-                //watering and nutrition day
-                /*
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
-                        value = wateringAndNutritionDay.value,
-                        onValueChange = { wateringAndNutritionDay.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
-                 */
+                    //watering and nutrition day
+                    /*
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
+                            value = wateringAndNutritionDay.value,
+                            onValueChange = { wateringAndNutritionDay.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
+                     */
 
-                // Sun requirement
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
-                        value = placeholderSunRequirement,
-                        onValueChange = { placeholderSunRequirement = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Sun requirement
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
+                            value = placeholderSunRequirement,
+                            onValueChange = { placeholderSunRequirement = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Personal note
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
-                        value = placeholderPersonalNote,
-                        onValueChange = { placeholderPersonalNote = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = { updatePlant(
-                            viewModel = viewModel,
-                            mContext = mContext,
-                            popBackStack = popBackStack,
-                            plantId = plantId,
-                            plantRoomId = plantRoomId,
-                            photoUrl = photoUrl,
-                            species = placeholderSpecies,
-                            speciesLatin = placeholderSpeciesLatin,
-                            classification = placeholderClassification,
-                            wateringInterval = placeholderWateringInterval,
-                            nutritionInterval = placeholderNutritionInterval,
-                            wateringAndNutritionDay = placeholderWateringAndNutritionDay,
-                            sunRequirement = placeholderSunRequirement,
-                            personalNote = placeholderPersonalNote
+                    // Personal note
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
+                            value = placeholderPersonalNote,
+                            onValueChange = { placeholderPersonalNote = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(onDone = { updatePlant(
+                                viewModel = viewModel,
+                                mContext = mContext,
+                                popBackStack = popBackStack,
+                                plantId = plantId,
+                                plantRoomId = plantRoomId,
+                                photoUrl = photoUrl,
+                                species = placeholderSpecies,
+                                speciesLatin = placeholderSpeciesLatin,
+                                classification = placeholderClassification,
+                                wateringInterval = placeholderWateringInterval,
+                                nutritionInterval = placeholderNutritionInterval,
+                                wateringAndNutritionDay = placeholderWateringAndNutritionDay,
+                                sunRequirement = placeholderSunRequirement,
+                                personalNote = placeholderPersonalNote
 
-                        ) })
-                    )
+                            ) })
+                        )
+                    }
                 }
             }
+
         }
     }
 }
