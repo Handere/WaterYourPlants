@@ -1,7 +1,13 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -20,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +36,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.WindowInfo
@@ -43,11 +52,17 @@ fun UpdatePlantScreen(
     userName: String?,
     plantRoomId: Int,
     modifier: Modifier = Modifier,
-    photoUrl: Int = R.drawable.no_plant_image,
     popBackStack: () -> Unit
 ) {
-    val windowInfo = rememberWindowInfo()
     val mContext = LocalContext.current
+    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+
+    var photoUri: Uri? = null
+
+
+
+    val windowInfo = rememberWindowInfo()
+
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
     val currentPlant = viewModel.currentPlant.observeAsState()
@@ -60,6 +75,7 @@ fun UpdatePlantScreen(
     var wateringAndNutritionDay = TextFieldValue(currentPlant.value?.wateringAndNutritionDay.toString())
     var sunRequirement = TextFieldValue(currentPlant.value?.sunRequirement.toString())
     var personalNote = TextFieldValue(currentPlant.value?.note.toString())
+    var photoUrl = currentPlant.value?.photoUrl.toString()
 
     var placeholderSpecies by remember { mutableStateOf(species) }
     var placeholderSpeciesLatin by remember { mutableStateOf(speciesLatin) }
@@ -69,6 +85,7 @@ fun UpdatePlantScreen(
     var placeholderWateringAndNutritionDay by remember{ mutableStateOf(wateringAndNutritionDay) }
     var placeholderSunRequirement by remember { mutableStateOf(sunRequirement) }
     var placeholderPersonalNote by remember { mutableStateOf(personalNote) }
+    var placeholderPhoto by remember { mutableStateOf(photoUri) }
 
     LaunchedEffect(key1 = species) {
         placeholderSpecies = species
@@ -79,6 +96,21 @@ fun UpdatePlantScreen(
         placeholderWateringAndNutritionDay = wateringAndNutritionDay
         placeholderSunRequirement = sunRequirement
         placeholderPersonalNote = personalNote
+        placeholderPhoto = photoUri
+    }
+    val pickmedia: ActivityResultLauncher<PickVisualMediaRequest> = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickVisualMedia() ){
+            uri ->
+        if(uri != null ){
+
+            mContext.applicationContext.contentResolver.takePersistableUriPermission(uri, flag)
+            println("Photo, selected")
+            photoUri = uri
+            placeholderPhoto = photoUri
+
+        } else {
+            println("photo not selected")
+        }
     }
 
     Scaffold(
@@ -90,7 +122,7 @@ fun UpdatePlantScreen(
                 popBackStack = popBackStack,
                 plantId = plantId,
                 plantRoomId = plantRoomId,
-                photoUrl = photoUrl,
+                photoUrl = placeholderPhoto.toString(),
                 species = placeholderSpecies,
                 speciesLatin = placeholderSpeciesLatin,
                 classification = placeholderClassification,
@@ -116,13 +148,17 @@ fun UpdatePlantScreen(
             Row(modifier = modifier.fillMaxWidth()) {
                 if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
                     // Image
-                    Image(
-                        painter = painterResource(id = photoUrl),
-                        contentDescription = "Placeholder image",
-                        modifier = modifier
-                            .clip(CircleShape)
-                            .border(1.5.dp, Color.Black, CircleShape)
-                            .clickable { /*TODO: Add uploading functionality*/ })
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                            .error(R.drawable.no_plant_image)
+                            .data(placeholderPhoto)
+                            .build(),
+                        contentDescription = currentPlant.value?.speciesName,
+                        contentScale = ContentScale.Crop,
+                        modifier = modifier.fillMaxWidth(0.5f)
+                            .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                        alignment = Alignment.Center
+                    )
                 }
                 // TODO: Make DRY...
                 LazyColumn(modifier = modifier
@@ -161,13 +197,17 @@ fun UpdatePlantScreen(
                         // Image
                         item {
                             Spacer(modifier = modifier.height(20.dp))
-                            Image(
-                                painter = painterResource(id = photoUrl),
-                                contentDescription = "Placeholder image",
-                                modifier = modifier
-                                    .clip(CircleShape)
-                                    .border(1.5.dp, Color.Black, CircleShape)
-                                    .clickable { /*TODO: Add uploading functionality*/ })
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                                    .error(R.drawable.no_plant_image)
+                                    .data(placeholderPhoto)
+                                    .build(),
+                                contentDescription = currentPlant.value?.speciesName,
+                                contentScale = ContentScale.Crop,
+                                modifier = modifier.fillMaxWidth(0.5f)
+                                    .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                                alignment = Alignment.Center
+                            )
                         }
                     }
 
@@ -267,7 +307,7 @@ fun UpdatePlantScreen(
                                 popBackStack = popBackStack,
                                 plantId = plantId,
                                 plantRoomId = plantRoomId,
-                                photoUrl = photoUrl,
+                                photoUrl = placeholderPhoto.toString(),
                                 species = placeholderSpecies,
                                 speciesLatin = placeholderSpeciesLatin,
                                 classification = placeholderClassification,
@@ -294,7 +334,7 @@ fun updatePlant(
     popBackStack: () -> Unit,
     plantId: Int,
     plantRoomId: Int,
-    photoUrl: Int,
+    photoUrl: String,
     species: TextFieldValue,
     speciesLatin: TextFieldValue,
     classification: TextFieldValue,

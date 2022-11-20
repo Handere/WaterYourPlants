@@ -56,7 +56,13 @@ fun PlantDetailsScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
+    val viewModel: PlantViewModel = viewModel(
+        factory = PlantViewModelFactory(
+            (LocalContext.current.applicationContext as WaterYourPlantsApplication).repository,
+            plantRoomId = plantRoomId,
+            plantId = plantId
+        )
+    )
 
     val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
     val currentPlant = viewModel.currentPlant.observeAsState()
@@ -69,7 +75,8 @@ fun PlantDetailsScreen(
             popBackStack = popBackStack,
             openDialog = openDialog,
             viewModel = viewModel,
-            plant = currentPlant.value!!)
+            plant = currentPlant.value!!
+        )
     }
 
     Scaffold(
@@ -81,24 +88,29 @@ fun PlantDetailsScreen(
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
             }
         }
-    ) {padding ->
+    ) { padding ->
 
         RequestNotificationPermission()
 
-        Column(modifier = modifier
-            .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-                TopAppBar( modifier = modifier.fillMaxWidth()) {
-                    Text(text = currentPlantRoom?.roomName?.uppercase().toString(),
-                        fontSize = 30.sp,
-                        textAlign = TextAlign.Left,
-                       )
-                }
+        Column(
+            modifier = modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TopAppBar(modifier = modifier.fillMaxWidth()) {
+                Text(
+                    text = currentPlantRoom?.roomName?.uppercase().toString(),
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Left,
+                )
+            }
 
-            LazyColumn(modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally) {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 item {
 
                     AsyncImage(
@@ -115,19 +127,22 @@ fun PlantDetailsScreen(
 
                 // Plant name
                 item {
-                    Row(){
+                    Row() {
                         Spacer(modifier = modifier.height(5.dp))
-                        Text(text = currentPlant.value?.speciesName.toString(),
+                        Text(
+                            text = currentPlant.value?.speciesName.toString(),
                             modifier = modifier.padding(5.dp),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = modifier.height(5.dp))
-                        Text(text = "(" + currentPlant.value?.speciesLatinName.toString() + ")",
+                        Text(
+                            text = "(" + currentPlant.value?.speciesLatinName.toString() + ")",
                             modifier = modifier.padding(5.dp),
                             fontSize = 18.sp,
                             fontStyle = FontStyle.Italic
-                        )}
+                        )
+                    }
                 }
 
                 // Watering interval
@@ -183,12 +198,18 @@ fun PlantDetailsScreen(
                         modifier = modifier
                     )
                 }
-            }
+
 
                 // Water now button
                 item {
-                    Row(){
-                        Button(onClick = { viewModel.updateWateringDate(currentPlant.value?.wateringInterval!!, plantId) },
+                    Row() {
+                        Button(
+                            onClick = {
+                                viewModel.updateWateringDate(
+                                    currentPlant.value?.wateringInterval!!,
+                                    plantId
+                                )
+                            },
                             shape = Shapes.medium,
                             modifier = modifier.height(50.dp)
                         ) {
@@ -201,7 +222,7 @@ fun PlantDetailsScreen(
                 item {
                     Spacer(modifier = modifier.height(5.dp))
                     ClickableText(
-                        text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
+                        text = AnnotatedString(stringResource(id = R.string.delete_plant)),
                         onClick = {
                             if (!openDialog.value) {
                                 openDialog.value = true

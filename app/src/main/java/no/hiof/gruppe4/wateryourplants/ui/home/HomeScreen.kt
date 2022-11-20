@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.Task
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import kotlinx.coroutines.*
+
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
@@ -55,6 +56,7 @@ import java.net.URL
 import kotlin.math.roundToInt
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -209,8 +211,6 @@ fun RoomCards(
 }
 
 
-
-
 suspend fun getWeather(latAndLon: String): String {
     var weatherWithCelsiusAndCondition = ""
     val urlWithGps = URL("https://api.met.no/weatherapi/locationforecast/2.0/compact?$latAndLon")
@@ -259,8 +259,5 @@ suspend fun getWeather(latAndLon: String): String {
 
     }.join()
 
-        return weatherWithCelsiusAndCondition
-    }
-
-
-
+    return weatherWithCelsiusAndCondition
+}
