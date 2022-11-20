@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
@@ -94,7 +95,10 @@ fun PlantDetailsScreen(
                 item {
 
                     AsyncImage(
-                        model = currentPlant.value?.photoUrl,
+                        model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                            .error(R.drawable.no_plant_image)
+                            .data(currentPlant.value?.photoUrl)
+                            .build(),
                         contentDescription = currentPlant.value?.speciesName,
                         contentScale = ContentScale.Crop,
                         modifier = modifier.fillMaxWidth(0.5f),

@@ -14,11 +14,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.request.ImageResult
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 import java.sql.Date
@@ -32,13 +36,18 @@ fun PlantCard(
     userName: String?,
     plantRoomId: Int,
     plantId: Int,
-    painter: Painter = painterResource(id = R.drawable.no_plant_image), // TODO: Change to photo from db
+    photoId: String,
     contentDescription: String,
     species: String,
     speciesLatin: String,
     nextWateringDay: Date,
     modifier: Modifier = Modifier,
 ) {
+    var usePhoto: String
+    if(photoId != ""){
+        usePhoto = photoId
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -53,11 +62,18 @@ fun PlantCard(
                 .fillMaxWidth()
                 .padding(5.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painter,
+val request =
+
+
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                        .error(R.drawable.no_plant_image)
+                        .data(photoId)
+                        .build(),
                     contentDescription = contentDescription,
                     contentScale = ContentScale.Crop,
                     modifier = modifier.fillMaxWidth(0.5f))
+
                 Column(modifier = modifier
                         .fillMaxHeight()) {
                     Text(text = species,

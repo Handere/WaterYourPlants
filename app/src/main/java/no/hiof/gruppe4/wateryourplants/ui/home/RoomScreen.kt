@@ -78,6 +78,7 @@ fun RoomScreen(
                         userName = userName,
                         plantRoomId = plantRoomId,
                         plantId = it.plantId,
+                        photoId = it.photoUrl,
                         contentDescription = it.speciesName,
                         species = it.speciesName,
                         speciesLatin = it.speciesLatinName,

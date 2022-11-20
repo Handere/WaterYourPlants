@@ -52,7 +52,7 @@ import java.net.URL
 import kotlin.math.roundToInt
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@SuppressLint("CoroutineCreationDuringComposition")
+
 @RequiresApi(value = 26)
 @Composable
 fun HomeScreen(
