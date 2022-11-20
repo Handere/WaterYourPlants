@@ -14,11 +14,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,17 +50,17 @@ fun UpdatePlantScreen(
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
     val currentPlant = viewModel.currentPlant.observeAsState()
 
-    // TODO: First output is null
+    // TODO: First output is null (use launch effect)
     println("Plant: \n" + currentPlant + "\n :end")
 
-    val species = remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesName.toString())) }
-    val speciesLatin = remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesLatinName.toString())) }
-    val classification = remember { mutableStateOf(TextFieldValue(currentPlant.value?.plantClassification.toString())) }
-    val wateringInterval = remember { mutableStateOf(TextFieldValue(currentPlant.value?.wateringInterval.toString())) }
-    val nutritionInterval = remember { mutableStateOf(TextFieldValue(currentPlant.value?.nutritionInterval.toString())) }
-    val wateringAndNutritionDay = remember{ mutableStateOf(TextFieldValue(" ")) }
-    val sunRequirement = remember { mutableStateOf(TextFieldValue(currentPlant.value?.sunRequirement.toString())) }
-    val personalNote = remember { mutableStateOf(TextFieldValue(currentPlant.value?.note.toString())) }
+    var species by remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesName.toString())) }
+    var speciesLatin by remember { mutableStateOf(TextFieldValue(currentPlant.value?.speciesLatinName.toString())) }
+    var classification by remember { mutableStateOf(TextFieldValue(currentPlant.value?.plantClassification.toString())) }
+    var wateringInterval by remember { mutableStateOf(TextFieldValue(currentPlant.value?.wateringInterval.toString())) }
+    var nutritionInterval by remember { mutableStateOf(TextFieldValue(currentPlant.value?.nutritionInterval.toString())) }
+    var wateringAndNutritionDay by remember{ mutableStateOf(TextFieldValue(" ")) }
+    var sunRequirement by remember { mutableStateOf(TextFieldValue(currentPlant.value?.sunRequirement.toString())) }
+    var personalNote by remember { mutableStateOf(TextFieldValue(currentPlant.value?.note.toString())) }
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName)},
@@ -147,8 +144,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.plant_species)) },
-                        value = species.value,
-                        onValueChange = { species.value = it },
+                        value = species,
+                        onValueChange = { species = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -158,8 +155,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
-                        value = speciesLatin.value,
-                        onValueChange = { speciesLatin.value = it },
+                        value = speciesLatin,
+                        onValueChange = { speciesLatin = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -169,8 +166,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
-                        value = classification.value,
-                        onValueChange = { classification.value = it },
+                        value = classification,
+                        onValueChange = { classification = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -180,8 +177,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
-                        value = wateringInterval.value,
-                        onValueChange = { wateringInterval.value = it },
+                        value = wateringInterval,
+                        onValueChange = { wateringInterval = it },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
                         singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
                     )
@@ -192,8 +189,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
-                        value = nutritionInterval.value,
-                        onValueChange = { nutritionInterval.value = it },
+                        value = nutritionInterval,
+                        onValueChange = { nutritionInterval = it },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
                         singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
                     )
@@ -217,8 +214,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
-                        value = sunRequirement.value,
-                        onValueChange = { sunRequirement.value = it },
+                        value = sunRequirement,
+                        onValueChange = { sunRequirement = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 }
@@ -228,8 +225,8 @@ fun UpdatePlantScreen(
                     Spacer(modifier = modifier.height(20.dp))
                     TextField(
                         label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
-                        value = personalNote.value,
-                        onValueChange = { personalNote.value = it },
+                        value = personalNote,
+                        onValueChange = { personalNote = it },
                         singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { updatePlant(
@@ -264,26 +261,26 @@ fun updatePlant(
     plantId: Int,
     plantRoomId: Int,
     photoUrl: Int,
-    species: MutableState<TextFieldValue>,
-    speciesLatin: MutableState<TextFieldValue>,
-    classification: MutableState<TextFieldValue>,
-    wateringInterval: MutableState<TextFieldValue>,
-    nutritionInterval: MutableState<TextFieldValue>,
-    wateringAndNutritionDay: MutableState<TextFieldValue>,
-    sunRequirement: MutableState<TextFieldValue>,
-    personalNote: MutableState<TextFieldValue>,
+    species: TextFieldValue,
+    speciesLatin: TextFieldValue,
+    classification: TextFieldValue,
+    wateringInterval: TextFieldValue,
+    nutritionInterval: TextFieldValue,
+    wateringAndNutritionDay: TextFieldValue,
+    sunRequirement: TextFieldValue,
+    personalNote: TextFieldValue,
 
     ) {
     // TODO: Add more specific input validation and handling
     val errorMessage = "All fields are required" // Can't use getString() or stringResource() because it's not Composable
-    if (species.value.text.isEmpty() ||
-        speciesLatin.value.text.isEmpty() ||
-        classification.value.text.isEmpty() ||
-        wateringInterval.value.text.isEmpty() ||
-        nutritionInterval.value.text.isEmpty() ||
-        wateringAndNutritionDay.value.text.isEmpty() ||
-        sunRequirement.value.text.isEmpty() ||
-        personalNote.value.text.isEmpty()
+    if (species.text.isEmpty() ||
+        speciesLatin.text.isEmpty() ||
+        classification.text.isEmpty() ||
+        wateringInterval.text.isEmpty() ||
+        nutritionInterval.text.isEmpty() ||
+        wateringAndNutritionDay.text.isEmpty() ||
+        sunRequirement.text.isEmpty() ||
+        personalNote.text.isEmpty()
     ) {
         Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show()
     }
@@ -291,15 +288,15 @@ fun updatePlant(
         viewModel.updatePlant(
             plantId = plantId,
             roomId = plantRoomId,
-            speciesName = species.value.text,
-            speciesLatinName = speciesLatin.value.text,
-            plantClassification = classification.value.text,
+            speciesName = species.text,
+            speciesLatinName = speciesLatin.text,
+            plantClassification = classification.text,
             photoUrl = photoUrl,
-            wateringInterval = wateringInterval.value.text.toInt(),
-            nutritionInterval = nutritionInterval.value.text.toInt(),
-            wateringAndNutritionDay = wateringAndNutritionDay.value.text,
-            sunRequirement = sunRequirement.value.text,
-            note = personalNote.value.text
+            wateringInterval = wateringInterval.text.toInt(),
+            nutritionInterval = nutritionInterval.text.toInt(),
+            wateringAndNutritionDay = wateringAndNutritionDay.text,
+            sunRequirement = sunRequirement.text,
+            note = personalNote.text
         )
         popBackStack()
     }
