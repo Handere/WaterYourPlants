@@ -4,6 +4,14 @@
     <string name="confirm">Confirm</string>
     <string name="dismiss">Dismiss</string>
 
+    <!-- Notifications -->
+    <string name="watering_notification_channel_id">watering_channel_01</string>
+    <string name="watering_notification_channel_name">Watering</string>
+    <string name="watering_notification_channel_description">Send a push notification with the number of plants currently in need of watering.</string>
+    <string name="watering_notification_title_water_your_plants">Water your plants!</string>
+    <string name="watering_notification_content_text_first_part">You have </string>
+    <string name="watering_notification_content_text_second_part"> plants in need of water.</string>
+
     <!-- Screens -->
     <string name="login_screen">login_screen</string>
     <string name="home_screen">home_screen</string>
@@ -45,7 +53,10 @@
     <string name="add_new_plant_plant_sun_requirement">Sun requirement</string>
     <string name="add_new_plant_plant_personal_note">Note</string>
 
-    <!-- Create room -->
+    <!-- Update plant -->
+    <string name="update_plant_title">Update plant</string>
+
+    <!-- Create plant-room -->
     <string name="add_new_room_title">Add new room</string>
     <string name="add_new_room_name">Room name</string>
 

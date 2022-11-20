@@ -308,7 +308,7 @@ fun createPlant(
 
     ) {
     // TODO: Add more specific input validation and handling
-    val errorMessage = "All fields are required" // Can't use stringResource because it's not Composable
+    val errorMessage = "All fields are required" // Can't use getString() or stringResource() because it's not Composable
     if (species.value.text.isEmpty() ||
         speciesLatin.value.text.isEmpty() ||
         classification.value.text.isEmpty() ||

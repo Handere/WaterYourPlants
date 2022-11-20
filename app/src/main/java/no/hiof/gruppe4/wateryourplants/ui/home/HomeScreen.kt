@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -35,6 +37,9 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
+
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import kotlinx.coroutines.*
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
@@ -50,8 +55,6 @@ import java.net.URL
 import kotlin.math.roundToInt
 
 // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-
-@RequiresApi(value = 26)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -62,6 +65,7 @@ fun HomeScreen(
     val descriptionPlaceholder = stringResource(id = R.string.placeholder_weather_description)
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
+
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
 
     //logic
@@ -198,7 +202,7 @@ fun RoomCards(
                     onNavigationToRoom = onNavigateToRoom,
                     buttonName = it.roomName,
                     plantRoomId = it.plantRoomId,
-                    viewModel1 = viewModel)
+                    viewModel = viewModel)
             }
         }
     }

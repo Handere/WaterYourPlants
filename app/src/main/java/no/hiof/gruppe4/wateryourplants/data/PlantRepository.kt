@@ -17,6 +17,9 @@ class PlantRepository(private val plantDao: PlantDao) {
     @WorkerThread
     suspend fun deletePlant(plant: Plant) = plantDao.deletePlant(plant)
 
+    @WorkerThread
+    suspend fun updatePlant(plant: Plant) = plantDao.updatePlant(plant)
+
     fun getPlantRoom(plantRoomId: Int) = plantDao.getPlantRoom(plantRoomId)
 
     fun getPlantRooms() = plantDao.getAllPlantRooms()
@@ -27,5 +30,7 @@ class PlantRepository(private val plantDao: PlantDao) {
 
     @WorkerThread
     suspend fun updateWateringDate(lastWateringDate: Date, nextWateringDate: Date, id: Int) = plantDao.updateWateringDate(lastWateringDate, nextWateringDate, id)
+
+    fun getPlants() = plantDao.getAllPlants()
 
 }

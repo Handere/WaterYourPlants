@@ -1,6 +1,5 @@
 package no.hiof.gruppe4.wateryourplants.ui.components
 
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -14,18 +13,17 @@ import androidx.compose.ui.Modifier
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
-@RequiresApi(value = 26)
 @Composable
 fun PlantRoomCard(
     onNavigationToRoom: (String, Int) -> Unit,
     userName: String?,
     buttonName: String,
     plantRoomId: Int,
-    viewModel1: PlantViewModel,
+    viewModel: PlantViewModel,
     modifier: Modifier = Modifier) {
 
-    val plantRoomPlantList by viewModel1.getPlantRoomPlantList(plantRoomId).observeAsState(listOf())
-    val notifications = viewModel1.numberOfNotifyingPlants(plantRoomPlantList)
+    val plantRoomPlantList by viewModel.getPlantRoomPlantList(plantRoomId).observeAsState(listOf())
+    val notifications = viewModel.numberOfNotifyingPlants(plantRoomPlantList)
 
     Button(onClick = { onNavigationToRoom(userName.toString(), plantRoomId) },
         shape = Shapes.medium,

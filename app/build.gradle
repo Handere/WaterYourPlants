@@ -55,6 +55,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.2'
     def nav_version = "2.5.2"
     def lifecycle_version = "2.5.1"
+    def core_version = "1.6.0"
+    
+    implementation "androidx.core:core:$core_version"
 
     //API dependencies
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

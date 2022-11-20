@@ -1,5 +1,6 @@
 package no.hiof.gruppe4.wateryourplants.home
 
+import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -10,7 +11,7 @@ import java.time.LocalDate
 
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
-    //var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
+    var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
     @RequiresApi(value = 26)
@@ -29,7 +30,56 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
         val currentDate = Date.valueOf(LocalDate.now().toString())
         val nextWateringDay = Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
 
-       repository.insertPlant(Plant(roomId, speciesName, speciesLatinName, plantClassification, photoUrl, wateringInterval, nutritionInterval, wateringAndNutritionDay, sunRequirement, note, currentDate, nextWateringDay))
+       repository.insertPlant(Plant(
+           roomId,
+           speciesName,
+           speciesLatinName,
+           plantClassification,
+           photoUrl,
+           wateringInterval,
+           nutritionInterval,
+           wateringAndNutritionDay,
+           sunRequirement,
+           note,
+           currentDate,
+           nextWateringDay))
+    }
+
+    @RequiresApi(value = 26)
+    fun updatePlant(
+        plantId: Int,
+        roomId: Int,
+        speciesName: String,
+        speciesLatinName: String,
+        plantClassification: String,
+        photoUrl: Int,
+        wateringInterval: Int,
+        nutritionInterval: Int,
+        wateringAndNutritionDay: String,
+        sunRequirement: String,
+        note: String
+    ) = viewModelScope.launch {
+        val currentDate = Date.valueOf(LocalDate.now().toString())
+        val nextWateringDay =
+            Date.valueOf(LocalDate.now().plusDays(wateringInterval.toLong()).toString())
+
+        repository.updatePlant(
+            Plant(
+                roomId,
+                speciesName,
+                speciesLatinName,
+                plantClassification,
+                photoUrl,
+                wateringInterval,
+                nutritionInterval,
+                wateringAndNutritionDay,
+                sunRequirement,
+                note,
+                currentDate,
+                nextWateringDay,
+                plantId
+            )
+        )
     }
 
     fun deletePlant(plant: Plant) = viewModelScope.launch { repository.deletePlant(plant) }
@@ -62,13 +112,16 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     }
 
     // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(value = 26)
     fun numberOfNotifyingPlants(plantList: List<Plant>): Int {
         var notifications = 0
         plantList.forEach {
-            if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
-                notifications++
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
+                    notifications++
+                }
+                } else {
+                    TODO("VERSION.SDK_INT < O")
+                }
         }
         return notifications
     }

@@ -1,7 +1,14 @@
 package no.hiof.gruppe4.wateryourplants.ui.home
 
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -14,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -39,6 +48,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 @RequiresApi(value = 26)
 @Composable
 fun PlantDetailsScreen(
+    onNavigateToUpdatePlantScreen: (Int, String, Int) -> Unit,
     popBackStack: () -> Unit,
     userName: String?,
     plantRoomId: Int,
@@ -65,11 +75,15 @@ fun PlantDetailsScreen(
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = {
+                onNavigateToUpdatePlantScreen(plantId, userName.toString(), plantRoomId)
+            }) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
             }
         }
     ) {padding ->
+
+        RequestNotificationPermission()
 
         Column(modifier = modifier
             .fillMaxWidth(),
@@ -171,31 +185,51 @@ fun PlantDetailsScreen(
                 }
             }
 
-            // Water now button
-            Row(){
-                Button(onClick = { viewModel.updateWateringDate(currentPlant.value?.wateringInterval!!, plantId) },
-                    shape = Shapes.medium,
-                    modifier = modifier.height(50.dp)
-                ) {
-                    Text(text = stringResource(id = R.string.water_now_button))
+                // Water now button
+                item {
+                    Row(){
+                        Button(onClick = { viewModel.updateWateringDate(currentPlant.value?.wateringInterval!!, plantId) },
+                            shape = Shapes.medium,
+                            modifier = modifier.height(50.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.water_now_button))
+                        }
+                    }
+                }
+
+                // Delete button
+                item {
+                    Spacer(modifier = modifier.height(5.dp))
+                    ClickableText(
+                        text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
+                        onClick = {
+                            if (!openDialog.value) {
+                                openDialog.value = true
+                            }
+                        },
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily.Default,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
                 }
             }
+        }
+    }
+}
 
-            // Delete button
-            Spacer(modifier = modifier.height(5.dp))
-            ClickableText(
-                text = AnnotatedString(stringResource(id = R.string.delete_plant)) ,
-                onClick = {
-                    if (!openDialog.value) {
-                        openDialog.value = true
-                    }
-                },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline
-                )
-            )
+@Composable
+fun RequestNotificationPermission() {
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { _ ->}
+    )
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        SideEffect {
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 }
