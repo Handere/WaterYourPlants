@@ -117,11 +117,9 @@ fun HomeScreen(
                 }
 
                 gpsFromUserString = "lat=$latitude&lon=$longitude"
-                println(gpsFromUserString)
 
                 gpsLocationFromUserRememberState = gpsFromUserString
             }
-
 
     } else {
         // Request permissions
@@ -135,7 +133,6 @@ fun HomeScreen(
 
             weatherFromApiRememberState = weatherFromApi
         }
-
 
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
@@ -209,8 +206,6 @@ fun HomeScreen(
                     plantRoomList = plantRoomList,
                     viewModel = viewModel)
             }
-
-
             }
     }
 }
@@ -230,8 +225,6 @@ fun RoomCards(
     viewModel: PlantViewModel,
     modifier: Modifier = Modifier
 ) {
-
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -275,7 +268,6 @@ suspend fun getWeather(latAndLon: String): String {
         if (responseCode == 200) {
             val response = connectionToYr.inputStream.bufferedReader()
                 .use { it.readText() }  // defaults to UTF-8
-
 
             val jsonObject = JSONObject(response)
             val airTemp = jsonObject.getJSONObject("properties")
