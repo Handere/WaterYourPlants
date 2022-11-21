@@ -104,7 +104,7 @@ fun PlantDetailsScreen(
                         .data(currentPlant.value?.photoUrl)
                         .build(),
                     contentDescription = currentPlant.value?.speciesName,
-                    contentScale = ContentScale.FillHeight,
+                    contentScale = ContentScale.Fit,
                     modifier = modifier.fillMaxWidth(0.5f),
                     alignment = Alignment.Center
                 )
@@ -124,7 +124,7 @@ fun PlantDetailsScreen(
                                 .data(currentPlant.value?.photoUrl)
                                 .build(),
                             contentDescription = currentPlant.value?.speciesName,
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             modifier = modifier.fillMaxWidth(0.5f),
                             alignment = Alignment.Center
                         )

@@ -136,8 +136,6 @@ fun CreatePlantScreen(
                                 .border(1.5.dp, Color.Black, CircleShape)
                                 .clickable { /*TODO: Add uploading functionality*/
                                     pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-
-                                    println(photoUrl)
                                 })
                     } else {
                         AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
@@ -162,8 +160,6 @@ fun CreatePlantScreen(
                                         .border(1.5.dp, Color.Black, CircleShape)
                                         .clickable { /*TODO: Add uploading functionality*/
                                             pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-
-                                            println(photoUrl)
                                         })
                             } else {
                                 AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )

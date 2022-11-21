@@ -154,8 +154,10 @@ fun UpdatePlantScreen(
                             .data(placeholderPhoto)
                             .build(),
                         contentDescription = currentPlant.value?.speciesName,
-                        contentScale = ContentScale.Crop,
                         modifier = modifier.fillMaxWidth(0.5f)
+                            .padding(60.dp, 40.dp, 16.dp, 20.dp)
+                            .clip(CircleShape)
+                            .border(1.5.dp, Color.Black, CircleShape)
                             .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
                         alignment = Alignment.Center
                     )
@@ -176,8 +178,9 @@ fun UpdatePlantScreen(
                                     .data(placeholderPhoto)
                                     .build(),
                                 contentDescription = currentPlant.value?.speciesName,
-                                contentScale = ContentScale.Crop,
                                 modifier = modifier.fillMaxWidth(0.5f)
+                                    .clip(CircleShape)
+                                    .border(1.5.dp, Color.Black, CircleShape)
                                     .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
                                 alignment = Alignment.Center
                             )
