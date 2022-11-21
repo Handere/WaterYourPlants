@@ -44,9 +44,11 @@ import kotlinx.coroutines.*
 
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.WindowInfo
 import no.hiof.gruppe4.wateryourplants.data.PlantRoom
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
+import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 import no.hiof.gruppe4.wateryourplants.ui.components.PlantRoomCard
 import org.json.JSONObject
 import java.math.BigDecimal
@@ -63,6 +65,7 @@ fun HomeScreen(
     onNavigateToCreatePlantRoom: (String) -> Unit,
     userName: String?
 ) {
+    val windowInfo = rememberWindowInfo()
     val weatherPlaceholder: Painter = painterResource(id = R.drawable.weather_forcast)
     val descriptionPlaceholder = stringResource(id = R.string.placeholder_weather_description)
 
@@ -142,34 +145,73 @@ fun HomeScreen(
             }
         }
     ) { padding -> // TODO: why tf do we need to do this shit?
-        Column(modifier = Modifier.padding(16.dp)) {
 
-            Box(modifier = Modifier.weight(1f, fill = false)
-                .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
-                .fillMaxWidth() ){
+            Row(modifier = Modifier.fillMaxWidth()){
+                if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
+                    Box(
+                        modifier = Modifier.weight(1f, fill = false)
+                            .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            .padding(16.dp, 50.dp, 16.dp)
+                    ) {
 
-                Image(painter = weatherPlaceholder,
-                contentDescription = descriptionPlaceholder,
-                    contentScale = ContentScale.Fit
-                )
+                        Image(
+                            painter = weatherPlaceholder,
+                            contentDescription = descriptionPlaceholder,
+                            contentScale = ContentScale.FillBounds,
+                            )
 
-                Text(text = weatherFromApiRememberState,
-                    modifier = Modifier.fillMaxWidth()
-                        .align(Alignment.BottomStart)
-                        .padding(20.dp, 30.dp),
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    fontSize =20.sp,
-                    )
+                        Text(
+                            text = weatherFromApiRememberState,
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(20.dp, 30.dp),
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                        )
+                    }
+                }
+
+            Column(modifier = Modifier.weight(1f, fill = false)) {
+                    if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
+
+                            Box(
+                                modifier = Modifier.weight(0.5f, fill = false)
+                                    .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
+                                    .fillMaxWidth()
+                                    .padding(16.dp, 16.dp, 13.dp)
+                            ) {
+
+                                Image(
+                                    painter = weatherPlaceholder,
+                                    contentDescription = descriptionPlaceholder,
+                                    contentScale = ContentScale.Fit,
+
+                                    )
+
+                                Text(
+                                    text = weatherFromApiRememberState,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomStart)
+                                        .padding(20.dp, 30.dp),
+                                    fontFamily = FontFamily.Monospace,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                )
+                            }
+
+                    }
+                RoomCards(
+                    onNavigateToRoom = onNavigateToRoom,
+                    userName = userName,
+                    plantRoomList = plantRoomList,
+                    viewModel = viewModel)
             }
 
 
-            RoomCards(
-                onNavigateToRoom = onNavigateToRoom,
-                userName = userName,
-                plantRoomList = plantRoomList,
-                viewModel = viewModel)
-        }
+            }
     }
 }
 
