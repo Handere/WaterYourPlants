@@ -32,6 +32,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.WindowInfo
+import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 // Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
@@ -46,83 +48,97 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
         val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
         val password = remember { mutableStateOf(TextFieldValue()) }
 
-        LazyColumn(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        val windowInfo = rememberWindowInfo()
 
-            // Picture designed by Freepik, modified by Handere
-            item {
-                Image(painter = painter,
+        Row(modifier = modifier.fillMaxWidth()) {
+            if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
+                // Picture designed by Freepik, modified by Handere
+                Image(
+                    painter = painter,
                     contentDescription = stringResource(id = R.string.water_your_plants),
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier.fillMaxWidth())
-            }
-
-
-            // Text(text = "Login", style = TextStyle(fontSize = 40.sp))
-
-            // Username
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = stringResource(id = R.string.username)) },
-                    value = username.value,
-                    onValueChange = { username.value = it },
-                    singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                    modifier = modifier.fillMaxWidth(0.5f)
                 )
             }
 
-            // Password
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = stringResource(id = R.string.password)) },
-                    value = password.value,
-                    visualTransformation = PasswordVisualTransformation(),
-                    onValueChange = { password.value = it },
-                    singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = { login(
-                        onNavigateToHomeScreen = onNavigateToHomeScreen,
-                        mContext = mContext,
-                        username = username) })
-                )
-            }
+            LazyColumn(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-                Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
-                    Button(
-                        onClick = { login(
-                            onNavigateToHomeScreen = onNavigateToHomeScreen,
-                            mContext = mContext,
-                            username = username)},
-                        shape = Shapes.large,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                    ) {
-                        Text(text = stringResource(id = R.string.login))
+                if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
+                    // Picture designed by Freepik, modified by Handere
+                    item {
+                        Image(painter = painter,
+                            contentDescription = stringResource(id = R.string.water_your_plants),
+                            modifier = modifier.fillMaxWidth())
                     }
                 }
-            }
+                else {
+                    item {
+                        Text(text = stringResource(id = R.string.login), fontSize = 30.sp)
+                    }
+                }
 
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-                ClickableText(
-                    text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
-                    onClick = { /* TODO: Add functionality */ },
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.Default
+                // Username
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    TextField(
+                        label = { Text(text = stringResource(id = R.string.username)) },
+                        value = username.value,
+                        onValueChange = { username.value = it },
+                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
-                )
+                }
+
+                // Password
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    TextField(
+                        label = { Text(text = stringResource(id = R.string.password)) },
+                        value = password.value,
+                        visualTransformation = PasswordVisualTransformation(),
+                        onValueChange = { password.value = it },
+                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = { login(
+                            onNavigateToHomeScreen = onNavigateToHomeScreen,
+                            mContext = mContext,
+                            username = username) })
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+                        Button(
+                            onClick = { login(
+                                onNavigateToHomeScreen = onNavigateToHomeScreen,
+                                mContext = mContext,
+                                username = username)},
+                            shape = Shapes.large,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.login))
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ClickableText(
+                        text = AnnotatedString(stringResource(id = R.string.sign_up_here)) ,
+                        onClick = { /* TODO: Add functionality */ },
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily.Default
+                        )
+                    )
+                }
             }
-
-
         }
     }
 

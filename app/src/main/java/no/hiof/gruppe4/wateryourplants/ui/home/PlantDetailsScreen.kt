@@ -40,7 +40,9 @@ import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 import no.hiof.gruppe4.wateryourplants.R
+import no.hiof.gruppe4.wateryourplants.WindowInfo
 import no.hiof.gruppe4.wateryourplants.data.Plant
+import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
 
@@ -64,6 +66,7 @@ fun PlantDetailsScreen(
         )
     )
 
+    val windowInfo = rememberWindowInfo()
     val currentPlantRoom by viewModel.currentPlantRoom.observeAsState()
     val currentPlant = viewModel.currentPlant.observeAsState()
 
@@ -92,37 +95,40 @@ fun PlantDetailsScreen(
 
         RequestNotificationPermission()
 
-        Column(
-            modifier = modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            TopAppBar(modifier = modifier.fillMaxWidth()) {
-                Text(
-                    text = currentPlantRoom?.roomName?.uppercase().toString(),
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Left,
+        Row(modifier = modifier.fillMaxWidth()) {
+
+            if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                        .error(R.drawable.no_plant_image)
+                        .data(currentPlant.value?.photoUrl)
+                        .build(),
+                    contentDescription = currentPlant.value?.speciesName,
+                    contentScale = ContentScale.FillHeight,
+                    modifier = modifier.fillMaxWidth(0.5f),
+                    alignment = Alignment.Center
                 )
             }
-
-            LazyColumn(
+                LazyColumn(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                item {
 
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current.applicationContext)
-                            .error(R.drawable.no_plant_image)
-                            .data(currentPlant.value?.photoUrl)
-                            .build(),
-                        contentDescription = currentPlant.value?.speciesName,
-                        contentScale = ContentScale.Crop,
-                        modifier = modifier.fillMaxWidth(0.5f),
-                        alignment = Alignment.Center
-                    )
+                if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
+                    item {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                                .error(R.drawable.no_plant_image)
+                                .data(currentPlant.value?.photoUrl)
+                                .build(),
+                            contentDescription = currentPlant.value?.speciesName,
+                            contentScale = ContentScale.Crop,
+                            modifier = modifier.fillMaxWidth(0.5f),
+                            alignment = Alignment.Center
+                        )
+                    }
                 }
 
                 // Plant name

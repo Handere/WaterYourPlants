@@ -40,11 +40,6 @@ fun PlantCard(
     nextWateringDay: Date,
     modifier: Modifier = Modifier,
 ) {
-    var usePhoto: String
-    if(photoId != ""){
-        usePhoto = photoId
-    }
-
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -59,16 +54,13 @@ fun PlantCard(
                 .fillMaxWidth()
                 .padding(5.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-val request =
-
-
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current.applicationContext)
                         .error(R.drawable.no_plant_image)
                         .data(photoId)
                         .build(),
                     contentDescription = contentDescription,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillHeight,
                     modifier = modifier.fillMaxWidth(0.5f))
 
                 Column(modifier = modifier

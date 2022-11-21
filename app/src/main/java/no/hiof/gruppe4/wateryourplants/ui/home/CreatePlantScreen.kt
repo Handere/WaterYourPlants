@@ -38,8 +38,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
+import no.hiof.gruppe4.wateryourplants.WindowInfo
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
+import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 
 
 @RequiresApi(value = 26)
@@ -58,11 +60,10 @@ fun CreatePlantScreen(
     var photoFromUser by remember {mutableStateOf(photoUri)}
     val mContext = LocalContext.current
 
-
+    val windowInfo = rememberWindowInfo()
 
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
-    // val plantSearch = remember { mutableStateOf(TextFieldValue()) }
     val species = remember { mutableStateOf(TextFieldValue()) }
     val speciesLatin = remember { mutableStateOf(TextFieldValue()) }
     val classification = remember { mutableStateOf(TextFieldValue()) }
@@ -113,177 +114,170 @@ fun CreatePlantScreen(
         }
     ) { padding -> // TODO: dafuq do we need this thing?
 
-
-
-        Box(modifier = modifier.padding(padding))
         Column(modifier = modifier
             .fillMaxWidth()
             .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
 
-            // TODO: Make DRY...
-            LazyColumn(modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally) {
-
-                /*item {
-                    // Plant search field
-                    TextField(
-                        label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
-                        value = plantSearch.value,
-                        onValueChange = { plantSearch.value = it }
-                    )
-
-                    // Plant search buttons
-                    Spacer(modifier = modifier.height(20.dp))
-                    Row(modifier = modifier) {
-                        Button(onClick = { *//*TODO*//* },
-                            shape = Shapes.medium,
-                            modifier = modifier.height(50.dp)
-                        ) {
-                            Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
-                        }
-                        Spacer(modifier = modifier.width(20.dp))
-                        Button(onClick = { *//*TODO*//* },
-                            shape = Shapes.medium,
-                            modifier = modifier.height(50.dp)
-                        ) {
-                            Text(text = stringResource(id = R.string.add_new_plant_search_button))
-                        }
-                    }
-                }*/
-
+            Row(
+                modifier = modifier.fillMaxWidth()
+            ) {
 
                 // Image
-                item {
-
-                    Spacer(modifier = modifier.height(20.dp))
+                if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
                     if(photoFromUser == null ) {
                         Image(
-                        painter = painterResource(id = photoUrl),
-                        contentDescription = "Placeholder image",
-                        modifier = modifier
-                            .clip(CircleShape)
-                            .border(1.5.dp, Color.Black, CircleShape)
-                            .clickable { /*TODO: Add uploading functionality*/
-                                pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            painter = painterResource(id = photoUrl),
+                            contentDescription = "Placeholder image",
+                            modifier = modifier
+                                .padding(60.dp, 40.dp, 16.dp, 20.dp)
+                                .clip(CircleShape)
+                                .border(1.5.dp, Color.Black, CircleShape)
+                                .clickable { /*TODO: Add uploading functionality*/
+                                    pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
-                                println(photoUrl)
-                            })
+                                    println(photoUrl)
+                                })
                     } else {
                         AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
                     }
-                    println("photo: " +photoFromUser)
                 }
 
-                // Species
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.plant_species)) },
-                        value = species.value,
-                        onValueChange = { species.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                LazyColumn(modifier = modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
 
-                // Species Latin
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
-                        value = speciesLatin.value,
-                        onValueChange = { speciesLatin.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Image
+                    if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
+                        item {
+                            Spacer(modifier = modifier.height(20.dp))
+                            if(photoFromUser == null ) {
+                                Image(
+                                    painter = painterResource(id = photoUrl),
+                                    contentDescription = "Placeholder image",
+                                    modifier = modifier
+                                        .clip(CircleShape)
+                                        .border(1.5.dp, Color.Black, CircleShape)
+                                        .clickable { /*TODO: Add uploading functionality*/
+                                            pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
-                // Classification
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
-                        value = classification.value,
-                        onValueChange = { classification.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                                            println(photoUrl)
+                                        })
+                            } else {
+                                AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
+                            }
+                        }
+                    }
 
-                // Watering interval
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
-                        value = wateringInterval.value,
-                        onValueChange = { wateringInterval.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                        singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    )
-                }
+                    // Species
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.plant_species)) },
+                            value = species.value,
+                            onValueChange = { species.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Nutrition interval
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
-                        value = nutritionInterval.value,
-                        onValueChange = { nutritionInterval.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                        singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                    )
-                }
+                    // Species Latin
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
+                            value = speciesLatin.value,
+                            onValueChange = { speciesLatin.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                //watering and nutrition day
-                /*
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
-                        value = wateringAndNutritionDay.value,
-                        onValueChange = { wateringAndNutritionDay.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
-                 */
+                    // Classification
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
+                            value = classification.value,
+                            onValueChange = { classification.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
 
-                // Sun requirement
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
-                        value = sunRequirement.value,
-                        onValueChange = { sunRequirement.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                }
+                    // Watering interval
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_interval)) },
+                            value = wateringInterval.value,
+                            onValueChange = { wateringInterval.value = it },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        )
+                    }
 
-                // Personal note
-                item {
-                    Spacer(modifier = modifier.height(20.dp))
-                    TextField(
-                        label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
-                        value = personalNote.value,
-                        onValueChange = { personalNote.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = { createPlant(
-                            viewModel = viewModel,
-                            mContext = mContext,
-                            popBackStack = popBackStack,
-                            plantRoomId = plantRoomId,
-                            photoUrl = photoFromUser.toString(),
-                            species = species,
-                            speciesLatin = speciesLatin,
-                            classification = classification,
-                            wateringInterval = wateringInterval,
-                            nutritionInterval = nutritionInterval,
-                            wateringAndNutritionDay = wateringAndNutritionDay,
-                            sunRequirement = sunRequirement,
-                            personalNote = personalNote
+                    // Nutrition interval
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_nutrition_interval)) },
+                            value = nutritionInterval.value,
+                            onValueChange = { nutritionInterval.value = it },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        )
+                    }
 
-                        ) })
-                    )
+                    //watering and nutrition day
+                    /*
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
+                            value = wateringAndNutritionDay.value,
+                            onValueChange = { wateringAndNutritionDay.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
+                     */
+
+                    // Sun requirement
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
+                            value = sunRequirement.value,
+                            onValueChange = { sunRequirement.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                    }
+
+                    // Personal note
+                    item {
+                        Spacer(modifier = modifier.height(20.dp))
+                        TextField(
+                            label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
+                            value = personalNote.value,
+                            onValueChange = { personalNote.value = it },
+                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(onDone = { createPlant(
+                                viewModel = viewModel,
+                                mContext = mContext,
+                                popBackStack = popBackStack,
+                                plantRoomId = plantRoomId,
+                                photoUrl = photoFromUser.toString(),
+                                species = species,
+                                speciesLatin = speciesLatin,
+                                classification = classification,
+                                wateringInterval = wateringInterval,
+                                nutritionInterval = nutritionInterval,
+                                wateringAndNutritionDay = wateringAndNutritionDay,
+                                sunRequirement = sunRequirement,
+                                personalNote = personalNote
+
+                            ) })
+                        )
+                    }
                 }
             }
         }
