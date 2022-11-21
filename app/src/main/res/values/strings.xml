@@ -3,8 +3,11 @@
 
     <string name="confirm">Confirm</string>
     <string name="dismiss">Dismiss</string>
+    <string name="add">Add</string>
+    <string name="done">Done</string>
 
     <!-- Notifications -->
+    <string name="notifications">Notifications</string>
     <string name="watering_notification_channel_id">watering_channel_01</string>
     <string name="watering_notification_channel_name">Watering</string>
     <string name="watering_notification_channel_description">Send a push notification with the number of plants currently in need of watering.</string>
@@ -40,6 +43,8 @@
 
     <!-- Create plant -->
     <string name="add_new_plant">Add new plant</string>
+    <string name="placeholder_image">Placeholder image</string>
+    <string name="photo_from_user">photo from users camera roll</string>
     <string name="add_new_plant_image_search_button">Image search</string>
     <string name="add_new_plant_search_button">Search</string>
     <string name="add_new_plant_search_field">Plant search</string>

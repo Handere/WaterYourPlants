@@ -55,17 +55,16 @@ fun RoomScreen(
             plantRoomPlantList = plantRoomPlantList)
     }
 
-
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigationToCreatePlant(userName.toString(),
                 plantRoomId
             ) }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(id = R.string.add))
             }
         }
-        ) {padding -> // TODO: ...
+        ) {padding ->
         Column(modifier = modifier
             .fillMaxWidth()
             .padding(16.dp, 0.dp)) {

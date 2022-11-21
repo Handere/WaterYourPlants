@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -38,8 +37,6 @@ import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
 import kotlinx.coroutines.*
 
 import no.hiof.gruppe4.wateryourplants.R
@@ -72,8 +69,6 @@ fun HomeScreen(
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
 
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
-
-    //logic
     val context: Context = LocalContext.current.applicationContext
 
     var permissionString: Int = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -82,8 +77,6 @@ fun HomeScreen(
     var weatherFromApiRememberState by remember { mutableStateOf(weatherFromApi) }
     var gpsFromUserString = ""
     var gpsLocationFromUserRememberState by remember{ mutableStateOf(gpsFromUserString) }
-
-
 
     val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     val tokenSource = CancellationTokenSource()
@@ -96,8 +89,6 @@ fun HomeScreen(
             if (isGranted) {
                 permissionString = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
                 permissionsGiven = permissionString
-            } else {
-                println("permissionDenied")
             }
     }
 
@@ -123,13 +114,14 @@ fun HomeScreen(
 
     } else {
         // Request permissions
-
         SideEffect {
             launchScope.launch { launcherMultiplePermissions.launch(Manifest.permission.ACCESS_COARSE_LOCATION) }
         }
     }
         LaunchedEffect(gpsLocationFromUserRememberState, permissionsGiven){
-            if(permissionsGiven == 0 && gpsLocationFromUserRememberState != "") {weatherFromApi = getWeather(gpsLocationFromUserRememberState)}
+            if(permissionsGiven == 0 && gpsLocationFromUserRememberState != "") {
+                weatherFromApi = getWeather(gpsLocationFromUserRememberState)
+            }
 
             weatherFromApiRememberState = weatherFromApi
         }
@@ -138,15 +130,16 @@ fun HomeScreen(
         topBar = { ScaffoldTopAppBar(userName) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigateToCreatePlantRoom(userName.toString()) }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(id = R.string.add))
             }
         }
-    ) { padding -> // TODO: why tf do we need to do this shit?
+    ) { padding ->
 
             Row(modifier = Modifier.fillMaxWidth()){
                 if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
                     Box(
-                        modifier = Modifier.weight(1f, fill = false)
+                        modifier = Modifier
+                            .weight(1f, fill = false)
                             .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
                             .fillMaxHeight()
                             .fillMaxWidth()
@@ -175,7 +168,8 @@ fun HomeScreen(
                     if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
 
                             Box(
-                                modifier = Modifier.weight(0.5f, fill = false)
+                                modifier = Modifier
+                                    .weight(0.5f, fill = false)
                                     .aspectRatio(weatherPlaceholder.intrinsicSize.width / weatherPlaceholder.intrinsicSize.height)
                                     .fillMaxWidth()
                                     .padding(16.dp, 16.dp, 13.dp)
@@ -198,15 +192,13 @@ fun HomeScreen(
                                     fontSize = 20.sp,
                                 )
                             }
-
                     }
                 RoomCards(
                     onNavigateToRoom = onNavigateToRoom,
                     userName = userName,
                     plantRoomList = plantRoomList,
                     viewModel = viewModel)
-            }
-            }
+            } }
     }
 }
 

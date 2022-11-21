@@ -59,11 +59,7 @@ fun UpdatePlantScreen(
 
     var photoUri: Uri? = null
 
-
-
     val windowInfo = rememberWindowInfo()
-
-
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId, plantId = plantId))
     val currentPlant = viewModel.currentPlant.observeAsState()
 
@@ -75,7 +71,6 @@ fun UpdatePlantScreen(
     var wateringAndNutritionDay = TextFieldValue(currentPlant.value?.wateringAndNutritionDay.toString())
     var sunRequirement = TextFieldValue(currentPlant.value?.sunRequirement.toString())
     var personalNote = TextFieldValue(currentPlant.value?.note.toString())
-    var photoUrl = currentPlant.value?.photoUrl.toString()
 
     var placeholderSpecies by remember { mutableStateOf(species) }
     var placeholderSpeciesLatin by remember { mutableStateOf(speciesLatin) }
@@ -102,14 +97,9 @@ fun UpdatePlantScreen(
         ActivityResultContracts.PickVisualMedia() ){
             uri ->
         if(uri != null ){
-
             mContext.applicationContext.contentResolver.takePersistableUriPermission(uri, flag)
-            println("Photo, selected")
             photoUri = uri
             placeholderPhoto = photoUri
-
-        } else {
-            println("photo not selected")
         }
     }
 
@@ -134,10 +124,10 @@ fun UpdatePlantScreen(
 
             ) })
             {
-                Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
+                Icon(imageVector = Icons.Default.Done, contentDescription = stringResource(id = R.string.done))
             }
         }
-    ) { padding -> // TODO: dafuq do we need this thing?
+    ) { padding ->
 
         Box(modifier = modifier.padding(padding))
         Column(modifier = modifier
@@ -154,15 +144,22 @@ fun UpdatePlantScreen(
                             .data(placeholderPhoto)
                             .build(),
                         contentDescription = currentPlant.value?.speciesName,
-                        modifier = modifier.fillMaxWidth(0.5f)
+                        modifier = modifier
+                            .fillMaxWidth(0.5f)
                             .padding(60.dp, 40.dp, 16.dp, 20.dp)
                             .clip(CircleShape)
                             .border(1.5.dp, Color.Black, CircleShape)
-                            .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                            .clickable {
+                                pickmedia.launch(
+                                    PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
+                                )
+                            },
                         alignment = Alignment.Center
                     )
                 }
-                // TODO: Make DRY...
+
                 LazyColumn(modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -178,10 +175,17 @@ fun UpdatePlantScreen(
                                     .data(placeholderPhoto)
                                     .build(),
                                 contentDescription = currentPlant.value?.speciesName,
-                                modifier = modifier.fillMaxWidth(0.5f)
+                                modifier = modifier
+                                    .fillMaxWidth(0.5f)
                                     .clip(CircleShape)
                                     .border(1.5.dp, Color.Black, CircleShape)
-                                    .clickable {pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))},
+                                    .clickable {
+                                        pickmedia.launch(
+                                            PickVisualMediaRequest(
+                                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                                            )
+                                        )
+                                    },
                                 alignment = Alignment.Center
                             )
                         }
@@ -194,7 +198,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.plant_species)) },
                             value = placeholderSpecies,
                             onValueChange = { placeholderSpecies = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -205,7 +209,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
                             value = placeholderSpeciesLatin,
                             onValueChange = { placeholderSpeciesLatin = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -216,7 +220,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
                             value = placeholderClassification,
                             onValueChange = { placeholderClassification = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -228,7 +232,7 @@ fun UpdatePlantScreen(
                             value = placeholderWateringInterval,
                             onValueChange = { placeholderWateringInterval = it },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         )
                     }
 
@@ -240,7 +244,7 @@ fun UpdatePlantScreen(
                             value = placeholderNutritionInterval,
                             onValueChange = { placeholderNutritionInterval = it },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         )
                     }
 
@@ -252,7 +256,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
                             value = wateringAndNutritionDay.value,
                             onValueChange = { wateringAndNutritionDay.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
                      */
@@ -264,7 +268,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
                             value = placeholderSunRequirement,
                             onValueChange = { placeholderSunRequirement = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -275,7 +279,7 @@ fun UpdatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
                             value = placeholderPersonalNote,
                             onValueChange = { placeholderPersonalNote = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                             keyboardActions = KeyboardActions(onDone = { updatePlant(
                                 viewModel = viewModel,

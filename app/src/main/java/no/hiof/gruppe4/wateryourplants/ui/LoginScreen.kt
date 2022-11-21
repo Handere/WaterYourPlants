@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,8 +34,6 @@ import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WindowInfo
 import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
-
-// Code inspiration from: https://dev.to/manojbhadane/android-login-screen-using-jetpack-compose-part-1-50pl
 
     @Composable
     fun LoginScreen(
@@ -90,7 +87,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
                         label = { Text(text = stringResource(id = R.string.username)) },
                         value = username.value,
                         onValueChange = { username.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
                 }
@@ -103,7 +100,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
                         value = password.value,
                         visualTransformation = PasswordVisualTransformation(),
                         onValueChange = { password.value = it },
-                        singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                        singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { login(
                             onNavigateToHomeScreen = onNavigateToHomeScreen,

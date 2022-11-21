@@ -38,7 +38,6 @@ fun CreatePlantRoomScreen(
     val plantRoomName = remember { mutableStateOf(TextFieldValue()) }
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository))
 
-
     Scaffold(
         topBar = { ScaffoldTopAppBar(userName = username)},
         floatingActionButton = {
@@ -53,7 +52,7 @@ fun CreatePlantRoomScreen(
                 Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
             }
         }
-    ) {padding -> // TODO: yep....
+    ) {padding ->
         Column(modifier = modifier
             .fillMaxWidth()
             .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -62,7 +61,7 @@ fun CreatePlantRoomScreen(
                 label ={ Text(text = stringResource(id = R.string.add_new_room_name)) },
                 value = plantRoomName.value,
                 onValueChange = { plantRoomName.value = it },
-                singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     createPlantRoom(

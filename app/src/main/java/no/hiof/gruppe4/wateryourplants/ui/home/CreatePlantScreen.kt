@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.WaterYourPlantsApplication
 import no.hiof.gruppe4.wateryourplants.WindowInfo
@@ -55,13 +56,11 @@ fun CreatePlantScreen(
 ) {
     val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
-
     var photoUri: Uri? = null
     var photoFromUser by remember {mutableStateOf(photoUri)}
     val mContext = LocalContext.current
 
     val windowInfo = rememberWindowInfo()
-
     val viewModel: PlantViewModel = viewModel(factory = PlantViewModelFactory((LocalContext.current.applicationContext as WaterYourPlantsApplication).repository, plantRoomId = plantRoomId))
 
     val species = remember { mutableStateOf(TextFieldValue()) }
@@ -73,19 +72,13 @@ fun CreatePlantScreen(
     val sunRequirement = remember { mutableStateOf(TextFieldValue()) }
     val personalNote = remember { mutableStateOf(TextFieldValue()) }
 
-
     val pickmedia: ActivityResultLauncher<PickVisualMediaRequest> = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia() ){
             uri ->
         if(uri != null ){
-
             mContext.applicationContext.contentResolver.takePersistableUriPermission(uri, flag)
-            println("Photo, selected")
             photoUri = uri
             photoFromUser = photoUri
-
-        } else {
-            println("photo not selected")
         }
     }
 
@@ -106,13 +99,12 @@ fun CreatePlantScreen(
                 wateringAndNutritionDay = wateringAndNutritionDay,
                 sunRequirement = sunRequirement,
                 personalNote = personalNote
-
             ) })
             {
             Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
             }
         }
-    ) { padding -> // TODO: dafuq do we need this thing?
+    ) { padding ->
 
         Column(modifier = modifier
             .fillMaxWidth()
@@ -126,20 +118,19 @@ fun CreatePlantScreen(
 
                 // Image
                 if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
-                    if(photoFromUser == null ) {
-                        Image(
-                            painter = painterResource(id = photoUrl),
-                            contentDescription = "Placeholder image",
-                            modifier = modifier
-                                .padding(60.dp, 40.dp, 16.dp, 20.dp)
-                                .clip(CircleShape)
-                                .border(1.5.dp, Color.Black, CircleShape)
-                                .clickable { /*TODO: Add uploading functionality*/
-                                    pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                                })
-                    } else {
-                        AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
-                    }
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                            .error(R.drawable.no_plant_image)
+                            .data(photoFromUser)
+                            .build(),
+                        contentDescription = stringResource(id = R.string.photo_from_user),
+                        modifier = modifier
+                            .padding(60.dp, 40.dp, 16.dp, 20.dp)
+                            .clip(CircleShape)
+                            .border(1.5.dp, Color.Black, CircleShape)
+                            .clickable {
+                                pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            })
                 }
 
                 LazyColumn(modifier = modifier
@@ -151,19 +142,18 @@ fun CreatePlantScreen(
                     if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
                         item {
                             Spacer(modifier = modifier.height(20.dp))
-                            if(photoFromUser == null ) {
-                                Image(
-                                    painter = painterResource(id = photoUrl),
-                                    contentDescription = "Placeholder image",
-                                    modifier = modifier
-                                        .clip(CircleShape)
-                                        .border(1.5.dp, Color.Black, CircleShape)
-                                        .clickable { /*TODO: Add uploading functionality*/
-                                            pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                                        })
-                            } else {
-                                AsyncImage(model = photoFromUser, contentDescription = "photo from users camera roll" )
-                            }
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current.applicationContext)
+                                    .error(R.drawable.no_plant_image)
+                                    .data(photoFromUser)
+                                    .build(),
+                                contentDescription = stringResource(id = R.string.photo_from_user),
+                                modifier = modifier
+                                    .clip(CircleShape)
+                                    .border(1.5.dp, Color.Black, CircleShape)
+                                    .clickable {
+                                        pickmedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                                    })
                         }
                     }
 
@@ -174,7 +164,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.plant_species)) },
                             value = species.value,
                             onValueChange = { species.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -185,7 +175,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_species_latin)) },
                             value = speciesLatin.value,
                             onValueChange = { speciesLatin.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -196,7 +186,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_classification)) },
                             value = classification.value,
                             onValueChange = { classification.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -208,7 +198,7 @@ fun CreatePlantScreen(
                             value = wateringInterval.value,
                             onValueChange = { wateringInterval.value = it },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         )
                     }
 
@@ -220,7 +210,7 @@ fun CreatePlantScreen(
                             value = nutritionInterval.value,
                             onValueChange = { nutritionInterval.value = it },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                            singleLine = true // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                         )
                     }
 
@@ -232,7 +222,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_watering_and_nutrition_day)) },
                             value = wateringAndNutritionDay.value,
                             onValueChange = { wateringAndNutritionDay.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
                      */
@@ -244,7 +234,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_sun_requirement)) },
                             value = sunRequirement.value,
                             onValueChange = { sunRequirement.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                     }
 
@@ -255,7 +245,7 @@ fun CreatePlantScreen(
                             label = { Text(text = stringResource(id = R.string.add_new_plant_plant_personal_note)) },
                             value = personalNote.value,
                             onValueChange = { personalNote.value = it },
-                            singleLine = true, // TODO: Bug: Is still possible to press "enter" and get multiple lines
+                            singleLine = true, // FIXME: Bug: Is still possible to press "enter" and get multiple lines
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                             keyboardActions = KeyboardActions(onDone = { createPlant(
                                 viewModel = viewModel,

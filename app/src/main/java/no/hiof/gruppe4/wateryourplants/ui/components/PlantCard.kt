@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -82,7 +83,7 @@ fun PlantCard(
                             fontStyle = FontStyle.Italic
                         )
                         if (nextWateringDay.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0){
-                            Icon(imageVector = Icons.Default.Notifications, contentDescription = "Notifications")
+                            Icon(imageVector = Icons.Default.Notifications, contentDescription = stringResource(id = R.string.notifications))
                         }
                     }
                 }

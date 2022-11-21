@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import no.hiof.gruppe4.wateryourplants.R
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
@@ -30,7 +32,7 @@ fun PlantRoomCard(
         modifier = modifier.fillMaxWidth()) {
             Text(text = buttonName.uppercase())
             if (notifications > 0) {
-                Icon(imageVector = Icons.Default.Notifications, contentDescription = "Notifications")
+                Icon(imageVector = Icons.Default.Notifications, contentDescription = stringResource(id = R.string.notifications))
                 Text(text = notifications.toString())
             }
     }

@@ -176,7 +176,6 @@ fun AppNavHost(
                     type = NavType.IntType
                     nullable = false
                 }
-
             )
 
         ){ backStackEntry ->
@@ -263,7 +262,6 @@ fun AppNavHost(
 
 sealed class Routes(val route: String) {
     object LoginScreen : Routes("login_screen") {
-
     }
     object HomeScreen : Routes("home_screen") {
         const val userName = "userName"
