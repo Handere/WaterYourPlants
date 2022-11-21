@@ -133,6 +133,7 @@ fun CreatePlantScreen(
                             painter = painterResource(id = photoUrl),
                             contentDescription = "Placeholder image",
                             modifier = modifier
+                                .padding(60.dp, 40.dp, 16.dp, 20.dp)
                                 .clip(CircleShape)
                                 .border(1.5.dp, Color.Black, CircleShape)
                                 .clickable { /*TODO: Add uploading functionality*/
