@@ -114,9 +114,6 @@ fun CreatePlantScreen(
         }
     ) { padding -> // TODO: dafuq do we need this thing?
 
-
-
-        Box(modifier = modifier.padding(padding))
         Column(modifier = modifier
             .fillMaxWidth()
             .padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
