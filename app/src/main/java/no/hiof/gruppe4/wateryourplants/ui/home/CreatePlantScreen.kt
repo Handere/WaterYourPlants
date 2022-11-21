@@ -120,7 +120,8 @@ fun CreatePlantScreen(
             Text(text = stringResource(id = R.string.add_new_plant), fontSize = 30.sp)
 
             Row(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
 
                 // Image
