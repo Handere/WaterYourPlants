@@ -166,33 +166,6 @@ fun UpdatePlantScreen(
                     .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally) {
 
-                    /*item {
-                        // Plant search field
-                        TextField(
-                            label ={ Text(text = stringResource(id = R.string.add_new_plant_search_field)) },
-                            value = plantSearch.value,
-                            onValueChange = { plantSearch.value = it }
-                        )
-
-                        // Plant search buttons
-                        Spacer(modifier = modifier.height(20.dp))
-                        Row(modifier = modifier) {
-                            Button(onClick = { *//*TODO*//* },
-                            shape = Shapes.medium,
-                            modifier = modifier.height(50.dp)
-                        ) {
-                            Text(text = stringResource(id = R.string.add_new_plant_image_search_button))
-                        }
-                        Spacer(modifier = modifier.width(20.dp))
-                        Button(onClick = { *//*TODO*//* },
-                            shape = Shapes.medium,
-                            modifier = modifier.height(50.dp)
-                        ) {
-                            Text(text = stringResource(id = R.string.add_new_plant_search_button))
-                        }
-                    }
-                }*/
-
                     if (windowInfo.screenWithInfo is WindowInfo.WindowType.Compact) {
                         // Image
                         item {
