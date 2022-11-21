@@ -50,13 +50,16 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
         val windowInfo = rememberWindowInfo()
 
-        Row(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             if (windowInfo.screenWithInfo is WindowInfo.WindowType.Medium || windowInfo.screenWithInfo is WindowInfo.WindowType.Expanded) {
                 // Picture designed by Freepik, modified by Handere
                 Image(
                     painter = painter,
                     contentDescription = stringResource(id = R.string.water_your_plants),
-                    modifier = modifier.fillMaxWidth(0.5f)
+                    modifier = modifier.fillMaxWidth(0.5f).fillMaxHeight()
                 )
             }
 
