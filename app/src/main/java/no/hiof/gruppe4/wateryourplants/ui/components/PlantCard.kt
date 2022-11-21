@@ -40,7 +40,6 @@ fun PlantCard(
     nextWateringDay: Date,
     modifier: Modifier = Modifier,
 ) {
-
     Card(
         modifier = modifier
             .fillMaxWidth()
