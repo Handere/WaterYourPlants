@@ -4,10 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,8 +52,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.math.roundToInt
 
-// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     onNavigateToRoom: (String, Int) -> Unit,
@@ -207,8 +203,6 @@ fun ScaffoldTopAppBar(userName: String?) {
     TopAppBar(title = { userName?.let { Text(text = it) } }) // TODO: Placeholder. Change to actual username
 }
 
-// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(value = 26)
 @Composable
 fun RoomCards(
     userName: String?,

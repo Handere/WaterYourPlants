@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -27,9 +26,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.WaterYourPlantsTheme
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModel
 import no.hiof.gruppe4.wateryourplants.home.PlantViewModelFactory
 
-
 class MainActivity : ComponentActivity() {
-    @RequiresApi(value = 26)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -95,7 +92,6 @@ fun notifyingPlants(): Int {
     return viewModel.numberOfNotifyingPlants(allPlants)
 }
 
-@RequiresApi(value = 26)
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,

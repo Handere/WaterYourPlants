@@ -42,7 +42,7 @@ import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
         modifier: Modifier = Modifier) {
 
         val mContext = LocalContext.current
-        val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling
+        val username = remember { mutableStateOf(TextFieldValue("DefaultUserName")) } // Don't remove "DefaultUserName" without exception handling, used as a placeholder
         val password = remember { mutableStateOf(TextFieldValue()) }
 
         val windowInfo = rememberWindowInfo()

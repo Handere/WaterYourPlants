@@ -5,7 +5,6 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -39,9 +38,6 @@ import no.hiof.gruppe4.wateryourplants.data.Plant
 import no.hiof.gruppe4.wateryourplants.rememberWindowInfo
 import no.hiof.gruppe4.wateryourplants.ui.theme.Shapes
 
-
-// TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-@RequiresApi(value = 26)
 @Composable
 fun PlantDetailsScreen(
     onNavigateToUpdatePlantScreen: (Int, String, Int) -> Unit,

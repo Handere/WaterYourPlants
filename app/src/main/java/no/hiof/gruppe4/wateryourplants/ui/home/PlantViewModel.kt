@@ -1,20 +1,15 @@
 package no.hiof.gruppe4.wateryourplants.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import no.hiof.gruppe4.wateryourplants.data.*
 import java.sql.Date
 import java.time.LocalDate
 
-
 class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, plantId: Int) : ViewModel() {
 
     var allPlants: LiveData<List<Plant>> = repository.getPlants().asLiveData()
 
-    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(value = 26)
     fun insertPlant(
         roomId: Int,
         speciesName: String,
@@ -45,7 +40,6 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
            nextWateringDay))
     }
 
-    @RequiresApi(value = 26)
     fun updatePlant(
         plantId: Int,
         roomId: Int,
@@ -84,8 +78,6 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
 
     fun deletePlant(plant: Plant) = viewModelScope.launch { repository.deletePlant(plant) }
 
-    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-    @RequiresApi(value = 26)
     fun updateWateringDate(
         wateringInterval: Int,
         plantId: Int) = viewModelScope.launch {
@@ -111,17 +103,12 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
         return repository.getPlantRoomPlants(plantRoomId).asLiveData()
     }
 
-    // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
     fun numberOfNotifyingPlants(plantList: List<Plant>): Int {
         var notifications = 0
         plantList.forEach {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
-                    notifications++
-                }
-                } else {
-                    TODO("VERSION.SDK_INT < O")
-                }
+            if (it.nextWateringDate.compareTo(Date.valueOf(LocalDate.now().toString())) <= 0) {
+                notifications++
+            }
         }
         return notifications
     }
