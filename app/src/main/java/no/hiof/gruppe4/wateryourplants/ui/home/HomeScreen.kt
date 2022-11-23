@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
@@ -91,7 +92,7 @@ fun HomeScreen(
     if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        fusedLocationClient.getCurrentLocation(LocationRequest.create().priority, token)
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, token)
             .addOnCompleteListener { location: Task<Location> ->
                 var latitude = location.result.latitude
                 var longitude = location.result.longitude
