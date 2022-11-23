@@ -72,7 +72,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         10,
                        " ",
                         "lite",
-                        "",
+                        "Min første plante",
                        Date.valueOf(LocalDate.now().toString()),
                        Date.valueOf(LocalDate.now().plusDays(10).toString()))
                         )
@@ -87,7 +87,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                         0,
                        " ",
                         "lite",
-                        "",
+                        "Snart jul! (Håper du ikke har allergi)",
                        Date.valueOf(LocalDate.now().toString()),
                        Date.valueOf(LocalDate.now().plusDays(0).toString()))
                         )
@@ -103,7 +103,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             5,
                             " ",
                             "halvskygge",
-                            "",
+                            "Denne er også fin",
                             Date.valueOf(LocalDate.now().minusDays(5).toString()),
                             Date.valueOf(LocalDate.now().toString()))
                     )
@@ -119,7 +119,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             29,
                             " ",
                             "halvskygge - sol",
-                            "",
+                            "Fra din kjære Ida",
                             Date.valueOf(LocalDate.now().toString()),
                             Date.valueOf(LocalDate.now().plusDays(29).toString()))
                     )
@@ -135,7 +135,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             4,
                             " ",
                             "halvskygge - sol",
-                            "",
+                            "Passer også fint i julen",
                             Date.valueOf(LocalDate.now().minusDays(94).toString()),
                             Date.valueOf(LocalDate.now().minusDays(90).toString()))
                     )
@@ -151,7 +151,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             4,
                             " ",
                             "halvskygge - sol",
-                            "",
+                            "Plommer i juli/august",
                             Date.valueOf(LocalDate.now().minusDays(2).toString()),
                             Date.valueOf(LocalDate.now().plusDays(2).toString()))
                     )
@@ -167,7 +167,7 @@ abstract class PlantRoomDatabase: RoomDatabase() {
                             30,
                             " ",
                             "halvskygge - sol",
-                            "",
+                            "Kunne vært kult i Fortnite",
                             Date.valueOf(LocalDate.now().toString()),
                             Date.valueOf(LocalDate.now().plusDays(30).toString()))
                     )
