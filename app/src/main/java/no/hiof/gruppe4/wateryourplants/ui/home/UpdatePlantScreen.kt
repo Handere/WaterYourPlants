@@ -66,6 +66,7 @@ fun UpdatePlantScreen(
     var wateringAndNutritionDay = TextFieldValue(currentPlant.value?.wateringAndNutritionDay.toString())
     var sunRequirement = TextFieldValue(currentPlant.value?.sunRequirement.toString())
     var personalNote = TextFieldValue(currentPlant.value?.note.toString())
+    photoUri = Uri.parse(currentPlant.value?.photoUrl.toString())
 
     var placeholderSpecies by remember { mutableStateOf(species) }
     var placeholderSpeciesLatin by remember { mutableStateOf(speciesLatin) }
