@@ -91,7 +91,7 @@ fun HomeScreen(
     if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, token)
+        fusedLocationClient.getCurrentLocation(LocationRequest.create().priority, token)
             .addOnCompleteListener { location: Task<Location> ->
                 var latitude = location.result.latitude
                 var longitude = location.result.longitude
