@@ -114,7 +114,6 @@ class PlantViewModel(private val repository: PlantRepository, plantRoomId: Int, 
     }
 }
 
-// TODO: Error handling if plantRoomId = 0 = no argument given
 class PlantViewModelFactory(val repository: PlantRepository, val plantRoomId: Int = 0, val plantId: Int = 0) :
     ViewModelProvider.Factory {
 
