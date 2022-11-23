@@ -40,8 +40,6 @@ abstract class PlantRoomDatabase: RoomDatabase() {
         private val scope: CoroutineScope
     ) : Callback() {
 
-        // TODO: LocalDate.now() requires API lvl 26 or higher (current supported is 21)
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
