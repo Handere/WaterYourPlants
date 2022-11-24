@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -67,6 +68,7 @@ fun HomeScreen(
 
     val plantRoomList by viewModel.plantRoomList.observeAsState(listOf())
     val context: Context = LocalContext.current.applicationContext
+    val contextCurrent: Context = LocalContext.current
 
     var permissionString: Int = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
     var permissionsGiven by remember { mutableStateOf(permissionString) }
@@ -92,21 +94,31 @@ fun HomeScreen(
     if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, token)
-            .addOnCompleteListener { location: Task<Location> ->
-                var latitude = location.result.latitude
-                var longitude = location.result.longitude
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, token).addOnCompleteListener { location: Task<Location> ->
 
-                latitude = latitude.let {
-                    BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+                try {
+                    var latitude = location.result.latitude
+                    var longitude = location.result.longitude
+
+                    latitude = latitude.let {
+                        BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+                    }
+                    longitude = longitude.let {
+                        BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+                    }
+
+                    gpsFromUserString = "lat=$latitude&lon=$longitude"
+
+                    gpsLocationFromUserRememberState = gpsFromUserString
+
+                } catch (e : Exception){
+                    gpsFromUserString = "We couldn't get your location"
+                    gpsLocationFromUserRememberState = gpsFromUserString
+                    println(e)
                 }
-                longitude = longitude.let {
-                    BigDecimal(it).setScale(2, RoundingMode.HALF_EVEN).toDouble()
-                }
 
-                gpsFromUserString = "lat=$latitude&lon=$longitude"
 
-                gpsLocationFromUserRememberState = gpsFromUserString
+
             }
 
     } else {
@@ -117,7 +129,7 @@ fun HomeScreen(
     }
         LaunchedEffect(gpsLocationFromUserRememberState, permissionsGiven){
             if(permissionsGiven == 0 && gpsLocationFromUserRememberState != "") {
-                weatherFromApi = getWeather(gpsLocationFromUserRememberState)
+                weatherFromApi = getWeather(gpsLocationFromUserRememberState, contextCurrent)
             }
 
             weatherFromApiRememberState = weatherFromApi
@@ -233,52 +245,72 @@ fun RoomCards(
 }
 
 
-suspend fun getWeather(latAndLon: String): String {
+suspend fun getWeather(latAndLon: String, context: Context): String {
     var weatherWithCelsiusAndCondition = ""
     val urlWithGps = URL("https://api.met.no/weatherapi/locationforecast/2.0/compact?$latAndLon")
     println(urlWithGps)
     var responseCode: Int = 0
     val coroutineScope = CoroutineScope(Dispatchers.IO)
 
+    if (latAndLon == "We couldn't get your location") {
+
+        Toast.makeText(context, "Please make sure your GPS is turned on", Toast.LENGTH_SHORT).show()
+
+        weatherWithCelsiusAndCondition = "We couldn't get your location"
+
+        return weatherWithCelsiusAndCondition
+    }
+
     coroutineScope.launch {
-        val connectionToYr: HttpURLConnection = urlWithGps.openConnection() as HttpURLConnection
-        connectionToYr.setRequestProperty(
-            "Accept",
-            "application/json"
-        ) // The format of response we want to get from the server
-        connectionToYr.requestMethod = "GET"
-        connectionToYr.setRequestProperty("User-Agent", "waterYourPlants")
-        connectionToYr.doInput = true
-        connectionToYr.doOutput = false
-        responseCode = connectionToYr.responseCode
 
-        if (responseCode == 200) {
-            val response = connectionToYr.inputStream.bufferedReader()
-                .use { it.readText() }  // defaults to UTF-8
+        try {
 
-            val jsonObject = JSONObject(response)
-            val airTemp = jsonObject.getJSONObject("properties")
-                .getJSONArray("timeseries")
-                .getJSONObject(1)
-                .getJSONObject("data")
-                .getJSONObject("instant")
-                .getJSONObject("details")
-                .get("air_temperature")
-            val clouds = jsonObject.getJSONObject("properties")
-                .getJSONArray("timeseries")
-                .getJSONObject(1)
-                .getJSONObject("data")
-                .getJSONObject("next_1_hours")
-                .getJSONObject("summary")
-                .get("symbol_code")
+            val connectionToYr: HttpURLConnection = urlWithGps.openConnection() as HttpURLConnection
+            connectionToYr.setRequestProperty(
+                "Accept",
+                "application/json"
+            ) // The format of response we want to get from the server
+            connectionToYr.requestMethod = "GET"
+            connectionToYr.setRequestProperty("User-Agent", "waterYourPlants")
+            connectionToYr.doInput = true
+            connectionToYr.doOutput = false
+            responseCode = connectionToYr.responseCode
 
-            weatherWithCelsiusAndCondition = "Temperature:" + (airTemp as Double).roundToInt() + "°C \nwith " + clouds
+            if (responseCode == 200) {
+                val response = connectionToYr.inputStream.bufferedReader()
+                    .use { it.readText() }  // defaults to UTF-8
 
-        } else {
-            println("HTTPURLCONNECTION_ERROR" + responseCode.toString())
+                val jsonObject = JSONObject(response)
+                val airTemp = jsonObject.getJSONObject("properties")
+                    .getJSONArray("timeseries")
+                    .getJSONObject(1)
+                    .getJSONObject("data")
+                    .getJSONObject("instant")
+                    .getJSONObject("details")
+                    .get("air_temperature")
+                val clouds = jsonObject.getJSONObject("properties")
+                    .getJSONArray("timeseries")
+                    .getJSONObject(1)
+                    .getJSONObject("data")
+                    .getJSONObject("next_1_hours")
+                    .getJSONObject("summary")
+                    .get("symbol_code")
+
+                weatherWithCelsiusAndCondition = "Temperature:" + (airTemp as Double).roundToInt() + "°C \nwith " + clouds
+
+            } else {
+                println("HTTPURLCONNECTION_ERROR" + responseCode.toString())
+            }
+
+        } catch (e: java.lang.Exception) {
+            println(e)
         }
 
     }.join()
 
+    if(weatherWithCelsiusAndCondition == "") {
+        weatherWithCelsiusAndCondition = "Ops,\nsomething went wrong"
+        Toast.makeText(context, "Please check your internet connection", Toast.LENGTH_LONG).show()
+    }
     return weatherWithCelsiusAndCondition
 }
