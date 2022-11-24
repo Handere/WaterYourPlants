@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 // Check and hold window size to customize screen content
+// Code inspiration from https://www.youtube.com/watch?v=HmXgVBys7BU&list=PLQkwcJG4YTCSpJ2NLhDTHhi6XBNfk9WiC&index=27&t=538s
 @Composable
 fun rememberWindowInfo(): WindowInfo {
     val configuration = LocalConfiguration.current
