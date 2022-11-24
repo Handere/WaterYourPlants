@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -92,7 +93,7 @@ fun HomeScreen(
     }
 
     if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 
         fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, token).addOnCompleteListener { location: Task<Location> ->
 
@@ -114,11 +115,7 @@ fun HomeScreen(
                 } catch (e : Exception){
                     gpsFromUserString = "We couldn't get your location"
                     gpsLocationFromUserRememberState = gpsFromUserString
-                    println(e)
                 }
-
-
-
             }
 
     } else {
