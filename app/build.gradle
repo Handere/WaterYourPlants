@@ -8,6 +8,10 @@ android {
     namespace 'no.hiof.gruppe4.wateryourplants'
     compileSdk 33
 
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
     defaultConfig {
         applicationId "no.hiof.gruppe4.wateryourplants"
         minSdk 21
